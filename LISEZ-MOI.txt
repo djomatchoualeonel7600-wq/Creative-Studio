@@ -1,0 +1,11 @@
+METTRE A JOUR LE SITE
+
+1. Remplace les fichiers de ce dossier par ceux de la nouvelle version (index.html, fonts, brand, i, v).
+   Garde le dossier .git (il est invisible) et ce fichier publier.bat.
+2. Double-clique sur publier.bat.
+3. Attends "Termine". Vercel republie le site tout seul en 30 secondes.
+
+MUSIQUE D'AMBIANCE
+Par defaut, l'ambiance est generee par le navigateur (aucun fichier, aucun droit d'auteur).
+Pour utiliser ta propre musique : place un fichier ambiance.mp3 dans un dossier "audio" ici,
+puis demande-moi de brancher le fichier.
