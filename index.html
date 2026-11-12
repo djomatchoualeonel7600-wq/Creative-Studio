@@ -598,6 +598,31 @@ body.sparks .sparks-canvas{opacity:1}
 @media (max-width:1040px){.nav .snd{margin-left:auto}.nav .btn{margin-left:0}}
 @media (max-width:420px){.snd{padding:0;width:2.5rem;justify-content:center}.snd .t{display:none}}
 @media (prefers-reduced-motion:reduce){.snd[aria-pressed="true"] .eq i{animation:none;height:70%}}
+
+/* ===== V13 : visionneuse plein cadre ===== */
+.lb .slide{padding:calc(4.25rem + env(safe-area-inset-top,0px)) max(0.75rem,env(safe-area-inset-right,0px)) calc(5.5rem + env(safe-area-inset-bottom,0px)) max(0.75rem,env(safe-area-inset-left,0px))}
+.lb .slide img,.lb .slide video{--avh:calc(100vh - 9.75rem - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px));max-height:var(--avh)}
+@supports (height:100dvh){.lb .slide img,.lb .slide video{--avh:calc(100dvh - 9.75rem - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px))}}
+.lb .slide img.fit,.lb .slide video.fit{width:min(100%,calc(var(--avh) * var(--ar)));height:auto;max-width:none}
+
+/* ===== V13 : entrée du site écartée vers les bords ===== */
+.hero .wrap{max-width:none;padding-left:max(clamp(1rem,4.5vw,8rem),env(safe-area-inset-left,0px));padding-right:max(clamp(1rem,4.5vw,8rem),env(safe-area-inset-right,0px))}
+.hero .grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+.stage{max-width:min(48rem,calc((100vh - 4rem) * .86))}
+@media (max-width:980px){.hero .grid{grid-template-columns:1fr}.stage{max-width:30rem}}
+
+/* ===== V13 : galerie de projets repliable ===== */
+.pfold{display:grid;grid-template-rows:0fr;opacity:0;transition:grid-template-rows .9s var(--ease),opacity .6s var(--ease)}
+.pfold.open{grid-template-rows:1fr;opacity:1}
+.pfold.instant{transition:none}
+.pfold > .pin{min-height:0;overflow:hidden;padding:0.5rem;margin:-0.5rem}
+.ptease{display:flex;align-items:center;gap:1.125rem;flex-wrap:wrap;margin-top:0.25rem}
+.ptease p{margin:0;color:var(--muted);font-size:0.9375rem}
+.ptease .btn .arr{display:inline-block;transition:transform .35s var(--ease)}
+.ptease .btn:hover .arr{transform:translateY(0.1875rem)}
+.ptease[hidden]{display:none}
+.pclose{display:flex;justify-content:center;margin-top:1.75rem}
+.pclose .btn .arr{display:inline-block;transform:rotate(180deg)}
 .opts{display:none!important}
 </style>
 </head>
@@ -752,7 +777,11 @@ body.sparks .sparks-canvas{opacity:1}
         <p>Les vitrines sont en noir et blanc pour une lecture homogène. Survolez pour révéler la couleur, cliquez pour ouvrir le projet en plein écran.</p>
       </div>
       <div class="filters" id="filters" role="group" aria-label="Filtrer par secteur"></div>
-      <div class="pgrid" id="grid"></div>
+      <div class="ptease" id="ptease"><button class="btn btn-glass tint trace-on" type="button" id="popen"><span>Voir les <span id="pcount">33</span> projets</span> <span class="arr" aria-hidden="true">↓</span></button><p>Choisissez un secteur, ou ouvrez toute la galerie.</p></div>
+      <div class="pfold" id="pfold"><div class="pin">
+        <div class="pgrid" id="grid"></div>
+        <div class="pclose"><button class="btn btn-glass trace-h" type="button" id="pshut">Ranger les projets <span class="arr" aria-hidden="true">↓</span></button></div>
+      </div></div>
     </div>
   </section>
 
@@ -914,11 +943,11 @@ function card(p){
 }
 const cats=[...new Set(PROJECTS.map(p=>p.cat))];
 const order=['Tous',...['Restauration','Mode & beauté','Sport','Tech & services','Culture & musique','Maison & bien-être','Concepts'].filter(c=>cats.includes(c))];
-let current='Tous';
+let current='Tous', pOpen=false;
 function renderFilters(){
   $('filters').innerHTML=order.map(c=>{
     const n=c==='Tous'?PROJECTS.length:PROJECTS.filter(p=>p.cat===c).length;
-    return `<button class="fchip trace-h" type="button" aria-pressed="${c===current}" data-cat="${c}">${techify(c)}<sup>${n}</sup></button>`;
+    return `<button class="fchip trace-h" type="button" aria-pressed="${pOpen&&c===current}" data-cat="${c}">${techify(c)}<sup>${n}</sup></button>`;
   }).join('');
 }
 function renderGrid(){
@@ -931,8 +960,42 @@ function renderGrid(){
 }
 $('filters').addEventListener('click',e=>{
   const b=e.target.closest('.fchip'); if(!b) return;
-  current=b.dataset.cat; renderFilters(); renderGrid();
+  current=b.dataset.cat; renderGrid(); openFold();
 });
+
+/* Galerie repliée : s'ouvre au clic, se range quand on la dépasse */
+const fold=$('pfold'), tease=$('ptease');
+function openFold(){
+  pOpen=true; renderFilters(); fold.classList.add('open'); tease.hidden=true; fold.setAttribute('aria-hidden','false');
+}
+function closeFold(instant){
+  if(!pOpen) return;
+  if(instant){
+    const ref=$('projets').nextElementSibling||document.querySelector('footer'), t0=ref.getBoundingClientRect().top;
+    fold.classList.add('instant'); fold.classList.remove('open'); tease.hidden=false;
+    const t1=ref.getBoundingClientRect().top; if(Math.abs(t1-t0)>1) window.scrollBy({top:t1-t0,behavior:'instant'});
+    requestAnimationFrame(()=>requestAnimationFrame(()=>fold.classList.remove('instant')));
+  } else { fold.classList.remove('open'); tease.hidden=false; }
+  pOpen=false; renderFilters(); fold.setAttribute('aria-hidden','true');
+}
+fold.setAttribute('aria-hidden','true'); $('pcount').textContent=PROJECTS.length;
+$('popen').addEventListener('click',()=>{ current='Tous'; renderGrid(); openFold(); });
+$('pshut').addEventListener('click',()=>{ closeFold(false); $('projets').scrollIntoView({block:'start'}); });
+let foldTick=false;
+addEventListener('scroll',()=>{
+  if(!pOpen||foldTick||lb.classList.contains('open')) return; foldTick=true;
+  requestAnimationFrame(()=>{ foldTick=false; if(!pOpen) return;
+    const r=fold.getBoundingClientRect();
+    if(r.bottom<0) closeFold(true);                       /* dépassée vers le bas : rangée sans saut */
+    else if(r.top>innerHeight+200) closeFold(false);      /* remontée au-dessus : rangée hors de vue */
+  });
+},{passive:true});
+document.addEventListener('click',e=>{
+  const a=e.target.closest('a[href^="#"]'); if(!a) return;
+  if(a.getAttribute('href')==='#projets'){ if(!pOpen){ current='Tous'; renderGrid(); openFold(); } return; }
+  if(pOpen && !a.closest('#projets')) closeFold(false);
+});
+if(location.hash==='#projets'){ renderGrid(); openFold(); }
 
 /* Entrées en rotation : seuls les éléments sous la ligne de flottaison attendent, avec une sécurité */
 let io, vio;
@@ -1082,6 +1145,11 @@ function load(p, from){
   $('lb-title').textContent=lp.name;
   $('lb-cat').textContent=lp.sector+(lp.concept?' · concept de rebranding non officiel':'');
   box.innerHTML=lp.items.map(slideHTML).join('')+endHTML();
+  box.querySelectorAll('.slide > img, .slide > video').forEach(el=>{
+    const fit=()=>{ const w=el.naturalWidth||el.videoWidth, h=el.naturalHeight||el.videoHeight; if(w&&h){ el.style.setProperty('--ar',(w/h).toFixed(4)); el.classList.add('fit'); } };
+    if(el.tagName==='IMG'){ el.complete?fit():el.addEventListener('load',fit,{once:true}); }
+    else { el.readyState>=1?fit():el.addEventListener('loadedmetadata',fit,{once:true}); }
+  });
   const nx=nextOf(lp);
   $('lb-strip').innerHTML=lp.items.map((it,k)=>`<button type="button" class="${it.t==='v'?'v':''}" aria-label="Visuel ${k+1}"><img src="${it.t==='v'?it.p:it.f}" alt="" loading="lazy"></button>`).join('')
     +`<button type="button" class="nx" aria-label="Projet suivant : ${nx.name}">→</button>`;
