@@ -1,0 +1,521 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Créatifs · Creative Studio</title>
+<meta name="description" content="Les créatifs de Creative Studio et le portfolio d'Étincelle, cofondateur.">
+<link rel="icon" href="brand/creative-studio-mark.png">
+<style>
+/* Plateforme : barre fixe + vues en onglets (annuaire, profil, espace créatif, espace client, inscription), même DA que le site */
+@font-face{font-family:"Cy Grotesk";src:url(fonts/CyGrotesk-KeyLight.woff2) format("woff2");font-weight:300;font-display:swap}
+@font-face{font-family:"Cy Grotesk";src:url(fonts/CyGrotesk-KeyRegular.woff2) format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Cy Grotesk";src:url(fonts/CyGrotesk-KeyMedium.woff2) format("woff2");font-weight:500;font-display:swap}
+@font-face{font-family:"Cy Grotesk";src:url(fonts/CyGrotesk-KeyBold.woff2) format("woff2");font-weight:700;font-display:swap}
+:root{
+  --ink:#080605; --umber:#1B1610; --bronze:#584F3F; --champagne:#DCC690; --cream:#F3E5D7; --muted:#A89F92;
+  --halo:#00B0FF; --ok:#5BD08A; --warn:#F2B84B;
+  --glass:rgba(27,22,16,.55); --line:rgba(220,198,144,.22);
+  --font:"Cy Grotesk",-apple-system,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+  --ease:cubic-bezier(.2,.75,.2,1);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--font);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--ink)}
+body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:repeating-linear-gradient(90deg,rgba(255,240,210,.03) 0 1px,transparent 1px 9px),radial-gradient(60% 50% at 75% 0%,rgba(88,79,63,.45),transparent 70%)}
+a{color:inherit}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--halo);outline-offset:3px;border-radius:8px}
+.wrap{max-width:1240px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+/* bandeau maquette */
+.demo{background:linear-gradient(90deg,#DCC690,#B39557);color:#120F0B;font-size:13px;font-weight:500;text-align:center;padding:7px max(16px,env(safe-area-inset-right,0px)) 7px max(16px,env(safe-area-inset-left,0px))}
+
+/* barre */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:rgba(10,8,6,.78);backdrop-filter:blur(18px) saturate(140%);-webkit-backdrop-filter:blur(18px) saturate(140%);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:18px;min-height:64px;flex-wrap:wrap;padding-block:8px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-size:15px;white-space:nowrap}
+.logo img{width:28px;height:auto}
+.logo .c1{font-weight:300}.logo .c2{font-weight:700;color:#F2BC21}
+.eco{display:flex;gap:4px;padding:4px;border-radius:999px;border:1px solid var(--line);background:var(--glass);font-size:12.5px}
+.eco a,.eco span{padding:6px 12px;border-radius:999px;text-decoration:none;white-space:nowrap;color:var(--muted)}
+.eco .on{background:linear-gradient(90deg,#FFF7E8,var(--champagne) 55%,#B39557);color:#120F0B;font-weight:500}
+.eco span small{font-size:10.5px;opacity:.8}
+.tabs{display:flex;gap:2px;margin-left:auto;flex-wrap:wrap}
+.tabs a{white-space:nowrap;font-size:14px;color:var(--muted);text-decoration:none;padding:8px 12px;border-radius:999px;transition:color .25s,background .25s}
+.tabs a:hover{color:var(--cream);background:rgba(220,198,144,.08)}
+.tabs a[aria-current="page"]{color:var(--cream);background:rgba(220,198,144,.12);box-shadow:inset 0 0 0 1px var(--line)}
+.tabs a.cta{background:linear-gradient(90deg,#FFF7E8,var(--champagne) 55%,#B39557);color:#120F0B;font-weight:500}
+@media (max-width:860px){.tabs{margin-left:0;width:100%;overflow-x:auto;flex-wrap:nowrap}.eco{order:3;max-width:100%;overflow-x:auto}.eco::-webkit-scrollbar,.tabs::-webkit-scrollbar{display:none}}
+.top .wrap > *{min-width:0}
+
+/* commun */
+main{padding-block:44px 80px}
+.view[hidden]{display:none}
+.kicker{display:flex;align-items:center;gap:12px;font-size:12px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--champagne)}
+.kicker::before{content:"";width:30px;height:1px;background:linear-gradient(90deg,var(--champagne),transparent)}
+h1,h2,h3{margin:0;letter-spacing:-.03em;text-wrap:balance}
+h1{font-weight:300;font-size:clamp(34px,5vw,60px);line-height:1}
+h1 b,h2 b{font-weight:500;background:linear-gradient(90deg,#FFF9F0,var(--cream) 35%,var(--champagne) 75%,#A88C5C);-webkit-background-clip:text;background-clip:text;color:transparent}
+h2{font-weight:400;font-size:clamp(22px,2.4vw,28px);line-height:1.15}
+.lead{color:var(--muted);max-width:60ch;margin:14px 0 0}
+.head{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;margin-bottom:28px}
+.panel{position:relative;background:var(--glass);border:1px solid var(--line);border-radius:22px;box-shadow:inset 0 1px 0 rgba(255,249,240,.08),0 20px 40px -22px #000;backdrop-filter:blur(16px) saturate(140%);-webkit-backdrop-filter:blur(16px) saturate(140%)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;border:0;cursor:pointer;text-decoration:none;font-weight:500;font-size:14px;padding:12px 18px;border-radius:999px;white-space:nowrap;transition:transform .3s var(--ease),box-shadow .3s}
+.btn:hover{transform:translateY(-2px)}
+.btn.gold{color:#120F0B;background:linear-gradient(90deg,#FFF7E8,var(--champagne) 55%,#B39557);box-shadow:inset 0 1px 0 rgba(255,255,255,.7),0 12px 30px -12px rgba(220,198,144,.6)}
+.btn.glass{background:var(--glass);box-shadow:inset 0 0 0 1px var(--line);color:var(--cream)}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;padding:6px 11px;border-radius:999px;border:1px solid var(--line);background:rgba(255,249,240,.03);color:var(--cream);white-space:nowrap}
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:500;padding:4px 10px;border-radius:999px;white-space:nowrap}
+.pill::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.pill.ok{color:var(--ok);background:rgba(91,208,138,.1)}
+.pill.warn{color:var(--warn);background:rgba(242,184,75,.1)}
+.pill.idle{color:var(--muted);background:rgba(168,159,146,.1)}
+.pill.live{color:var(--halo);background:rgba(0,176,255,.1)}
+.av{flex:none;display:grid;place-items:center;border-radius:50%;font-weight:600;color:#120F0B;background:linear-gradient(135deg,#FFF7E8,var(--champagne) 55%,#B39557);box-shadow:0 0 0 2px var(--ink),0 0 0 3.5px var(--halo)}
+.av img{width:100%;height:100%;border-radius:50%;object-fit:cover}
+.ex{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#120F0B;background:#F3E5D7;padding:3px 8px;border-radius:999px;font-weight:500}
+.grid{display:grid;gap:16px}
+
+/* annuaire */
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
+.filters button{cursor:pointer;font-size:13px;padding:8px 14px;border-radius:999px;border:1px solid var(--line);background:var(--glass);color:var(--muted)}
+.filters button[aria-pressed="true"]{color:#120F0B;border-color:transparent;background:linear-gradient(90deg,#FFF7E8,var(--champagne) 55%,#B39557)}
+.dgrid{grid-template-columns:repeat(auto-fill,minmax(270px,1fr))}
+.dcard{overflow:hidden;display:flex;flex-direction:column;text-decoration:none;transition:transform .35s var(--ease),border-color .35s}
+.dcard:hover{transform:translateY(-4px);border-color:rgba(220,198,144,.5)}
+.mos{display:grid;grid-template-columns:2fr 1fr;grid-template-rows:1fr 1fr;gap:3px;aspect-ratio:16/10;background:var(--umber)}
+.mos img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.05);transition:filter .5s}
+.mos img:first-child{grid-row:1/3}
+.dcard:hover .mos img{filter:none}
+.dbody{display:flex;flex-direction:column;gap:12px;padding:0 18px 18px;margin-top:-26px;position:relative}
+.dbody .av{width:52px;height:52px;font-size:17px}
+.dname{display:flex;justify-content:space-between;align-items:flex-end;gap:10px}
+.dname h3{font-size:19px;font-weight:500;line-height:1.15}
+.dname small{display:block;color:var(--muted);font-size:13px}
+.dmeta{display:flex;gap:6px;flex-wrap:wrap}
+.dfoot{display:flex;justify-content:space-between;align-items:center;gap:10px;padding-top:12px;border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
+.dfoot b{color:var(--cream);font-weight:500}
+
+/* profil */
+.cover{height:clamp(150px,22vw,240px);border-radius:22px;overflow:hidden;display:grid;grid-template-columns:repeat(4,1fr);gap:3px;position:relative}
+.cover img{width:100%;height:100%;object-fit:cover;filter:grayscale(.6) brightness(.6)}
+.cover::after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 30%,var(--ink))}
+.pid{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:28px;margin-top:-64px;position:relative;z-index:2;align-items:start}
+@media (max-width:900px){.pid{grid-template-columns:1fr}}
+.pmain{display:flex;flex-direction:column;gap:18px;min-width:0}
+.pwho{display:flex;align-items:flex-end;gap:18px;flex-wrap:wrap;padding-left:12px}
+.pwho .av{width:104px;height:104px;font-size:34px;box-shadow:0 0 0 4px var(--ink),0 0 0 6px var(--halo)}
+.pwho h1{font-size:clamp(30px,4vw,46px)}
+.verif{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--champagne)}
+.verif svg{width:15px;height:15px}
+.pstats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--line);border-radius:16px;overflow:hidden}
+.pstats div{background:var(--umber);padding:14px 16px}
+.pstats b{display:block;font-size:24px;font-weight:500;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.pstats span{font-size:12.5px;color:var(--muted)}
+.side{padding:20px;display:flex;flex-direction:column;gap:14px;position:sticky;top:96px}
+.side h3{font-size:17px;font-weight:500}
+.side p{margin:0;color:var(--muted);font-size:14px}
+.side .row{display:flex;justify-content:space-between;font-size:14px;padding:8px 0;border-top:1px solid var(--line)}
+.side .row span{color:var(--muted)}
+.pf{grid-template-columns:repeat(auto-fill,minmax(210px,1fr))}
+.work{overflow:hidden;border-radius:16px;border:1px solid var(--line);background:var(--umber);display:flex;flex-direction:column}
+.work img{width:100%;aspect-ratio:1;object-fit:cover;filter:grayscale(1);transition:filter .5s,transform .8s var(--ease)}
+.work:hover img{filter:none;transform:scale(1.03)}
+.work div{padding:12px 14px;display:flex;justify-content:space-between;gap:8px;align-items:center}
+.work b{font-weight:500;font-size:14.5px}
+.work small{color:var(--muted);font-size:12px}
+.reviews{display:grid;gap:12px}
+.rev{padding:16px 18px;border-radius:16px;border:1px dashed var(--line);color:var(--muted);font-size:14px}
+
+/* tableaux de bord */
+.kpis{grid-template-columns:repeat(4,minmax(0,1fr))}
+@media (max-width:820px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.kpi{padding:18px}
+.kpi span{font-size:12.5px;color:var(--muted)}
+.kpi b{display:block;font-size:30px;font-weight:400;letter-spacing:-.03em;font-variant-numeric:tabular-nums;margin-top:4px}
+.kpi small{font-size:12px;color:var(--ok)}
+.two{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:16px;margin-top:16px;align-items:start}
+@media (max-width:980px){.two{grid-template-columns:1fr}}
+.box{padding:22px;display:flex;flex-direction:column;gap:16px;min-width:0}
+.box h2{font-size:20px}
+.list{display:flex;flex-direction:column}
+.item{display:grid;grid-template-columns:56px minmax(0,1fr) auto;gap:14px;align-items:center;padding:12px 0;border-top:1px solid var(--line)}
+.item:first-child{border-top:0}
+.item img{width:56px;height:56px;border-radius:12px;object-fit:cover}
+.item b{font-weight:500;font-size:14.5px;display:block}
+.item small{color:var(--muted);font-size:12.5px}
+form .f{display:flex;flex-direction:column;gap:6px;min-width:0}
+form label,.f > span{font-size:12.5px;color:var(--champagne)}
+form input,form select,form textarea{font:400 14px var(--font);color:var(--cream);background:rgba(255,249,240,.04);border:1px solid var(--line);border-radius:12px;padding:11px 13px;width:100%;min-width:0}
+form input:focus,form select:focus,form textarea:focus{outline:none;border-color:var(--champagne)}
+form select option{background:#1B1610}
+.f2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:560px){.f2{grid-template-columns:1fr}}
+.drop{display:grid;place-items:center;text-align:center;gap:6px;padding:26px;border-radius:16px;border:1.5px dashed rgba(220,198,144,.4);color:var(--muted);font-size:13.5px;cursor:pointer;transition:background .3s,border-color .3s}
+.drop:hover,.drop.over{background:rgba(220,198,144,.06);border-color:var(--champagne)}
+.drop b{color:var(--cream);font-weight:500}
+.thumbs{display:flex;gap:8px;flex-wrap:wrap}
+.thumbs img{width:64px;height:64px;object-fit:cover;border-radius:10px;border:1px solid var(--line)}
+.check{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;color:var(--muted)}
+.check input{width:auto;margin-top:3px;accent-color:var(--champagne)}
+.msg{font-size:13.5px;color:var(--champagne);min-height:1.4em;margin:0}
+
+/* commandes */
+.order{padding:20px;display:flex;flex-direction:column;gap:16px}
+.ohead{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:flex-start}
+.ohead h3{font-size:18px;font-weight:500}
+.ohead small{color:var(--muted);font-size:13px;display:block;margin-top:2px}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.steps div{display:flex;flex-direction:column;gap:7px;font-size:12.5px;color:var(--muted)}
+.steps i{height:4px;border-radius:4px;background:rgba(220,198,144,.15)}
+.steps .done i{background:var(--champagne)}
+.steps .now i{background:linear-gradient(90deg,var(--champagne),rgba(220,198,144,.25));box-shadow:0 0 12px rgba(255,233,184,.5)}
+.steps .done,.steps .now{color:var(--cream)}
+.files{display:flex;flex-direction:column;gap:8px}
+.file{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:12px;background:rgba(255,249,240,.03);border:1px solid var(--line);font-size:13.5px;min-width:0}
+.file .ic{flex:none;width:34px;height:34px;border-radius:9px;display:grid;place-items:center;background:rgba(220,198,144,.12);color:var(--champagne);font-size:10.5px;font-weight:600}
+.file span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.file small{color:var(--muted)}
+.file button{cursor:pointer;border:1px solid var(--line);background:transparent;border-radius:999px;padding:6px 12px;font-size:12.5px}
+.chat{display:flex;flex-direction:column;gap:10px}
+.bub{max-width:85%;padding:10px 14px;border-radius:16px;font-size:14px;background:rgba(255,249,240,.05);border:1px solid var(--line)}
+.bub.me{align-self:flex-end;background:rgba(220,198,144,.14)}
+.bub small{display:block;color:var(--muted);font-size:11.5px;margin-top:3px}
+
+/* inscription */
+.roles{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media (max-width:640px){.roles{grid-template-columns:1fr}}
+.role{cursor:pointer;text-align:left;padding:20px;display:flex;flex-direction:column;gap:8px;border:1px solid var(--line);transition:border-color .3s,transform .3s var(--ease)}
+.role:hover{transform:translateY(-2px)}
+.role[aria-pressed="true"]{border-color:var(--champagne);box-shadow:inset 0 0 0 1px var(--champagne),0 20px 40px -22px #000}
+.role b{font-size:18px;font-weight:500}
+.role span{color:var(--muted);font-size:14px}
+.auth{max-width:560px;margin:22px auto 0;padding:26px;display:flex;flex-direction:column;gap:14px}
+.gbtn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:12px;border-radius:12px;border:1px solid var(--line);background:rgba(255,249,240,.05);cursor:pointer;font-size:14px}
+.or{display:flex;align-items:center;gap:12px;color:var(--muted);font-size:12.5px}
+.or::before,.or::after{content:"";flex:1;height:1px;background:var(--line)}
+.forcrea[hidden]{display:none}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+/* ===== page des créatifs ===== */
+.back{display:inline-flex;align-items:center;gap:6px;font-size:13.5px;color:var(--muted);text-decoration:none;margin-bottom:22px}
+.back:hover{color:var(--cream)}
+.pwho .av{overflow:hidden}
+.dcard.soon{cursor:default}
+.dcard.soon:hover{transform:none;border-color:var(--line)}
+.mos.empty{display:grid;place-items:center;grid-template-columns:1fr;grid-template-rows:1fr;background:repeating-linear-gradient(135deg,rgba(220,198,144,.05) 0 12px,transparent 12px 24px),var(--umber);color:var(--muted);font-size:13px}
+.dbody .av img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.work{cursor:pointer;padding:0;text-align:left}
+.work small{white-space:nowrap}
+.work .mv{position:absolute;top:10px;left:10px;font-size:11px;font-weight:500;padding:4px 9px;border-radius:999px;background:rgba(8,6,5,.65);border:1px solid var(--line)}
+.work{position:relative}
+/* visionneuse */
+.pv{position:fixed;inset:0;z-index:80;background:#050403;display:flex;flex-direction:column}
+.pv[hidden]{display:none}
+.pv-top{display:flex;align-items:center;gap:16px;padding:calc(14px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) 10px max(16px,env(safe-area-inset-left,0px))}
+.pv-top > div{flex:1;min-width:0}
+.pv-top h3{font-size:20px;font-weight:500}
+.pv-top small{color:var(--muted);font-size:13px}
+.pv-top span{font-variant-numeric:tabular-nums;color:var(--muted);font-size:14px}
+.pv-top button{width:42px;height:42px;border-radius:50%;border:1px solid var(--line);background:var(--glass);cursor:pointer;font-size:15px}
+.pv-stage{flex:1;min-height:0;position:relative}
+.pv-stage img,.pv-stage video{position:absolute;top:8px;bottom:8px;left:max(16px,env(safe-area-inset-left,0px));right:max(16px,env(safe-area-inset-right,0px));width:calc(100% - 32px);height:calc(100% - 16px);object-fit:contain}
+.pv-nav{position:absolute;top:50%;translate:0 -50%;width:50px;height:50px;border-radius:50%;border:1px solid var(--line);background:var(--glass);cursor:pointer;font-size:18px;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.pv-nav.prev{left:max(16px,env(safe-area-inset-left,0px))}
+.pv-nav.next{right:max(16px,env(safe-area-inset-right,0px))}
+.pv-strip{display:flex;gap:6px;overflow-x:auto;padding:10px max(16px,env(safe-area-inset-right,0px)) calc(14px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.pv-strip button{flex:none;width:52px;height:52px;padding:0;border-radius:10px;overflow:hidden;border:1px solid var(--line);opacity:.55;cursor:pointer;background:var(--umber)}
+.pv-strip button[aria-current="true"]{opacity:1;outline:2px solid var(--champagne)}
+.pv-strip img{width:100%;height:100%;object-fit:cover}
+
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<div class="demo" id="demobar" hidden>Démonstration : cet espace montre comment fonctionnera la plateforme. Les chiffres et commandes ci-dessous sont des exemples.</div>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="index.html" aria-label="Retour au site Creative Studio"><img src="brand/creative-studio-mark.png" alt=""><span><span class="c1">Creative</span> <span class="c2">Studio</span></span></a>
+    <nav class="eco" aria-label="Plateformes du groupe">
+      <a class="on" href="index.html">Design</a>
+      <span title="Site à venir">Studio YouTube <small>bientôt</small></span>
+      <span title="Site à venir">Événementiel <small>bientôt</small></span>
+    </nav>
+    <nav class="tabs" aria-label="Sections">
+      <a href="#createurs">Les créatifs</a>
+      <a href="#etincelle">Profil d'Étincelle</a>
+      <a href="#studio">Espace créatif</a>
+      <a href="#client">Espace client</a>
+      <a class="cta" href="#compte">Créer un compte</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ANNUAIRE -->
+  <section class="view" id="v-createurs">
+    <a class="back" href="index.html">← Retour au site</a>
+    <div class="head">
+      <div>
+        <div class="kicker">Le collectif</div>
+        <h1 style="margin-top:14px"><b>Les créatifs</b><br>de Creative Studio.</h1>
+        <p class="lead">Chaque créatif a son profil et y publie ses travaux. Toutes les publications sont vérifiées par l'équipe avant d'être visibles.</p>
+      </div>
+      <a class="btn gold" href="#compte">Rejoindre le collectif →</a>
+    </div>
+    <div class="grid dgrid" id="dgrid"></div>
+  </section>
+
+  <!-- PROFIL D'ÉTINCELLE -->
+  <section class="view" id="v-etincelle" hidden>
+    <a class="back" href="#createurs">← Tous les créatifs</a>
+    <div class="cover" id="pcover"></div>
+    <div class="pid">
+      <div class="pmain">
+        <div class="pwho">
+          <div class="av"><img src="brand/leonel-portrait-2.jpg" alt="Étincelle"></div>
+          <div>
+            <span class="verif"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l2.4 2.1 3.2-.3.9 3.1 2.8 1.6-1.2 3 1.2 3-2.8 1.6-.9 3.1-3.2-.3L12 22l-2.4-2.1-3.2.3-.9-3.1-2.8-1.6 1.2-3-1.2-3 2.8-1.6.9-3.1 3.2.3z"/><path d="M8.5 12l2.4 2.4 4.6-4.8"/></svg>Cofondateur de Creative Studio</span>
+            <h1 style="margin-top:6px">Étincelle</h1>
+            <p class="lead" style="margin-top:6px">Identité visuelle · Logo · Motion design · Personal branding</p>
+          </div>
+        </div>
+        <div class="pstats"><div><b id="n-proj">33</b><span>projets publiés</span></div><div><b id="n-vis">302</b><span>visuels et animations</span></div><div><b id="n-sec">7</b><span>secteurs</span></div></div>
+        <div class="dmeta"><span class="chip">Identité visuelle</span><span class="chip">Logo</span><span class="chip">Motion design</span><span class="chip">Miniatures YouTube</span><span class="chip">Personal branding</span><span class="chip">Croquis à la main</span></div>
+        <div class="head" style="margin:14px 0 0"><h2>Portfolio</h2><span class="lead" style="margin:0;font-size:13.5px">Cliquez sur un projet pour l'ouvrir.</span></div>
+        <div class="filters" id="pfilters" role="group" aria-label="Filtrer par secteur" style="margin-bottom:4px"></div>
+        <div class="grid pf" id="pportfolio"></div>
+      </div>
+      <aside class="panel side">
+        <h3>Travailler avec Étincelle</h3>
+        <p>Racontez votre projet. Sous 24 heures, vous recevez une première direction créative.</p>
+        <div class="row"><span>Disponibilité</span><span class="pill ok">Disponible</span></div>
+        <div class="row"><span>Langues</span><b>Français</b></div>
+        <a class="btn gold" href="index.html#contact">Proposer un projet →</a>
+        <a class="btn glass" href="https://www.linkedin.com/in/leoenldjomatchouabrandidentity/" target="_blank" rel="noopener">Voir son LinkedIn ↗</a>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ESPACE CRÉATIF -->
+  <section class="view" id="v-studio" hidden>
+    <div class="head">
+      <div><div class="kicker">Espace créatif</div><h1 style="margin-top:14px">Bonjour <b>Étincelle</b>.</h1><p class="lead">Ce que vous verrez une fois connecté : vos projets, vos demandes et le formulaire pour publier un nouveau travail.</p></div>
+      <a class="btn glass" href="#etincelle">Voir mon profil public →</a>
+    </div>
+    <div class="grid kpis">
+      <div class="panel kpi"><span>Projets publiés</span><b id="k-proj">33</b><small>réel</small></div>
+      <div class="panel kpi"><span>Visuels en ligne</span><b id="k-vis">302</b><small>réel</small></div>
+      <div class="panel kpi"><span>Demandes reçues</span><b>–</b><small style="color:var(--muted)">après lancement</small></div>
+      <div class="panel kpi"><span>En attente de validation</span><b id="kpending">0</b><small style="color:var(--warn)">vérifié par l'équipe</small></div>
+    </div>
+    <div class="two">
+      <form class="panel box" id="pubform" novalidate>
+        <h2>Publier un nouveau projet</h2>
+        <div class="f2">
+          <div class="f"><label for="w-title">Nom du projet</label><input id="w-title" placeholder="Ex. : Identité d'un food truck"></div>
+          <div class="f"><label for="w-sector">Secteur</label><select id="w-sector"><option>Restauration</option><option>Mode &amp; beauté</option><option>Sport</option><option>Tech &amp; services</option><option>Culture &amp; musique</option><option>Maison &amp; bien-être</option><option>Concepts</option></select></div>
+        </div>
+        <div class="f"><label for="w-desc">Ce que vous avez réalisé</label><textarea id="w-desc" rows="3" placeholder="Logo, charte, déclinaisons, motion…"></textarea></div>
+        <label class="drop" id="drop" for="w-files"><b>Glissez vos visuels ici</b>ou cliquez pour les choisir (JPG, PNG)<input id="w-files" type="file" accept="image/*" multiple hidden></label>
+        <div class="thumbs" id="wthumbs"></div>
+        <label class="check"><input type="checkbox" id="w-ok"> J'ai l'accord du client pour publier ce projet.</label>
+        <p class="msg" id="wmsg" role="status"></p>
+        <button class="btn gold" type="submit">Envoyer pour validation</button>
+      </form>
+      <div class="panel box">
+        <h2>Mes projets</h2>
+        <div class="list" id="mylist" style="max-height:640px;overflow:auto"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ESPACE CLIENT -->
+  <section class="view" id="v-client" hidden>
+    <div class="head">
+      <div><div class="kicker">Espace client</div><h1 style="margin-top:14px">Mes <b>commandes</b>.</h1><p class="lead">Ce que verra un client connecté : l'avancement de chaque commande, ses fichiers et les messages avec son créatif.</p></div>
+      <a class="btn gold" href="index.html#contact">Nouvelle commande →</a>
+    </div>
+    <div class="two" style="margin-top:0">
+      <div style="display:flex;flex-direction:column;gap:16px;min-width:0">
+        <article class="panel order">
+          <div class="ohead"><div><h3>Identité de marque complète</h3><small>Exemple de commande · créatif : Étincelle</small></div><span class="pill live">En cours</span></div>
+          <div class="steps" aria-label="Avancement"><div class="done"><i></i>Comprendre</div><div class="done"><i></i>Esquisser</div><div class="now"><i></i>Affiner</div><div><i></i>Déployer</div></div>
+          <div class="files">
+            <div class="file"><span class="ic">PDF</span><span>Croquis-logo-v2.pdf <small>· 3,2 Mo</small></span><button type="button" data-demo>Télécharger</button></div>
+            <div class="file"><span class="ic">PNG</span><span>Pistes-couleurs.png <small>· 1,1 Mo</small></span><button type="button" data-demo>Télécharger</button></div>
+          </div>
+          <p class="msg"></p>
+        </article>
+        <article class="panel order">
+          <div class="ohead"><div><h3>Pack miniatures YouTube (×10)</h3><small>Exemple de commande · créatif : Étincelle</small></div><span class="pill ok">Livrée</span></div>
+          <div class="steps"><div class="done"><i></i>Comprendre</div><div class="done"><i></i>Esquisser</div><div class="done"><i></i>Affiner</div><div class="done"><i></i>Déployer</div></div>
+          <div class="files">
+            <div class="file"><span class="ic">ZIP</span><span>Miniatures-finales.zip <small>· 48 Mo · disponible 30 jours</small></span><button type="button" data-demo>Télécharger</button></div>
+            <div class="file"><span class="ic">PDF</span><span>Facture.pdf <small>· 120 Ko</small></span><button type="button" data-demo>Télécharger</button></div>
+          </div>
+          <p class="msg"></p>
+        </article>
+      </div>
+      <div class="panel box">
+        <h2>Messages</h2>
+        <div class="chat" id="chat">
+          <div class="bub">Voici deux pistes de couleurs pour votre logo. Laquelle vous parle le plus ?<small>Étincelle · exemple</small></div>
+          <div class="bub me">La deuxième, avec un peu plus d'or.<small>Client · exemple</small></div>
+        </div>
+        <form id="chatform" novalidate style="display:flex;gap:8px"><input id="chatin" placeholder="Écrire un message…" aria-label="Message"><button class="btn gold" type="submit">Envoyer</button></form>
+        <p class="msg" id="cmsg" role="status"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- INSCRIPTION -->
+  <section class="view" id="v-compte" hidden>
+    <div class="head" style="justify-content:center;text-align:center">
+      <div><div class="kicker" style="justify-content:center">Créer un compte</div><h1 style="margin-top:14px">Vous êtes <b>…</b></h1></div>
+    </div>
+    <div class="grid roles" role="group" aria-label="Type de compte">
+      <button class="panel role" type="button" data-role="client" aria-pressed="true"><b>Client</b><span>Je veux créer ou refaire ma marque, suivre mes commandes et récupérer mes fichiers.</span></button>
+      <button class="panel role" type="button" data-role="crea" aria-pressed="false"><b>Créatif</b><span>Je suis designer et je veux rejoindre le collectif, publier mes travaux et recevoir des missions.</span></button>
+    </div>
+    <form class="panel auth" id="authform" novalidate>
+      <button class="gbtn" type="button" data-demo>Continuer avec Google</button>
+      <div class="or">ou</div>
+      <div class="f2">
+        <div class="f"><label for="a-name">Nom et prénom</label><input id="a-name" autocomplete="name"></div>
+        <div class="f"><label for="a-mail">Adresse e-mail</label><input id="a-mail" type="email" autocomplete="email" placeholder="vous@exemple.com"></div>
+      </div>
+      <div class="forcrea" hidden>
+        <div class="f2">
+          <div class="f"><label for="a-spec">Spécialité principale</label><select id="a-spec"><option>Identité visuelle</option><option>Motion design</option><option>Miniatures YouTube</option><option>UI &amp; UX</option><option>Illustration</option><option>Montage vidéo</option></select></div>
+          <div class="f"><label for="a-port">Lien vers vos travaux</label><input id="a-port" type="url" placeholder="Behance, Instagram, LinkedIn…"></div>
+        </div>
+        <p class="lead" style="font-size:13.5px;margin:10px 0 0">Votre profil est vérifié par l'équipe avant d'apparaître dans l'annuaire.</p>
+      </div>
+      <p class="msg" id="amsg" role="status"></p>
+      <button class="btn gold" type="submit">Recevoir mon lien de connexion</button>
+      <p class="lead" style="font-size:12.5px;margin:0;text-align:center">Pas de mot de passe à retenir : un lien de connexion arrive par e-mail.</p>
+    </form>
+  </section>
+</main>
+
+<!-- visionneuse de projet -->
+<div class="pv" id="pv" role="dialog" aria-modal="true" aria-labelledby="pv-t" hidden>
+  <div class="pv-top"><div><h3 id="pv-t"></h3><small id="pv-s"></small></div><span id="pv-c"></span><button type="button" id="pv-x" aria-label="Fermer">✕</button></div>
+  <div class="pv-stage" id="pv-stage"></div>
+  <button type="button" class="pv-nav prev" id="pv-p" aria-label="Visuel précédent">←</button>
+  <button type="button" class="pv-nav next" id="pv-n" aria-label="Visuel suivant">→</button>
+  <div class="pv-strip" id="pv-strip"></div>
+</div>
+
+<script type="application/json" id="pdata">[{"id":"top-grill","name":"Top Grill","sector":"Grillades","cat":"Restauration","concept":false,"items":[{"t":"i","f":"i/top-grill-01.jpg","w":1400,"h":1400},{"t":"i","f":"i/top-grill-02.jpg","w":1400,"h":1400},{"t":"i","f":"i/top-grill-03.jpg","w":1400,"h":1400},{"t":"i","f":"i/top-grill-04.jpg","w":1400,"h":1400},{"t":"i","f":"i/top-grill-05.jpg","w":1400,"h":1400},{"t":"i","f":"i/top-grill-06.jpg","w":1400,"h":1400},{"t":"i","f":"i/top-grill-07.jpg","w":1400,"h":1400},{"t":"i","f":"i/top-grill-08.jpg","w":1400,"h":1400},{"t":"i","f":"i/top-grill-09.jpg","w":1400,"h":1400},{"t":"i","f":"i/top-grill-10.jpg","w":1400,"h":1400},{"t":"i","f":"i/top-grill-11.jpg","w":1400,"h":1400},{"t":"i","f":"i/top-grill-12.jpg","w":1400,"h":1400}],"cover":7},{"id":"vintera","name":"Vantera","sector":"Bijoux & streetwear","cat":"Mode & beauté","concept":false,"items":[{"t":"v","f":"v/vintera-motion-01.mp4","p":"v/vintera-motion-01.jpg","w":720,"h":1280},{"t":"i","f":"i/vintera-01.jpg","w":1080,"h":1350},{"t":"i","f":"i/vintera-02.jpg","w":1080,"h":1350},{"t":"i","f":"i/vintera-03.jpg","w":1080,"h":1350},{"t":"i","f":"i/vintera-04.jpg","w":1080,"h":1350},{"t":"i","f":"i/vintera-05.jpg","w":1080,"h":1350},{"t":"i","f":"i/vintera-06.jpg","w":1080,"h":1350},{"t":"i","f":"i/vintera-07.jpg","w":1080,"h":1350},{"t":"i","f":"i/vintera-08.jpg","w":1080,"h":1350},{"t":"i","f":"i/vintera-09.jpg","w":1080,"h":1350},{"t":"i","f":"i/vintera-10.jpg","w":1080,"h":1350},{"t":"i","f":"i/vintera-11.jpg","w":1080,"h":1350},{"t":"i","f":"i/vintera-12.jpg","w":1080,"h":1350},{"t":"i","f":"i/vintera-13.jpg","w":1080,"h":1350},{"t":"i","f":"i/vintera-14.jpg","w":1080,"h":1350},{"t":"i","f":"i/vintera-15.jpg","w":1080,"h":1350},{"t":"i","f":"i/vintera-16.jpg","w":1080,"h":1350},{"t":"i","f":"i/vintera-17.jpg","w":1080,"h":1350}],"cover":0},{"id":"deep-beats","name":"Deep Beats","sector":"Label musical","cat":"Culture & musique","concept":false,"items":[{"t":"i","f":"i/deep-beats-01.jpg","w":1400,"h":1400},{"t":"i","f":"i/deep-beats-02.jpg","w":1400,"h":1400},{"t":"i","f":"i/deep-beats-03.jpg","w":1400,"h":1400},{"t":"i","f":"i/deep-beats-04.jpg","w":1400,"h":1400},{"t":"i","f":"i/deep-beats-05.jpg","w":1400,"h":1400},{"t":"i","f":"i/deep-beats-06.jpg","w":1400,"h":1400},{"t":"i","f":"i/deep-beats-07.jpg","w":1400,"h":1400},{"t":"i","f":"i/deep-beats-08.jpg","w":1400,"h":1400},{"t":"i","f":"i/deep-beats-09.jpg","w":1400,"h":1400},{"t":"i","f":"i/deep-beats-10.jpg","w":1400,"h":1400}],"cover":7},{"id":"kolobi-studio","name":"Kolobi Studio","sector":"Studio créatif","cat":"Tech & services","concept":false,"items":[{"t":"v","f":"v/kolobi-studio-motion-01.mp4","p":"v/kolobi-studio-motion-01.jpg","w":640,"h":360},{"t":"v","f":"v/kolobi-studio-motion-02.mp4","p":"v/kolobi-studio-motion-02.jpg","w":640,"h":360},{"t":"i","f":"i/kolobi-studio-01.jpg","w":931,"h":1080},{"t":"i","f":"i/kolobi-studio-02.jpg","w":1080,"h":1080},{"t":"i","f":"i/kolobi-studio-03.jpg","w":1080,"h":1080}],"cover":0},{"id":"dezyn-studio","name":"Dezyn Studio","sector":"Studio de design","cat":"Tech & services","concept":false,"items":[{"t":"v","f":"v/dezyn-studio-motion-01.mp4","p":"v/dezyn-studio-motion-01.jpg","w":640,"h":360},{"t":"i","f":"i/dezyn-studio-01.jpg","w":1020,"h":768},{"t":"i","f":"i/dezyn-studio-02.jpg","w":1020,"h":768},{"t":"i","f":"i/dezyn-studio-03.jpg","w":1020,"h":768}],"cover":0},{"id":"seoulancer","name":"SeoulAncer","sector":"Club de running","cat":"Sport","concept":false,"items":[{"t":"v","f":"v/seoulancer-motion-01.mp4","p":"v/seoulancer-motion-01.jpg","w":720,"h":1280},{"t":"i","f":"i/seoulancer-01.jpg","w":1080,"h":1350},{"t":"i","f":"i/seoulancer-02.jpg","w":1080,"h":1350},{"t":"i","f":"i/seoulancer-03.jpg","w":1080,"h":1350},{"t":"i","f":"i/seoulancer-04.jpg","w":1080,"h":1350},{"t":"i","f":"i/seoulancer-05.jpg","w":1080,"h":1350},{"t":"i","f":"i/seoulancer-06.jpg","w":1080,"h":1350},{"t":"i","f":"i/seoulancer-07.jpg","w":1080,"h":1350},{"t":"i","f":"i/seoulancer-08.jpg","w":1080,"h":1350},{"t":"i","f":"i/seoulancer-09.jpg","w":1080,"h":1350},{"t":"i","f":"i/seoulancer-10.jpg","w":1080,"h":1350},{"t":"i","f":"i/seoulancer-11.jpg","w":1080,"h":1350},{"t":"i","f":"i/seoulancer-12.jpg","w":1080,"h":1350},{"t":"i","f":"i/seoulancer-13.jpg","w":1080,"h":1350},{"t":"i","f":"i/seoulancer-14.jpg","w":1080,"h":1350},{"t":"i","f":"i/seoulancer-15.jpg","w":1080,"h":1350},{"t":"i","f":"i/seoulancer-16.jpg","w":1080,"h":1350},{"t":"i","f":"i/seoulancer-17.jpg","w":1080,"h":1350}],"cover":0},{"id":"filmesque","name":"Filmesque","sector":"Production vidéo","cat":"Culture & musique","concept":false,"items":[{"t":"v","f":"v/filmesque-motion-01.mp4","p":"v/filmesque-motion-01.jpg","w":360,"h":640},{"t":"i","f":"i/filmesque-01.jpg","w":1400,"h":1400},{"t":"i","f":"i/filmesque-02.jpg","w":1400,"h":1400},{"t":"i","f":"i/filmesque-03.jpg","w":1400,"h":1400},{"t":"i","f":"i/filmesque-04.jpg","w":1400,"h":1400},{"t":"i","f":"i/filmesque-05.jpg","w":1400,"h":1400},{"t":"i","f":"i/filmesque-06.jpg","w":1400,"h":1400},{"t":"i","f":"i/filmesque-07.jpg","w":1400,"h":1400},{"t":"i","f":"i/filmesque-08.jpg","w":1400,"h":1400},{"t":"i","f":"i/filmesque-09.jpg","w":1400,"h":1400},{"t":"i","f":"i/filmesque-10.jpg","w":1400,"h":1400}],"cover":0},{"id":"forme","name":"Forme","sector":"Papeterie & édition","cat":"Tech & services","concept":false,"items":[{"t":"v","f":"v/forme-motion-01.mp4","p":"v/forme-motion-01.jpg","w":716,"h":896},{"t":"i","f":"i/forme-01.jpg","w":1078,"h":1350},{"t":"i","f":"i/forme-02.jpg","w":1078,"h":1350},{"t":"i","f":"i/forme-03.jpg","w":1078,"h":1350},{"t":"i","f":"i/forme-04.jpg","w":1080,"h":1350},{"t":"i","f":"i/forme-05.jpg","w":1078,"h":1350},{"t":"i","f":"i/forme-06.jpg","w":1078,"h":1350},{"t":"i","f":"i/forme-07.jpg","w":1078,"h":1350},{"t":"i","f":"i/forme-08.jpg","w":1078,"h":1350},{"t":"i","f":"i/forme-09.jpg","w":1078,"h":1350},{"t":"i","f":"i/forme-10.jpg","w":1078,"h":1350},{"t":"i","f":"i/forme-11.jpg","w":1078,"h":1350},{"t":"i","f":"i/forme-12.jpg","w":1078,"h":1350},{"t":"i","f":"i/forme-13.jpg","w":1078,"h":1350},{"t":"i","f":"i/forme-14.jpg","w":1078,"h":1350},{"t":"i","f":"i/forme-15.jpg","w":1080,"h":1350},{"t":"i","f":"i/forme-16.jpg","w":1078,"h":1350},{"t":"i","f":"i/forme-17.jpg","w":1078,"h":1350},{"t":"i","f":"i/forme-18.jpg","w":1080,"h":1350},{"t":"i","f":"i/forme-19.jpg","w":1078,"h":1350},{"t":"i","f":"i/forme-20.jpg","w":1078,"h":1350},{"t":"i","f":"i/forme-21.jpg","w":1078,"h":1350},{"t":"i","f":"i/forme-22.jpg","w":1078,"h":1350}],"cover":0},{"id":"andro","name":"Andro","sector":"Mascotte tech","cat":"Tech & services","concept":false,"items":[{"t":"v","f":"v/andro-motion-01.mp4","p":"v/andro-motion-01.jpg","w":546,"h":308},{"t":"v","f":"v/andro-motion-02.mp4","p":"v/andro-motion-02.jpg","w":546,"h":308},{"t":"i","f":"i/andro-01.jpg","w":623,"h":1080},{"t":"i","f":"i/andro-02.jpg","w":1020,"h":768},{"t":"i","f":"i/andro-03.jpg","w":1020,"h":768},{"t":"i","f":"i/andro-04.jpg","w":1020,"h":768},{"t":"i","f":"i/andro-05.jpg","w":1080,"h":1080},{"t":"i","f":"i/andro-06.jpg","w":1080,"h":1080}],"cover":7},{"id":"space","name":"Space","sector":"Identité animée","cat":"Culture & musique","concept":false,"items":[{"t":"v","f":"v/space-motion-01.mp4","p":"v/space-motion-01.jpg","w":1280,"h":720},{"t":"v","f":"v/space-motion-02.mp4","p":"v/space-motion-02.jpg","w":1280,"h":720},{"t":"v","f":"v/space-motion-03.mp4","p":"v/space-motion-03.jpg","w":640,"h":360},{"t":"v","f":"v/space-motion-04.mp4","p":"v/space-motion-04.jpg","w":640,"h":360}],"cover":0},{"id":"ife-afriz","name":"Ife & Afiz","sector":"Mode","cat":"Mode & beauté","concept":false,"items":[{"t":"i","f":"i/ife-afriz-01.jpg","w":1400,"h":1400},{"t":"i","f":"i/ife-afriz-02.jpg","w":1400,"h":1400},{"t":"i","f":"i/ife-afriz-03.jpg","w":1400,"h":1400},{"t":"i","f":"i/ife-afriz-04.jpg","w":1400,"h":1400},{"t":"i","f":"i/ife-afriz-05.jpg","w":1400,"h":1400},{"t":"i","f":"i/ife-afriz-06.jpg","w":1400,"h":1400},{"t":"i","f":"i/ife-afriz-07.jpg","w":1400,"h":1400},{"t":"i","f":"i/ife-afriz-08.jpg","w":1400,"h":1400}],"cover":6},{"id":"kings","name":"Kings","sector":"Réparation automobile","cat":"Tech & services","concept":false,"items":[{"t":"i","f":"i/kings-01.jpg","w":1400,"h":1400},{"t":"i","f":"i/kings-02.jpg","w":1400,"h":1400},{"t":"i","f":"i/kings-03.jpg","w":1400,"h":1400},{"t":"i","f":"i/kings-04.jpg","w":1400,"h":1400},{"t":"i","f":"i/kings-05.jpg","w":1400,"h":1400},{"t":"i","f":"i/kings-06.jpg","w":1400,"h":1400},{"t":"i","f":"i/kings-07.jpg","w":1400,"h":1400},{"t":"i","f":"i/kings-08.jpg","w":1400,"h":1400},{"t":"i","f":"i/kings-09.jpg","w":1400,"h":1400},{"t":"i","f":"i/kings-10.jpg","w":1400,"h":1400}],"cover":9},{"id":"el-gallo","name":"El Gallo","sector":"Café torréfié","cat":"Restauration","concept":false,"items":[{"t":"i","f":"i/el-gallo-01.jpg","w":1080,"h":1080},{"t":"i","f":"i/el-gallo-02.jpg","w":1080,"h":1080},{"t":"i","f":"i/el-gallo-03.jpg","w":1080,"h":1080},{"t":"i","f":"i/el-gallo-04.jpg","w":1080,"h":1080},{"t":"i","f":"i/el-gallo-05.jpg","w":1080,"h":1080},{"t":"i","f":"i/el-gallo-06.jpg","w":1080,"h":1080}],"cover":0},{"id":"contra-file","name":"Contra-Filé","sector":"Burgers végans","cat":"Restauration","concept":false,"items":[{"t":"i","f":"i/contra-file-01.jpg","w":1080,"h":1080},{"t":"i","f":"i/contra-file-02.jpg","w":1080,"h":1080},{"t":"i","f":"i/contra-file-03.jpg","w":1080,"h":1080},{"t":"i","f":"i/contra-file-04.jpg","w":1080,"h":1080},{"t":"i","f":"i/contra-file-05.jpg","w":1080,"h":1080},{"t":"i","f":"i/contra-file-06.jpg","w":1080,"h":1080},{"t":"i","f":"i/contra-file-07.jpg","w":1080,"h":1080},{"t":"i","f":"i/contra-file-08.jpg","w":1080,"h":1080}],"cover":0},{"id":"keniz","name":"Keniz","sector":"Marque premium","cat":"Mode & beauté","concept":false,"items":[{"t":"i","f":"i/keniz-01.jpg","w":1080,"h":1080},{"t":"i","f":"i/keniz-02.jpg","w":1080,"h":1080},{"t":"i","f":"i/keniz-03.jpg","w":1020,"h":768},{"t":"i","f":"i/keniz-04.jpg","w":1020,"h":768},{"t":"i","f":"i/keniz-05.jpg","w":494,"h":1080},{"t":"i","f":"i/keniz-06.jpg","w":1020,"h":768},{"t":"i","f":"i/keniz-07.jpg","w":1020,"h":768},{"t":"i","f":"i/keniz-08.jpg","w":1080,"h":1080},{"t":"i","f":"i/keniz-09.jpg","w":1080,"h":1080}],"cover":6},{"id":"nasa","name":"NASA","sector":"Spatial","cat":"Concepts","concept":true,"items":[{"t":"i","f":"i/nasa-01.jpg","w":1080,"h":1080},{"t":"i","f":"i/nasa-02.jpg","w":1080,"h":1080},{"t":"i","f":"i/nasa-03.jpg","w":1080,"h":1080},{"t":"i","f":"i/nasa-04.jpg","w":1080,"h":1080}],"cover":3},{"id":"sonigson","name":"Sonigson","sector":"Studio son","cat":"Culture & musique","concept":false,"items":[{"t":"i","f":"i/sonigson-01.jpg","w":1020,"h":1020},{"t":"i","f":"i/sonigson-02.jpg","w":1020,"h":1020},{"t":"i","f":"i/sonigson-03.jpg","w":1020,"h":1020},{"t":"i","f":"i/sonigson-04.jpg","w":1020,"h":1020},{"t":"i","f":"i/sonigson-05.jpg","w":1020,"h":1020},{"t":"i","f":"i/sonigson-06.jpg","w":1020,"h":1020},{"t":"i","f":"i/sonigson-07.jpg","w":1020,"h":1020},{"t":"i","f":"i/sonigson-08.jpg","w":1020,"h":1020},{"t":"i","f":"i/sonigson-09.jpg","w":1020,"h":1020},{"t":"i","f":"i/sonigson-10.jpg","w":1020,"h":1020}],"cover":7},{"id":"huricanes-basket","name":"Hurricanes","sector":"Sport · basketball universitaire","cat":"Sport","concept":false,"items":[{"t":"i","f":"i/huricanes-basket-01.jpg","w":1080,"h":1080},{"t":"i","f":"i/huricanes-basket-02.jpg","w":1080,"h":1080},{"t":"i","f":"i/huricanes-basket-03.jpg","w":1080,"h":1080},{"t":"i","f":"i/huricanes-basket-04.jpg","w":1080,"h":1079},{"t":"i","f":"i/huricanes-basket-05.jpg","w":1080,"h":1080},{"t":"i","f":"i/huricanes-basket-06.jpg","w":1080,"h":1080},{"t":"i","f":"i/huricanes-basket-07.jpg","w":1080,"h":1080},{"t":"i","f":"i/huricanes-basket-08.jpg","w":1080,"h":1080},{"t":"i","f":"i/huricanes-basket-09.jpg","w":1080,"h":864},{"t":"i","f":"i/huricanes-basket-10.jpg","w":1080,"h":1080},{"t":"i","f":"i/huricanes-basket-11.jpg","w":1080,"h":900},{"t":"i","f":"i/huricanes-basket-12.jpg","w":1080,"h":900},{"t":"i","f":"i/huricanes-basket-13.jpg","w":1080,"h":1080},{"t":"i","f":"i/huricanes-basket-14.jpg","w":1080,"h":721},{"t":"i","f":"i/huricanes-basket-15.jpg","w":1080,"h":720}],"cover":6},{"id":"bevit","name":"Bevit","sector":"Nutrition végétale","cat":"Maison & bien-être","concept":false,"items":[{"t":"i","f":"i/bevit-01.jpg","w":1080,"h":1080},{"t":"i","f":"i/bevit-02.jpg","w":1080,"h":1080},{"t":"i","f":"i/bevit-03.jpg","w":1080,"h":1080},{"t":"i","f":"i/bevit-04.jpg","w":1080,"h":1080},{"t":"i","f":"i/bevit-05.jpg","w":1080,"h":1080},{"t":"i","f":"i/bevit-06.jpg","w":1080,"h":1080},{"t":"i","f":"i/bevit-07.jpg","w":1080,"h":1080}],"cover":4},{"id":"evenn","name":"Evenn","sector":"Application de services","cat":"Tech & services","concept":false,"items":[{"t":"i","f":"i/evenn-01.jpg","w":1080,"h":1337},{"t":"i","f":"i/evenn-02.jpg","w":1080,"h":1337},{"t":"i","f":"i/evenn-03.jpg","w":1080,"h":1336},{"t":"i","f":"i/evenn-04.jpg","w":1080,"h":1336},{"t":"i","f":"i/evenn-05.jpg","w":1080,"h":1337},{"t":"i","f":"i/evenn-06.jpg","w":1080,"h":1337},{"t":"i","f":"i/evenn-07.jpg","w":1080,"h":1337},{"t":"i","f":"i/evenn-08.jpg","w":1080,"h":1337}],"cover":6},{"id":"abike","name":"Abike","sector":"Accessoires beauté","cat":"Mode & beauté","concept":false,"items":[{"t":"i","f":"i/abike-01.jpg","w":1400,"h":1400},{"t":"i","f":"i/abike-02.jpg","w":1400,"h":1400},{"t":"i","f":"i/abike-03.jpg","w":1400,"h":1400},{"t":"i","f":"i/abike-04.jpg","w":1400,"h":1400},{"t":"i","f":"i/abike-05.jpg","w":1400,"h":1400},{"t":"i","f":"i/abike-06.jpg","w":1400,"h":1400},{"t":"i","f":"i/abike-07.jpg","w":1400,"h":1400},{"t":"i","f":"i/abike-08.jpg","w":1400,"h":1400},{"t":"i","f":"i/abike-09.jpg","w":1400,"h":1400}],"cover":6},{"id":"diligo","name":"Diligo","sector":"Accélérateur","cat":"Tech & services","concept":false,"items":[{"t":"i","f":"i/diligo-01.jpg","w":1080,"h":1080},{"t":"i","f":"i/diligo-02.jpg","w":1080,"h":1080},{"t":"i","f":"i/diligo-03.jpg","w":1080,"h":1080},{"t":"i","f":"i/diligo-04.jpg","w":1080,"h":1080},{"t":"i","f":"i/diligo-05.jpg","w":1080,"h":1080},{"t":"i","f":"i/diligo-06.jpg","w":1080,"h":1080},{"t":"i","f":"i/diligo-07.jpg","w":1080,"h":1080},{"t":"i","f":"i/diligo-08.jpg","w":1080,"h":1080},{"t":"i","f":"i/diligo-09.jpg","w":1080,"h":1080}],"cover":3},{"id":"pac-y","name":"Pac's","sector":"Fast-food","cat":"Restauration","concept":false,"items":[{"t":"i","f":"i/pac-y-01.jpg","w":1080,"h":1080},{"t":"i","f":"i/pac-y-02.jpg","w":1080,"h":1080},{"t":"i","f":"i/pac-y-03.jpg","w":1080,"h":1080},{"t":"i","f":"i/pac-y-04.jpg","w":1080,"h":1080},{"t":"i","f":"i/pac-y-05.jpg","w":1080,"h":1080},{"t":"i","f":"i/pac-y-06.jpg","w":1080,"h":1080}],"cover":3},{"id":"cookies","name":"Cookie & Cookies","sector":"Biscuiterie","cat":"Restauration","concept":false,"items":[{"t":"i","f":"i/cookies-01.jpg","w":1000,"h":750},{"t":"i","f":"i/cookies-02.jpg","w":1400,"h":933},{"t":"i","f":"i/cookies-03.jpg","w":1000,"h":750},{"t":"i","f":"i/cookies-04.jpg","w":1000,"h":750},{"t":"i","f":"i/cookies-05.jpg","w":1000,"h":750},{"t":"i","f":"i/cookies-06.jpg","w":1000,"h":750},{"t":"i","f":"i/cookies-07.jpg","w":1389,"h":926},{"t":"i","f":"i/cookies-08.jpg","w":1388,"h":926},{"t":"i","f":"i/cookies-09.jpg","w":1125,"h":750},{"t":"i","f":"i/cookies-10.jpg","w":1125,"h":750}],"cover":5},{"id":"waaky","name":"Waaky","sector":"Restaurant","cat":"Restauration","concept":false,"items":[{"t":"i","f":"i/waaky-01.jpg","w":736,"h":736},{"t":"i","f":"i/waaky-02.jpg","w":736,"h":736},{"t":"i","f":"i/waaky-03.jpg","w":736,"h":736},{"t":"i","f":"i/waaky-04.jpg","w":736,"h":736},{"t":"i","f":"i/waaky-05.jpg","w":736,"h":736}],"cover":1},{"id":"pago","name":"Pago","sector":"Fintech","cat":"Tech & services","concept":false,"items":[{"t":"i","f":"i/pago-01.jpg","w":1080,"h":1080},{"t":"i","f":"i/pago-02.jpg","w":1080,"h":1080},{"t":"i","f":"i/pago-03.jpg","w":1080,"h":1080}],"cover":1},{"id":"yuri-home","name":"Yuri Home","sector":"Mobilier & décoration","cat":"Maison & bien-être","concept":false,"items":[{"t":"i","f":"i/yuri-home-01.jpg","w":1001,"h":1001},{"t":"i","f":"i/yuri-home-02.jpg","w":1001,"h":1001},{"t":"i","f":"i/yuri-home-03.jpg","w":1001,"h":1001},{"t":"i","f":"i/yuri-home-04.jpg","w":1001,"h":1001},{"t":"i","f":"i/yuri-home-05.jpg","w":1001,"h":1001},{"t":"i","f":"i/yuri-home-06.jpg","w":1001,"h":1001},{"t":"i","f":"i/yuri-home-07.jpg","w":1001,"h":1001},{"t":"i","f":"i/yuri-home-08.jpg","w":1001,"h":1001},{"t":"i","f":"i/yuri-home-09.jpg","w":1001,"h":1001},{"t":"i","f":"i/yuri-home-10.jpg","w":1001,"h":1001},{"t":"i","f":"i/yuri-home-11.jpg","w":1001,"h":1001},{"t":"i","f":"i/yuri-home-12.jpg","w":1001,"h":1001},{"t":"i","f":"i/yuri-home-13.jpg","w":1001,"h":1001}],"cover":3},{"id":"sorin-sports","name":"Sorin Sports","sector":"Équipement sportif","cat":"Sport","concept":false,"items":[{"t":"i","f":"i/sorin-sports-01.jpg","w":1080,"h":1343},{"t":"i","f":"i/sorin-sports-02.jpg","w":1080,"h":1343},{"t":"i","f":"i/sorin-sports-03.jpg","w":1080,"h":1343}],"cover":0},{"id":"art-fest","name":"Art Fest","sector":"Festival","cat":"Culture & musique","concept":false,"items":[{"t":"i","f":"i/art-fest-01.jpg","w":1400,"h":1400},{"t":"i","f":"i/art-fest-02.jpg","w":1400,"h":1400},{"t":"i","f":"i/art-fest-03.jpg","w":1400,"h":1400},{"t":"i","f":"i/art-fest-04.jpg","w":1400,"h":1400},{"t":"i","f":"i/art-fest-05.jpg","w":1400,"h":1400},{"t":"i","f":"i/art-fest-06.jpg","w":1400,"h":1400},{"t":"i","f":"i/art-fest-07.jpg","w":1400,"h":1400},{"t":"i","f":"i/art-fest-08.jpg","w":1400,"h":1400},{"t":"i","f":"i/art-fest-09.jpg","w":1400,"h":1400}],"cover":0},{"id":"focus-honey","name":"Focus Honey","sector":"Miel","cat":"Restauration","concept":false,"items":[{"t":"i","f":"i/focus-honey-01.jpg","w":1080,"h":1080}],"cover":0},{"id":"jacinthe","name":"Africa Rose","sector":"Identité & papeterie","cat":"Mode & beauté","concept":false,"items":[{"t":"i","f":"i/jacinthe-01.jpg","w":1400,"h":1050},{"t":"i","f":"i/jacinthe-02.jpg","w":1400,"h":1120},{"t":"i","f":"i/jacinthe-03.jpg","w":1400,"h":980},{"t":"i","f":"i/jacinthe-04.jpg","w":1400,"h":1400},{"t":"i","f":"i/jacinthe-05.jpg","w":1400,"h":1050},{"t":"i","f":"i/jacinthe-06.jpg","w":1400,"h":1050},{"t":"i","f":"i/jacinthe-07.jpg","w":1400,"h":1050},{"t":"i","f":"i/jacinthe-08.jpg","w":1400,"h":934},{"t":"i","f":"i/jacinthe-09.jpg","w":1400,"h":1050},{"t":"i","f":"i/jacinthe-10.jpg","w":1400,"h":1400},{"t":"i","f":"i/jacinthe-11.jpg","w":1400,"h":1050},{"t":"i","f":"i/jacinthe-12.jpg","w":1400,"h":933},{"t":"i","f":"i/jacinthe-13.jpg","w":1400,"h":744},{"t":"i","f":"i/jacinthe-14.jpg","w":900,"h":750},{"t":"i","f":"i/jacinthe-15.jpg","w":951,"h":960},{"t":"i","f":"i/jacinthe-16.jpg","w":850,"h":960},{"t":"i","f":"i/jacinthe-17.jpg","w":903,"h":960}],"cover":11},{"id":"amazon","name":"Amazon","sector":"Retail","cat":"Concepts","concept":true,"items":[{"t":"i","f":"i/amazon-01.jpg","w":1080,"h":1080},{"t":"i","f":"i/amazon-02.jpg","w":1080,"h":1080},{"t":"i","f":"i/amazon-03.jpg","w":1080,"h":1080},{"t":"i","f":"i/amazon-04.jpg","w":1080,"h":1080},{"t":"i","f":"i/amazon-05.jpg","w":1080,"h":1080},{"t":"i","f":"i/amazon-06.jpg","w":1080,"h":1080}],"cover":4},{"id":"logo-all","name":"Carnet de logos","sector":"Recherches & croquis","cat":"Tech & services","concept":false,"items":[{"t":"v","f":"v/logo-all-motion-01.mp4","p":"v/logo-all-motion-01.jpg","w":1920,"h":1080},{"t":"i","f":"i/logo-all-01.jpg","w":1400,"h":1050},{"t":"i","f":"i/logo-all-02.jpg","w":1400,"h":1050},{"t":"i","f":"i/logo-all-03.jpg","w":1080,"h":967},{"t":"i","f":"i/logo-all-04.jpg","w":1080,"h":1080},{"t":"i","f":"i/logo-all-05.jpg","w":1020,"h":768},{"t":"i","f":"i/logo-all-06.jpg","w":1020,"h":768},{"t":"i","f":"i/logo-all-07.jpg","w":1020,"h":768},{"t":"i","f":"i/logo-all-08.jpg","w":1020,"h":768},{"t":"i","f":"i/logo-all-09.jpg","w":1020,"h":768},{"t":"i","f":"i/logo-all-10.jpg","w":1020,"h":768},{"t":"i","f":"i/logo-all-11.jpg","w":1020,"h":768},{"t":"i","f":"i/logo-all-12.jpg","w":1020,"h":768}],"cover":0}]</script>
+<script>
+const $=id=>document.getElementById(id);
+const PROJECTS=JSON.parse($('pdata').textContent);
+const ORDER=['Tous','Restauration','Mode & beauté','Sport','Tech & services','Culture & musique','Maison & bien-être','Concepts'];
+const thumb=it=>it.t==='v'?it.p:it.f;
+const coverOf=p=>thumb(p.items[p.cover||0]);
+const nVis=PROJECTS.reduce((a,p)=>a+p.items.length,0);
+const cats=new Set(PROJECTS.map(p=>p.cat));
+['n-proj','k-proj'].forEach(id=>$(id).textContent=PROJECTS.length);
+['n-vis','k-vis'].forEach(id=>$(id).textContent=nVis);
+$('n-sec').textContent=cats.size;
+
+/* annuaire : Étincelle + créatifs dont le profil est en préparation */
+const OTHERS=['Warrior Design','Jafet','Corrector X','Gloria','Tower','Stone Design','Queen Design','Yves','Jean-Yves','Mireille','Cyril'];
+const ini=n=>n.split(/[\s-]+/).map(w=>w[0]).join('').slice(0,2).toUpperCase();
+$('dgrid').innerHTML=`<a class="panel dcard" href="#etincelle">
+    <div class="mos">${PROJECTS.slice(0,3).map(p=>`<img src="${coverOf(p)}" alt="" loading="lazy">`).join('')}</div>
+    <div class="dbody"><div class="av"><img src="brand/leonel-portrait-2.jpg" alt=""></div>
+      <div class="dname"><div><h3>Étincelle</h3><small>Cofondateur · Identité visuelle, motion</small></div></div>
+      <div class="dmeta"><span class="chip">Identité</span><span class="chip">Logo</span><span class="chip">Motion</span></div>
+      <div class="dfoot"><span><b>${PROJECTS.length}</b> projets publiés</span><span class="pill ok">Disponible</span></div></div></a>`
+ + OTHERS.map(n=>`<div class="panel dcard soon">
+    <div class="mos empty">Portfolio en préparation</div>
+    <div class="dbody"><div class="av">${ini(n)}</div>
+      <div class="dname"><div><h3>${n}</h3><small>Créatif du collectif</small></div></div>
+      <div class="dfoot"><span>Profil bientôt en ligne</span><span class="pill idle">À venir</span></div></div></div>`).join('');
+
+/* profil : portfolio complet */
+let pf='Tous';
+function renderPF(){
+  $('pfilters').innerHTML=ORDER.filter(c=>c==='Tous'||cats.has(c)).map(c=>{const n=c==='Tous'?PROJECTS.length:PROJECTS.filter(p=>p.cat===c).length; return `<button type="button" aria-pressed="${c===pf}">${c} <sup>${n}</sup></button>`;}).join('');
+  $('pportfolio').innerHTML=PROJECTS.filter(p=>pf==='Tous'||p.cat===pf).map(p=>{const nv=p.items.filter(i=>i.t==='v').length;
+    return `<button class="work" type="button" data-id="${p.id}">${nv?`<span class="mv">Motion</span>`:''}<img src="${coverOf(p)}" alt="" loading="lazy"><div><b>${p.name}</b><small>${p.items.length} visuel${p.items.length>1?'s':''}</small></div></button>`;}).join('');
+}
+$('pfilters').addEventListener('click',e=>{const b=e.target.closest('button'); if(!b) return; pf=b.textContent.replace(/\s*\d+$/,'').trim(); renderPF();});
+$('pcover').innerHTML=PROJECTS.slice(3,7).map(p=>`<img src="${coverOf(p)}" alt="">`).join('');
+renderPF();
+
+/* visionneuse */
+let vp=null, vi=0, lastF=null;
+function show(i){
+  const n=vp.items.length; vi=(i+n)%n; const it=vp.items[vi];
+  $('pv-stage').innerHTML=it.t==='v'?`<video src="${it.f}" poster="${it.p}" autoplay muted loop playsinline controls></video>`:`<img src="${it.f}" alt="${vp.name}, visuel ${vi+1}">`;
+  $('pv-c').textContent=`${String(vi+1).padStart(2,'0')} / ${String(n).padStart(2,'0')}`;
+  [...$('pv-strip').children].forEach((b,k)=>{ b.setAttribute('aria-current',k===vi); if(k===vi) b.scrollIntoView({block:'nearest',inline:'center'}); });
+}
+function openP(id){
+  vp=PROJECTS.find(p=>p.id===id); if(!vp) return; lastF=document.activeElement;
+  $('pv-t').textContent=vp.name; $('pv-s').textContent=vp.sector;
+  $('pv-strip').innerHTML=vp.items.map((it,k)=>`<button type="button" aria-label="Visuel ${k+1}"><img src="${thumb(it)}" alt="" loading="lazy"></button>`).join('');
+  $('pv').hidden=false; document.body.style.overflow='hidden'; show(0); $('pv-x').focus();
+}
+function closeP(){ $('pv').hidden=true; $('pv-stage').innerHTML=''; document.body.style.overflow=''; if(lastF) lastF.focus(); }
+$('pportfolio').addEventListener('click',e=>{const w=e.target.closest('.work'); if(w) openP(w.dataset.id);});
+$('pv-strip').addEventListener('click',e=>{const b=e.target.closest('button'); if(b) show([...b.parentNode.children].indexOf(b));});
+$('pv-x').onclick=closeP; $('pv-p').onclick=()=>show(vi-1); $('pv-n').onclick=()=>show(vi+1);
+document.addEventListener('keydown',e=>{ if($('pv').hidden) return; if(e.key==='Escape') closeP(); if(e.key==='ArrowRight') show(vi+1); if(e.key==='ArrowLeft') show(vi-1); });
+let sx=null; $('pv-stage').addEventListener('pointerdown',e=>sx=e.clientX); $('pv-stage').addEventListener('pointerup',e=>{ if(sx===null) return; const d=e.clientX-sx; if(Math.abs(d)>50) show(vi+(d<0?1:-1)); sx=null; });
+
+/* espace créatif */
+const MINE=PROJECTS.map(p=>({t:p.name,s:'Publié',src:coverOf(p),c:p.cat}));
+function renderMine(){
+  $('mylist').innerHTML=MINE.map(m=>`<div class="item"><img src="${m.src}" alt=""><div><b>${m.t}</b><small>${m.c}</small></div><span class="pill ${m.s==='Publié'?'ok':'warn'}">${m.s}</span></div>`).join('');
+  $('kpending').textContent=MINE.filter(m=>m.s!=='Publié').length;
+}
+renderMine();
+const files=[];
+function addFiles(list){ [...list].filter(f=>f.type.startsWith('image/')).slice(0,8).forEach(f=>{ const u=URL.createObjectURL(f); files.push(u); $('wthumbs').insertAdjacentHTML('beforeend',`<img src="${u}" alt="">`); }); }
+$('w-files').addEventListener('change',e=>addFiles(e.target.files));
+const drop=$('drop');
+['dragover','dragenter'].forEach(t=>drop.addEventListener(t,e=>{e.preventDefault(); drop.classList.add('over');}));
+['dragleave','drop'].forEach(t=>drop.addEventListener(t,e=>{e.preventDefault(); drop.classList.remove('over');}));
+drop.addEventListener('drop',e=>addFiles(e.dataTransfer.files));
+$('pubform').addEventListener('submit',e=>{
+  e.preventDefault(); const t=$('w-title').value.trim();
+  if(!t){ $('wmsg').textContent='Donnez un nom au projet.'; $('w-title').focus(); return; }
+  if(!$('w-ok').checked){ $('wmsg').textContent="Cochez l'accord du client avant d'envoyer."; return; }
+  MINE.unshift({t,s:'En validation',src:files[0]||coverOf(PROJECTS[0]),c:$('w-sector').value}); renderMine();
+  e.target.reset(); $('wthumbs').innerHTML=''; files.length=0;
+  $('wmsg').textContent="Démonstration : dans la vraie plateforme, le projet part en validation avant d'être publié.";
+});
+
+/* espace client et inscription */
+$('chatform').addEventListener('submit',e=>{ e.preventDefault(); const v=$('chatin').value.trim(); if(!v) return;
+  const d=document.createElement('div'); d.className='bub me'; d.textContent=v; const s=document.createElement('small'); s.textContent="Client · à l'instant"; d.appendChild(s); $('chat').appendChild(d);
+  $('chatin').value=''; $('cmsg').textContent="Démonstration : rien n'est envoyé."; });
+document.querySelectorAll('.role').forEach(b=>b.addEventListener('click',()=>{ document.querySelectorAll('.role').forEach(x=>x.setAttribute('aria-pressed',x===b)); document.querySelector('.forcrea').hidden=b.dataset.role!=='crea'; }));
+$('authform').addEventListener('submit',e=>{ e.preventDefault(); const m=$('a-mail').value.trim();
+  $('amsg').textContent=/^\S+@\S+\.\S+$/.test(m)?`Démonstration : dans la vraie plateforme, un lien de connexion partirait vers ${m}.`:'Entrez une adresse e-mail valide.'; });
+document.addEventListener('click',e=>{ const d=e.target.closest('[data-demo]'); if(!d) return; e.preventDefault(); const m=d.closest('.order,.auth')?.querySelector('.msg'); if(m) m.textContent='Disponible dans la vraie plateforme.'; });
+
+/* onglets */
+const VIEWS=['createurs','etincelle','studio','client','compte'];
+function route(){
+  const h=(location.hash||'#createurs').slice(1), v=VIEWS.includes(h)?h:'createurs';
+  VIEWS.forEach(x=>$('v-'+x).hidden=x!==v);
+  document.querySelectorAll('.tabs a').forEach(a=>{ if(a.getAttribute('href')==='#'+v) a.setAttribute('aria-current','page'); else a.removeAttribute('aria-current'); });
+  $('demobar').hidden=!['studio','client','compte'].includes(v);
+  if(!$('pv').hidden) closeP();
+  scrollTo(0,0);
+}
+addEventListener('hashchange',route); route();
+
+</script>
+</body>
+</html>
