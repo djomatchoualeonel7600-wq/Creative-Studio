@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Connectez-vous à votre espace Creative Studio : client, créatif ou équipe.">
+<link rel="icon" href="brand/creative-studio-mark.png">
+<title>Mon espace · Creative Studio</title>
+<link rel="stylesheet" href="plateforme/plateforme.css">
+<style>
+.doors{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem;margin-top:2rem}
+@media (max-width:900px){.doors{grid-template-columns:1fr}}
+.door{display:flex;flex-direction:column;gap:.75rem;min-height:22rem}
+.door .ico{width:3rem;height:3rem;border-radius:1rem;display:grid;place-items:center;background:rgba(220,198,144,.12);color:var(--champagne)}
+.door .ico svg{width:1.5rem;height:1.5rem}
+.door h2{margin:0;font-weight:400;font-size:1.5rem;letter-spacing:-.03em}
+.door ul{margin:0;padding:0;list-style:none;display:grid;gap:.35rem;font-size:.8125rem;color:var(--muted)}
+.door ul li::before{content:"—";margin-right:.5rem;color:var(--champagne)}
+.door .pick{margin-top:auto;display:grid;gap:.5rem}
+.acc{display:flex;align-items:center;gap:.7rem;width:100%;text-align:left;cursor:pointer;padding:.6rem .7rem;border-radius:.8rem;border:1px solid var(--glass-line);background:var(--card);transition:.25s var(--ease)}
+.acc:hover{border-color:rgba(0,176,255,.55);transform:translateX(3px)}
+.acc i{display:grid;place-items:center;width:2rem;height:2rem;border-radius:50%;font-style:normal;font-weight:700;font-size:.75rem;color:#120F0B;background:linear-gradient(90deg,#FFF7E8,var(--champagne) 55%,#B39557);flex:none}
+.acc span{flex:1;font-size:.8125rem}.acc small{display:block;color:var(--muted);font-size:.6875rem}
+.wall{margin-top:2rem;display:flex;gap:1rem;align-items:flex-start;padding:1rem 1.2rem;border-radius:1rem;border:1px dashed var(--glass-line);font-size:.8125rem;color:var(--muted)}
+.wall b{color:var(--cream);font-weight:500}
+.auth{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:1.5rem;margin-top:2rem;align-items:start}
+@media (max-width:900px){.auth{grid-template-columns:1fr}}
+.auth form{display:grid;gap:.9rem}
+.side3{display:grid;gap:.75rem}
+.side3 .card h3{margin-bottom:.35rem}
+.side3 .card p{margin:0;font-size:.8125rem;color:var(--muted)}
+</style>
+</head>
+<body>
+<header class="top" id="top"></header>
+<main class="wrap" id="app"></main>
+<footer class="wrap pf"><div class="row"><span>© 2026 <span class="cs"><span class="c1">Creative</span> <b class="c2">Studio</b></span> · Be Creative | Be Excellent</span><span><a href="conditions.html">Conditions</a> · <a href="confidentialite.html">Confidentialité</a> · <a href="index.html">Accueil</a></span></div></footer>
+<script src="plateforme/config.js"></script>
+<script src="plateforme/vendor/supabase.js"></script>
+<script src="plateforme/donnees.js"></script>
+<script src="plateforme/app.js"></script>
+<script>
+(function(){
+  const { esc, D } = CS;
+  const app = document.getElementById('app');
+  const qs = new URLSearchParams(location.search);
+  const suite = qs.get('suite');
+  let tab = qs.get('type') === 'crea' ? 'crea' : qs.get('type') === 'client' ? 'client' : 'login';
+  let recovery = location.hash === '#nouveau';
+  CS.header({ where: 'Mon espace', nav: [['Accueil','index.html'],['Commander','commander.html'],['Mon espace','connexion.html',true]] });
+  const ICO = {
+    client: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16l-1.5 11a2 2 0 0 1-2 1.7h-9a2 2 0 0 1-2-1.7z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>',
+    crea: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l4-1 11-11-3-3L5 16z"/><path d="M14 6l3 3"/></svg>',
+    studio: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4M7 12l3-3 2 2 4-4"/></svg>'
+  };
+  const intro = (t, b, p) => `<div style="margin-top:2.5rem" class="rise"><span class="eyebrow"><i aria-hidden="true"></i>Mon espace</span><h1 class="t">${t} <b>${b}</b></h1><p class="lead">${p}</p></div>`;
+
+  /* ===================== MODE DÉMONSTRATION ===================== */
+  function renderDemo(){
+    const db = CS.load();
+    const acc = (role,id,name,sub) => `<button type="button" class="acc" data-role="${role}" data-id="${esc(id)}"><i aria-hidden="true">${esc(name.slice(0,1))}</i><span>${esc(name)}<small>${esc(sub)}</small></span><span aria-hidden="true">→</span></button>`;
+    app.innerHTML = intro('Trois espaces,', 'trois portes.', 'Chaque personne n\'entre que dans son espace. Le client ne voit jamais un créatif, le créatif ne voit jamais un client : seule l\'équipe Studio voit les deux côtés.') + `
+      <div class="doors" id="doors">
+      <section class="card door rise"><span class="ico">${ICO.client}</span><h2>Espace client</h2>
+        <ul><li>Suivre ses commandes étape par étape</li><li>Choisir entre deux pistes, valider, demander une retouche</li><li>Télécharger ses fichiers et retrouver sa marque</li></ul>
+        <div class="pick">${db.clients.slice().reverse().map(c=>acc('client',c.id,c.nom,c.entreprise||'Particulier')).join('')}<a class="btn btn-metal" href="commander.html">Nouvelle commande <span class="arr" aria-hidden="true">→</span></a></div></section>
+      <section class="card door rise" style="animation-delay:.08s"><span class="ico">${ICO.crea}</span><h2>Espace créatif</h2>
+        <ul><li>Recevoir des offres de missions payées</li><li>Déclarer son avancement en deux secondes</li><li>Livrer ses fichiers et voir ses gains</li></ul>
+        <div class="pick">${db.creatifs.slice(0,4).map(c=>acc('crea',c.id,c.pseudo,c.niveau+' · '+c.specialites.map(s=>CS.svc(s).nom).join(', '))).join('')}</div></section>
+      <section class="card door rise" style="animation-delay:.16s"><span class="ico">${ICO.studio}</span><h2>Équipe Studio</h2>
+        <ul><li>Qualifier, dispatcher, contrôler, livrer</li><li>Relayer les messages des deux côtés</li><li>Suivre les chiffres de la semaine</li></ul>
+        <div class="pick">${acc('studio','tous','Équipe Studio','Accès complet (super-administrateur)')}${acc('studio','dispatch','Dispatch','Sous-rôle : attribuer les missions')}${acc('studio','controle','Contrôle qualité','Sous-rôle : valider les livrables')}${acc('studio','finance','Finance','Sous-rôle : paiements et marge')}</div></section></div>
+      <div class="wall"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true" style="flex:none;color:var(--champagne)"><rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/></svg><p style="margin:0"><b>Version de démonstration.</b> Choisissez un compte d'exemple et passez d'un espace à l'autre pour suivre une même commande de bout en bout. En ligne, chacun crée son compte avec son e-mail et un mot de passe.</p></div>`;
+    app.querySelector('#doors').onclick = e => {
+      const b = e.target.closest('.acc'); if (!b) return;
+      const role = b.dataset.role, id = b.dataset.id;
+      if (role === 'studio') { CS.load().equipe.sousRole = id; CS.save(); }
+      CS.login(role, id); location.href = CS.SPACE[role];
+    };
+  }
+
+  /* ===================== MODE EN LIGNE ===================== */
+  const chk = (name, list, labels) => `<div class="chips">${list.map((v,i)=>`<label class="ck"><input type="checkbox" name="${name}" value="${esc(v)}"><span>${esc(labels ? labels[i] : v)}</span></label>`).join('')}</div>`;
+  const side = `<div class="side3">
+      <div class="card"><h3>Vous êtes client</h3><p>Commandez un service, suivez chaque étape, téléchargez vos fichiers. Vous n'avez qu'un seul interlocuteur : Creative Studio.</p></div>
+      <div class="card"><h3>Vous êtes créatif</h3><p>Postulez avec vos travaux. L'équipe examine votre profil puis vous certifie pour un ou plusieurs services : vous recevez alors des missions payées.</p></div>
+      <div class="card"><h3>Vos données</h3><p>Seule l'équipe Creative Studio voit les deux côtés. Un client ne voit jamais un profil de créatif, un créatif ne voit jamais un client.</p></div></div>`;
+  function loginForm(){
+    return `<form data-f="login" novalidate><label class="fld"><span>Adresse e-mail</span><input class="in" type="email" name="email" autocomplete="email" required></label>
+      <label class="fld"><span>Mot de passe</span><input class="in" type="password" name="password" autocomplete="current-password" required></label>
+      <p class="err" data-err hidden></p>
+      <div class="row between"><button class="lnk" type="button" data-forgot>Mot de passe oublié ?</button><button class="btn btn-metal" type="submit">Se connecter <span class="arr" aria-hidden="true">→</span></button></div></form>`;
+  }
+  function clientForm(){
+    return `<form data-f="client" novalidate><div class="g2"><label class="fld"><span>Votre nom *</span><input class="in" name="nom" autocomplete="name" required></label><label class="fld"><span>Entreprise ou marque</span><input class="in" name="entreprise" autocomplete="organization"></label></div>
+      <div class="g2"><label class="fld"><span>Adresse e-mail *</span><input class="in" type="email" name="email" autocomplete="email" required></label><label class="fld"><span>Mot de passe (8 caractères minimum) *</span><input class="in" type="password" name="password" autocomplete="new-password" required></label></div>
+      <div class="g2"><label class="fld"><span>Pays *</span><input class="in" name="pays" autocomplete="country-name" required></label><label class="fld"><span>Numéro WhatsApp (facultatif)</span><input class="in" name="contact" autocomplete="tel"></label></div>
+      <label class="sw"><input type="checkbox" name="cgu"><span>J'accepte les <a href="conditions.html" target="_blank">conditions d'utilisation</a> et la <a href="confidentialite.html" target="_blank">politique de confidentialité</a>.</span></label>
+      <p class="err" data-err hidden></p>
+      <div class="row" style="justify-content:flex-end"><button class="btn btn-metal" type="submit">Créer mon espace client <span class="arr" aria-hidden="true">→</span></button></div></form>`;
+  }
+  function creaForm(){
+    return `<form data-f="crea" novalidate><div class="g2"><label class="fld"><span>Nom et prénom *</span><input class="in" name="nom" autocomplete="name" required></label><label class="fld"><span>Nom de créatif (pseudo) *</span><input class="in" name="pseudo" required></label></div>
+      <div class="g2"><label class="fld"><span>Adresse e-mail *</span><input class="in" type="email" name="email" autocomplete="email" required></label><label class="fld"><span>Mot de passe (8 caractères minimum) *</span><input class="in" type="password" name="password" autocomplete="new-password" required></label></div>
+      <div class="fld"><span>Les services que vous maîtrisez *</span>${chk('specialites', D.services.map(s=>s.id), D.services.map(s=>s.nom))}</div>
+      <div class="fld"><span>Langues de travail *</span>${chk('langues', D.langues)}</div>
+      <div class="fld"><span>Secteurs que vous connaissez</span>${chk('secteurs', D.secteurs)}</div>
+      <div class="g2"><label class="fld"><span>Pays et fuseau horaire *</span><input class="in" name="fuseau" placeholder="Ex. Cameroun (Douala)" required></label><label class="fld"><span>Lien vers vos travaux (pour l'équipe)</span><input class="in" name="lien_travaux" placeholder="Behance, Drive, site…"></label></div>
+      <label class="fld"><span>Présentez-vous en quelques lignes</span><textarea class="in" name="presentation" style="min-height:5rem"></textarea></label>
+      <label class="sw"><input type="checkbox" name="cgu"><span>J'accepte les <a href="conditions.html" target="_blank">conditions d'utilisation</a>, dont la cession des droits et la clause de non-contournement, et la <a href="confidentialite.html" target="_blank">politique de confidentialité</a>.</span></label>
+      <p class="err" data-err hidden></p>
+      <div class="row" style="justify-content:flex-end"><button class="btn btn-metal" type="submit">Envoyer ma candidature <span class="arr" aria-hidden="true">→</span></button></div></form>`;
+  }
+  function renderLive(){
+    const s = CS.session();
+    if (recovery && s) {
+      app.innerHTML = intro('Nouveau', 'mot de passe.', 'Choisissez un nouveau mot de passe pour votre compte.') + `<div class="auth"><div class="card"><form data-f="newpw" novalidate><label class="fld"><span>Nouveau mot de passe (8 caractères minimum)</span><input class="in" type="password" name="password" autocomplete="new-password" required></label><p class="err" data-err hidden></p><div class="row" style="justify-content:flex-end"><button class="btn btn-metal" type="submit">Enregistrer</button></div></form></div></div>`;
+      return;
+    }
+    if (s) {
+      const name = s.role === 'client' ? (CS.load().clients[0]||{}).nom : s.role === 'crea' ? (CS.load().creatifs[0]||{}).pseudo : 'Équipe Studio';
+      app.innerHTML = intro('Bonjour,', esc(name || s.email) + '.', 'Vous êtes connecté avec ' + esc(s.email) + '.') + `<div class="row" style="margin-top:1.5rem"><a class="btn btn-metal" href="${CS.SPACE[s.role]}">Ouvrir mon espace <span class="arr" aria-hidden="true">→</span></a><button class="btn btn-glass" type="button" data-logout>Se déconnecter</button></div>`;
+      return;
+    }
+    const tabs = [['login','Se connecter'],['client','Créer un compte client'],['crea','Devenir créatif']];
+    app.innerHTML = intro('Bienvenue dans', 'votre espace.', 'Connectez-vous, ou créez votre compte en une minute.') + `
+      <div class="auth"><div class="card"><div class="seg" role="tablist" aria-label="Connexion ou inscription" style="margin-bottom:1.2rem">${tabs.map(t=>`<button type="button" role="tab" data-tab="${t[0]}" aria-selected="${tab===t[0]}">${t[1]}</button>`).join('')}</div>
+        ${tab==='login' ? loginForm() : tab==='client' ? clientForm() : creaForm()}</div>${side}</div>`;
+  }
+  function done(title, b, text){
+    app.innerHTML = intro(title, b, text) + `<div class="row" style="margin-top:1.5rem"><button class="btn btn-metal" type="button" data-tab="login">Me connecter</button></div>`;
+  }
+  async function afterLogin(){
+    const s = CS.session(); if (!s) return;
+    let pending = null; try { pending = JSON.parse(localStorage.getItem('cs-commande-en-attente')); } catch(e){}
+    if (pending && s.role === 'client') {
+      try { const id = await CS.act('createOrder', pending); localStorage.removeItem('cs-commande-en-attente'); location.href = 'espace-client.html#' + id; return; } catch(e){}
+    }
+    location.href = suite && !/^https?:|^\/\//.test(suite) ? suite : CS.SPACE[s.role];
+  }
+  async function submit(f){
+    const fd = new FormData(f), v = k => String(fd.get(k) || '').trim(), all = k => fd.getAll(k);
+    const err = f.querySelector('[data-err]'); const fail = m => { err.textContent = m; err.hidden = false; };
+    err.hidden = true;
+    const btn = f.querySelector('[type=submit]'); const lbl = btn.innerHTML;
+    const email = v('email'), pw = String(fd.get('password') || '');
+    try {
+      if (f.dataset.f === 'login') {
+        if (!email || !pw) return fail('Indiquez votre e-mail et votre mot de passe.');
+        btn.disabled = true; btn.textContent = 'Connexion…';
+        await CS.signIn(email, pw); await afterLogin(); return;
+      }
+      if (f.dataset.f === 'newpw') {
+        if (pw.length < 8) return fail('Au moins 8 caractères.');
+        btn.disabled = true; await CS.updatePassword(pw); recovery = false; history.replaceState(null,'',location.pathname); CS.toast('Mot de passe enregistré'); await afterLogin(); return;
+      }
+      if (!/^\S+@\S+\.\S+$/.test(email)) return fail('Indiquez une adresse e-mail valide.');
+      if (pw.length < 8) return fail('Choisissez un mot de passe d’au moins 8 caractères.');
+      if (!fd.get('cgu')) return fail('Merci d’accepter les conditions pour créer votre compte.');
+      let meta;
+      if (f.dataset.f === 'client') {
+        if (!v('nom') || !v('pays')) return fail('Indiquez votre nom et votre pays.');
+        meta = { role: 'client', nom: v('nom'), entreprise: v('entreprise'), pays: v('pays'), contact: v('contact') || email, langue: 'Français' };
+      } else {
+        if (!v('nom') || !v('pseudo') || !v('fuseau')) return fail('Indiquez votre nom, votre nom de créatif et votre pays.');
+        if (!all('specialites').length || !all('langues').length) return fail('Choisissez au moins un service et une langue.');
+        meta = { role: 'crea', nom: v('nom'), pseudo: v('pseudo'), specialites: all('specialites'), langues: all('langues'), secteurs: all('secteurs'), fuseau: v('fuseau'), lien_travaux: v('lien_travaux'), presentation: v('presentation') };
+      }
+      btn.disabled = true; btn.textContent = 'Création du compte…';
+      const connected = await CS.signUp(email, pw, meta);
+      if (connected) { await afterLogin(); return; }
+      done('Vérifiez', 'votre boîte e-mail.', `Nous avons envoyé un lien de confirmation à ${esc(email)}. Cliquez dessus, puis connectez-vous${f.dataset.f === 'crea' ? ' : l’équipe examinera ensuite votre candidature' : ''}.`);
+    } catch (e) { fail(CS.clean(e.message)); }
+    finally { if (btn.isConnected) { btn.disabled = false; btn.innerHTML = lbl; } }
+  }
+  app.addEventListener('click', async e => {
+    const t = e.target.closest('[data-tab]'); if (t) { tab = t.dataset.tab; renderLive(); return; }
+    if (e.target.closest('[data-logout]')) { await CS.sb.auth.signOut(); location.reload(); return; }
+    if (e.target.closest('[data-forgot]')) {
+      const f = app.querySelector('form'); const email = String(new FormData(f).get('email') || '').trim(); const err = f.querySelector('[data-err]');
+      if (!/^\S+@\S+\.\S+$/.test(email)) { err.textContent = 'Écrivez d’abord votre adresse e-mail, puis cliquez sur « Mot de passe oublié ».'; err.hidden = false; return; }
+      try { await CS.resetPassword(email); err.hidden = true; CS.toast('Lien envoyé à ' + email); } catch (x) { err.textContent = CS.clean(x.message); err.hidden = false; }
+    }
+  });
+  app.addEventListener('submit', e => { e.preventDefault(); submit(e.target); });
+
+  CS.ready().then(() => {
+    if (!CS.LIVE) { renderDemo(); CS.on(renderDemo); return; }
+    CS.sb.auth.onAuthStateChange(async (ev) => { if (ev === 'PASSWORD_RECOVERY') { recovery = true; await CS.refresh(); renderLive(); } });
+    renderLive();
+  });
+})();
+</script>
+</body>
+</html>

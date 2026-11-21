@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<link rel="icon" href="brand/creative-studio-mark.png">
+<title>Espace créatif · Creative Studio</title>
+<link rel="stylesheet" href="plateforme/plateforme.css">
+<style>
+.hello{display:flex;justify-content:space-between;align-items:end;gap:1rem;flex-wrap:wrap;margin:2.5rem 0 1.5rem}
+.offer{border-radius:1rem;border:1px solid rgba(0,176,255,.4);background:linear-gradient(180deg,rgba(25,105,251,.08),transparent);padding:1rem}
+.offer + .offer{margin-top:.75rem}
+.offer .cd{font-variant-numeric:tabular-nums;color:var(--halo);font-weight:500}
+.mi{display:block;width:100%;text-align:left;cursor:pointer;border-radius:1rem;border:1px solid rgba(220,198,144,.16);background:var(--card);padding:.9rem;transition:.3s var(--ease)}
+.mi + .mi{margin-top:.6rem}
+.mi:hover{border-color:rgba(0,176,255,.5)}
+.prog{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.6rem}
+.prog button{border:1px solid var(--glass-line);background:none;color:var(--muted);border-radius:99rem;padding:.35rem .7rem;font-size:.75rem;cursor:pointer}
+.prog button[aria-pressed="true"]{color:#120F0B;background:var(--champagne);border-color:transparent}
+.prog button[data-p="Bloqué"][aria-pressed="true"]{background:var(--bad);color:#fff}
+.bar{height:.45rem;border-radius:99rem;background:rgba(220,198,144,.14);overflow:hidden;margin-top:.35rem}
+.bar i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--champagne),#FFF4DC)}
+.pf-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(8.5rem,1fr));gap:.6rem}
+.pf-grid figure{margin:0;border-radius:.8rem;overflow:hidden;border:1px solid var(--glass-line);background:#000;position:relative}
+.pf-grid img{width:100%;aspect-ratio:1;object-fit:cover}
+.pf-grid figcaption{position:absolute;left:.4rem;bottom:.4rem;right:.4rem;font-size:.625rem;padding:.2rem .45rem;border-radius:99rem;background:rgba(8,6,5,.75);color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.peer{display:flex;gap:.7rem;align-items:center;padding:.55rem 0;border-bottom:1px solid rgba(220,198,144,.1);font-size:.8125rem}
+.peer i{display:grid;place-items:center;width:2.1rem;height:2.1rem;border-radius:50%;font-style:normal;font-weight:700;font-size:.75rem;color:#120F0B;background:linear-gradient(90deg,#FFF7E8,var(--champagne) 55%,#B39557);flex:none}
+.chk{display:grid;gap:.45rem;margin:.75rem 0}
+</style>
+</head>
+<body>
+<header class="top" id="top"></header>
+<main class="wrap" id="app"></main>
+<footer class="wrap pf"><div class="row"><span>© 2026 <span class="cs"><span class="c1">Creative</span> <b class="c2">Studio</b></span> · Be Creative | Be Excellent</span><span><a href="conditions.html">Conditions</a> · <a href="confidentialite.html">Confidentialité</a> · <a href="index.html">Accueil</a></span></div></footer>
+<script src="plateforme/config.js"></script>
+<script src="plateforme/vendor/supabase.js"></script>
+<script src="plateforme/donnees.js"></script>
+<script src="plateforme/app.js"></script>
+<script src="plateforme/createur.js"></script>
+</body>
+</html>

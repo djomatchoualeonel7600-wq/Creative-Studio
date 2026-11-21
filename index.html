@@ -810,6 +810,57 @@ body{transition:background-color .4s,color .4s}
 [data-theme="light"] .hero .bg .wash{background:radial-gradient(60% 55% at 72% 28%,rgba(214,186,128,.32),transparent 70%),radial-gradient(40% 40% at 20% 80%,rgba(25,105,251,.06),transparent 70%)}
 [data-theme="light"] .badge.count,[data-theme="light"] .badge.motion,[data-theme="light"] .work .tagw{background:rgba(255,252,246,.88);color:#1E1811}
 .opts{display:none!important}
+
+/* ===== V19 : PLATEFORME (services, commande, espaces) ===== */
+.esp{display:flex;align-items:center;gap:.5rem;height:2.25rem;padding:0 .95rem 0 .75rem;border-radius:999px;flex:none;text-decoration:none;
+  border:1px solid var(--glass-line);background:var(--glass);color:var(--cream);font:500 .8125rem var(--font);box-shadow:inset 0 1px 0 rgba(255,249,240,.1);transition:transform .3s var(--ease),background .3s}
+.esp:hover{transform:translateY(-1px);background:rgba(220,198,144,.1)}
+.esp svg{width:1.05rem;height:1.05rem;color:var(--champagne);flex:none}
+.nav nav a,.nav nav button{white-space:nowrap}
+@media (max-width:1760px){.esp{width:2.25rem;padding:0;justify-content:center}.esp .t{display:none}}
+@media (max-width:560px){.esp{display:none}}
+.svc-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1rem}
+@media (max-width:1100px){.svc-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.svc-grid{grid-template-columns:1fr}}
+.svc-card{position:relative;display:flex;flex-direction:column;border-radius:1.25rem;overflow:hidden;text-decoration:none;color:inherit;min-height:21rem;
+  background:var(--glass);border:1px solid var(--glass-line);box-shadow:inset 0 1px 0 rgba(255,249,240,.1),0 1.25rem 2.5rem -1.25rem #000;backdrop-filter:blur(16px) saturate(140%);-webkit-backdrop-filter:blur(16px) saturate(140%);transition:transform .45s var(--ease),box-shadow .45s}
+.svc-card:hover{transform:translateY(-.25rem);box-shadow:inset 0 0 0 1px rgba(0,176,255,.45),0 1.5rem 3rem -1.25rem rgba(25,105,251,.55)}
+.svc-card .pic{height:8.5rem;position:relative;overflow:hidden;background:radial-gradient(80% 90% at 30% 20%,rgba(88,79,63,.55),rgba(27,22,16,.4) 60%,transparent),repeating-linear-gradient(90deg,rgba(255,240,210,.04) 0 1px,transparent 1px .5625rem)}
+.svc-card .pic img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.05) brightness(.8);transition:filter .6s var(--ease),transform .9s var(--ease)}
+.svc-card:hover .pic img{filter:none;transform:scale(1.05)}
+.svc-card .pic .pi{position:absolute;inset:0;display:grid;place-items:center;color:var(--champagne);opacity:.22}.svc-card .pic .pi svg{width:4.5rem;height:4.5rem}
+.svc-card:hover .pic .pi{opacity:.4;transition:opacity .5s}
+.svc-card .pic::after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 40%,rgba(8,6,5,.65))}
+.svc-card .ico{position:absolute;left:1rem;top:7.2rem;z-index:2;width:2.6rem;height:2.6rem;border-radius:.85rem;display:grid;place-items:center;color:#120F0B;
+  background:linear-gradient(90deg,#FFF7E8 0%,var(--champagne) 55%,#B39557 100%);box-shadow:inset 0 1px 0 rgba(255,255,255,.7),0 .75rem 1.5rem -.6rem rgba(220,198,144,.7)}
+.svc-card .ico svg{width:1.3rem;height:1.3rem}
+.svc-card .bd{display:flex;flex-direction:column;gap:.5rem;padding:1.6rem 1.1rem 1.1rem;flex:1}
+.svc-card h3{margin:0;font-weight:500;font-size:1.0625rem;letter-spacing:-.015em}
+.svc-card p{margin:0;color:var(--muted);font-size:.8125rem;line-height:1.5}
+.svc-card .mt{margin-top:auto;display:flex;justify-content:space-between;align-items:center;gap:.6rem;padding-top:.8rem;border-top:1px solid rgba(220,198,144,.14);font-size:.75rem}
+.svc-card .mt b{font-weight:500;color:var(--champagne)}
+.svc-card .mt span{color:var(--cream);display:inline-flex;gap:.35rem;align-items:center}
+.svc-card .mt span i{font-style:normal;transition:transform .35s var(--ease)}
+.svc-card:hover .mt span i{transform:translateX(.25rem)}
+.svc-flow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1rem;margin-top:clamp(3rem,6vw,4.5rem);counter-reset:st;position:relative}
+.svc-flow::before{content:"";position:absolute;left:1.6rem;right:1.6rem;top:1.6rem;height:1px;background:linear-gradient(90deg,transparent,rgba(220,198,144,.5) 12%,rgba(0,176,255,.55) 50%,rgba(220,198,144,.5) 88%,transparent)}
+.svc-flow li{position:relative;list-style:none;padding-top:4.25rem}
+.svc-flow li::before{counter-increment:st;content:counter(st);position:absolute;top:0;left:0;width:3.2rem;height:3.2rem;border-radius:50%;display:grid;place-items:center;font-weight:500;font-size:1rem;color:var(--cream);
+  background:var(--ink);border:1px solid var(--glass-line);box-shadow:0 0 0 .35rem var(--ink),inset 0 1px 0 rgba(255,249,240,.1)}
+.svc-flow li:nth-child(2)::before{border-color:rgba(0,176,255,.6);box-shadow:0 0 0 .35rem var(--ink),0 0 1.25rem rgba(0,176,255,.45)}
+.svc-flow b{display:block;font-weight:500;font-size:1rem;margin-bottom:.3rem}
+.svc-flow span{display:block;color:var(--muted);font-size:.8125rem;max-width:30ch}
+.svc-flow small{display:inline-block;margin-top:.55rem;font-size:.6875rem;letter-spacing:.12em;text-transform:uppercase;color:var(--champagne)}
+@media (max-width:900px){.svc-flow{grid-template-columns:1fr 1fr;row-gap:2rem}.svc-flow::before{display:none}}
+@media (max-width:520px){.svc-flow{grid-template-columns:1fr}}
+.svc-gar{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:clamp(2.5rem,5vw,3.5rem)}
+.svc-gar span{display:inline-flex;align-items:center;gap:.55rem;padding:.6rem 1rem;border-radius:999px;font-size:.8125rem;border:1px solid var(--glass-line);background:var(--glass);backdrop-filter:blur(.75rem);-webkit-backdrop-filter:blur(.75rem)}
+.svc-gar span::before{content:"";width:.4rem;height:.4rem;border-radius:50%;background:var(--champagne)}
+.svc-cta{display:flex;flex-wrap:wrap;gap:.75rem;align-items:center;margin-top:1.75rem}
+.svc-cta .note{color:var(--muted);font-size:.8125rem;margin-left:.5rem}
+.fcmd{position:fixed;left:max(1rem,env(safe-area-inset-left,0px));bottom:calc(1rem + env(safe-area-inset-bottom,0px));z-index:70;opacity:0;transform:translateY(1rem);pointer-events:none;transition:opacity .45s var(--ease),transform .45s var(--ease)}
+.fcmd.on{opacity:1;transform:none;pointer-events:auto}
+@media (prefers-reduced-motion:reduce){.fcmd{transition:none}}
 </style>
 </head>
 <body>
@@ -825,13 +876,15 @@ body{transition:background-color .4s,color .4s}
       <nav aria-label="Navigation principale">
         <div class="dd"><button class="trace-h" type="button" aria-expanded="false" aria-controls="m-proj">Projets <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button><div class="menu two" id="m-proj"><a href="#projets"><i aria-hidden="true">→</i><span>Identité</span></a><a href="#projets"><i aria-hidden="true">→</i><span>Miniature</span></a><a href="#projets"><i aria-hidden="true">→</i><span>Personal branding</span></a><a href="#projets"><i aria-hidden="true">→</i><span>Motion design</span></a><a href="#projets"><i aria-hidden="true">→</i><span>UI &amp; UX design</span></a><a href="#projets"><i aria-hidden="true">→</i><span>Studio de podcast</span></a><a href="#projets"><i aria-hidden="true">→</i><span>Consultation et audit</span></a><a href="#projets"><i aria-hidden="true">→</i><span>Landing page</span></a></div></div>
         <div class="dd"><button class="trace-h" type="button" aria-expanded="false" aria-controls="m-crea">Créatifs <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button><div class="menu two" id="m-crea"><a href="createurs.html#etincelle"><i aria-hidden="true">→</i><span>Étincelle</span></a><a href="createurs.html#createurs"><i aria-hidden="true">→</i><span>Warrior Design</span></a><a href="createurs.html#createurs"><i aria-hidden="true">→</i><span>Corrector X</span></a><a href="createurs.html#createurs"><i aria-hidden="true">→</i><span>Tower</span></a><a href="createurs.html#createurs"><i aria-hidden="true">→</i><span>Gloria</span></a><a href="createurs.html#createurs"><i aria-hidden="true">→</i><span>Stone Design</span></a><a href="createurs.html#createurs"><i aria-hidden="true">→</i><span>Queen Design</span></a><a href="createurs.html#createurs"><i aria-hidden="true">→</i><span>Yves</span></a><a href="createurs.html#createurs"><i aria-hidden="true">→</i><span>Jean-Yves</span></a><a href="createurs.html#createurs"><i aria-hidden="true">→</i><span>Mireille</span></a><a href="createurs.html#createurs"><i aria-hidden="true">→</i><span>Cyril</span></a></div></div>
+        <a class="trace-h" href="#services">Services</a>
         <a class="trace-h" href="#methode">Méthode</a>
-        <a href="#contact">Nous rejoindre</a>
+        <a href="connexion.html?type=crea">Nous rejoindre</a>
         <a href="#contact">Partenariat</a>
         <a href="#contact">Contact</a>
       </nav>
       <button class="snd trace-h" id="snd" type="button" aria-pressed="false" aria-label="Activer l'ambiance sonore" title="Ambiance sonore"><svg class="spk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M16.5 9.5l4 5M20.5 9.5l-4 5"/></svg><span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span class="t">Son</span></button>
       <button class="thm trace-h" id="thm" type="button" aria-pressed="false" aria-label="Passer en mode clair" title="Mode clair / sombre"><svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg><svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></svg></button>
+      <a class="esp trace-h" href="connexion.html" aria-label="Mon espace : client, créatif ou équipe" title="Mon espace"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8.5" r="3.6"/><path d="M5 19.5a7 7 0 0 1 14 0"/></svg><span class="t">Mon espace</span></a>
       <a class="btn btn-metal trace-on" href="#contact"><span class="full">Proposition de collaboration</span><span class="short">Collaborer</span> <span class="arr" aria-hidden="true">→</span></a>
     </div>
   </div>
@@ -973,6 +1026,30 @@ body{transition:background-color .4s,color .4s}
     </div>
   </section>
 
+  <section class="block" id="services">
+    <div class="bg" aria-hidden="true">
+      <div class="lit" style="width:40vw;height:40vw;right:-12vw;top:10%;background:radial-gradient(closest-side,rgba(25,105,251,.16),transparent)"></div>
+    </div>
+    <div class="wrap">
+      <div class="head">
+        <div>
+          <div class="kicker">Services</div>
+          <h2><span class="metal">Choisissez un résultat,</span><br>on s'occupe du reste.</h2>
+        </div>
+        <p>Vous commandez un service. L'équipe Creative Studio le confie au bon créatif du collectif, contrôle chaque fichier, puis vous le livre. Un seul interlocuteur, du brief à la livraison.</p>
+      </div>
+      <div class="svc-grid" id="svcgrid"></div>
+      <ol class="svc-flow" aria-label="Comment se passe une commande">
+        <li><b>Vous commandez</b><span>Un service, une formule, quelques questions simples. Cinq minutes suffisent.</span><small>Brief guidé</small></li>
+        <li><b>Nous composons votre équipe</b><span>Le Studio étudie votre demande et la confie au créatif le plus adapté.</span><small>Première direction sous 24 h</small></li>
+        <li><b>Création et contrôle</b><span>Vous suivez l'avancement, choisissez entre deux pistes. Chaque fichier est vérifié avant de partir.</span><small>Contrôle Studio</small></li>
+        <li><b>Livraison dans votre espace</b><span>Vous téléchargez, demandez une retouche si besoin, et retrouvez votre marque pour la suite.</span><small>Espace marque</small></li>
+      </ol>
+      <div class="svc-gar"><span>Un seul interlocuteur : Creative Studio</span><span>Paiement gardé jusqu'à votre validation</span><span>Chaque livraison contrôlée par l'équipe</span><span>Vos fichiers gardés dans votre espace</span></div>
+      <div class="svc-cta"><a class="btn btn-metal trace-on" href="commander.html">Commander un service <span class="arr" aria-hidden="true">→</span></a><a class="btn btn-glass trace-h" href="commander.html?mode=mesure">Demande sur mesure</a><a class="btn btn-glass trace-h" href="connexion.html">Mon espace</a><span class="note">Un événement, un lancement ? Une seule proposition, un seul prix.</span></div>
+    </div>
+  </section>
+
   <section class="block" id="temoignages">
     <div class="bg" aria-hidden="true"></div>
     <div class="wrap">
@@ -1096,7 +1173,11 @@ body{transition:background-color .4s,color .4s}
       </nav>
       <nav aria-label="Le studio">
         <h3>Le studio</h3>
-        <a href="#projets">Projets</a><a href="#methode">Méthode</a><a href="#atelier">L'atelier</a><a href="#contact">Nous rejoindre</a><a href="#contact">Partenariat</a><a href="#contact">Contact</a>
+        <a href="#projets">Projets</a><a href="#methode">Méthode</a><a href="#atelier">L'atelier</a><a href="connexion.html?type=crea">Nous rejoindre</a><a href="#contact">Partenariat</a><a href="#contact">Contact</a>
+      </nav>
+      <nav aria-label="La plateforme">
+        <h3>La plateforme</h3>
+        <a href="#services">Services</a><a href="commander.html">Commander</a><a href="commander.html?mode=mesure">Demande sur mesure</a><a href="connexion.html">Mon espace</a>
       </nav>
     </div>
     <div class="giant" aria-hidden="true">Creative Studio</div>
@@ -1445,7 +1526,12 @@ $('cform').addEventListener('submit',e=>{
   const req=['f-nom','f-prenom','f-tel','f-mail'].map($); let bad=null;
   req.forEach(el=>{ const v=el.value.trim(), ok=v!=='' && (el.type!=='email' || /^\S+@\S+\.\S+$/.test(v)); el.setAttribute('aria-invalid',String(!ok)); if(!ok && !bad) bad=el; });
   if(bad){ $('fmsg').textContent='Complétez les champs en rouge : nom, prénom, téléphone et une adresse e-mail valide.'; bad.focus(); return; }
-  $('fmsg').textContent=`Merci ${$('f-prenom').value.trim()}. Ce formulaire est un aperçu : l'envoi sera activé dès que le lien de réception sera branché.`;
+  const C=window.CS_CONFIG||{}, btn=e.target.querySelector('[type=submit]');
+  if(!(C.supabaseUrl&&C.supabaseKey&&window.supabase)){ $('fmsg').textContent=`Merci ${$('f-prenom').value.trim()}. Ce formulaire est un aperçu : l'envoi sera activé dès que la plateforme sera branchée.`; return; }
+  btn.disabled=true; $('fmsg').textContent='Envoi en cours…';
+  window.supabase.createClient(C.supabaseUrl,C.supabaseKey).rpc('cs_contact',{p:{nom:$('f-nom').value.trim(),prenom:$('f-prenom').value.trim(),telephone:$('f-ind').value+' '+$('f-tel').value.trim(),email:$('f-mail').value.trim(),reseaux:$('f-social').value.trim()}})
+    .then(({error})=>{ btn.disabled=false; if(error){ $('fmsg').textContent='L’envoi n’a pas abouti. Réessayez dans un instant.'; return; } $('fmsg').textContent=`Merci ${$('f-prenom').value.trim()}, votre message est bien reçu. L’équipe Creative Studio vous répond très vite.`; e.target.reset(); })
+    .catch(()=>{ btn.disabled=false; $('fmsg').textContent='Connexion impossible. Vérifiez votre réseau et réessayez.'; });
 });
 $('cform').addEventListener('input',e=>{ if(e.target.getAttribute('aria-invalid')==='true' && e.target.value.trim()) e.target.removeAttribute('aria-invalid'); });
 
@@ -1651,5 +1737,31 @@ if(stage && !reduce && matchMedia('(pointer:fine)').matches){
   sync(); })();
 </script>
 
+<a class="fcmd btn btn-metal trace-on" id="fcmd" href="commander.html" tabindex="-1" aria-hidden="true">Commander <span class="arr" aria-hidden="true">→</span></a>
+<script src="plateforme/config.js"></script>
+<script src="plateforme/vendor/supabase.js" defer></script>
+<script src="plateforme/donnees.js"></script>
+<script>
+/* ===== V19 : catalogue des services (lu dans plateforme/donnees.js) et bouton Commander ===== */
+(function(){
+  const D=window.CS_DATA, g=document.getElementById('svcgrid'); if(!D||!g) return;
+  const IC={id:'<circle cx="12" cy="12" r="8.5"/><path d="M8.5 15.5 12 7l3.5 8.5M9.8 12.5h4.4"/>',yt:'<rect x="3" y="5.5" width="18" height="13" rx="3"/><path d="m10.5 9.5 4 2.5-4 2.5z"/>',pb:'<circle cx="12" cy="8.5" r="3.5"/><path d="M5 19.5a7 7 0 0 1 14 0"/>',mo:'<path d="M4 17c3-9 5-9 8 0s5 9 8 0"/><circle cx="12" cy="12" r="1.2"/>',ui:'<rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="M3 8.5h18M8 13h8M8 16h5"/>',lp:'<rect x="4" y="3" width="16" height="18" rx="2.5"/><path d="M8 8h8M8 12h8M10 16h4"/>',au:'<circle cx="10.5" cy="10.5" r="6"/><path d="m15 15 5 5M8 10.5h5"/>',po:'<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/>'};
+  const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  g.innerHTML=D.services.map(s=>{
+    const ps=s.forfaits.map(f=>f.prix).filter(p=>p!=null), min=ps.length?Math.min(...ps):null;
+    const dl=s.forfaits.map(f=>f.delai).find(d=>d);
+    return `<a class="svc-card trace-h" href="commander.html?service=${s.id}"><div class="pic">${s.image?`<img src="${s.image}" alt="" loading="lazy">`:`<span class="pi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width=".8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[s.icone]||''}</svg></span>`}</div><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[s.icone]||''}</svg></span>
+      <div class="bd"><h3>${esc(s.nom)}</h3><p>${esc(s.phrase)}</p><p style="font-size:.75rem">${esc(s.forfaits.map(f=>f.nom).join(' · '))}${dl?' · '+esc(dl):''}</p>
+      <div class="mt"><b>${min==null?'Sur devis':'à partir de '+min+' '+D.devise}</b><span>Commander <i aria-hidden="true">→</i></span></div></div></a>`;
+  }).join('');
+  const b=document.getElementById('fcmd'), hero=document.querySelector('.hero'), contact=document.getElementById('contact');
+  if(b&&hero&&'IntersectionObserver' in window){
+    let past=false, atEnd=false;
+    const set=()=>{const on=past&&!atEnd; b.classList.toggle('on',on); b.tabIndex=on?0:-1; b.setAttribute('aria-hidden',String(!on));};
+    new IntersectionObserver(e=>{past=!e[0].isIntersecting;set();},{threshold:.15}).observe(hero);
+    if(contact) new IntersectionObserver(e=>{atEnd=e[0].isIntersecting;set();},{threshold:.2}).observe(contact);
+  }
+})();
+</script>
 </body>
 </html>

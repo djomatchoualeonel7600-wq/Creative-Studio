@@ -1,11 +1,80 @@
-METTRE A JOUR LE SITE
+CREATIVE STUDIO · PLATEFORME V1
+================================
 
-1. Remplace les fichiers de ce dossier par ceux de la nouvelle version (index.html, fonts, brand, i, v).
-   Garde le dossier .git (il est invisible) et ce fichier publier.bat.
+METTRE A JOUR LE SITE (comme d'habitude)
+1. Les fichiers du site sont dans ce dossier.
+   Garde le dossier .git (il est invisible) et le fichier publier.bat.
 2. Double-clique sur publier.bat.
 3. Attends "Termine". Vercel republie le site tout seul en 30 secondes.
 
-MUSIQUE D'AMBIANCE
-Par defaut, l'ambiance est generee par le navigateur (aucun fichier, aucun droit d'auteur).
-Pour utiliser ta propre musique : place un fichier ambiance.mp3 dans un dossier "audio" ici,
-puis demande-moi de brancher le fichier.
+
+BRANCHER LA PLATEFORME (une seule fois, environ 15 minutes)
+Tant que ces étapes ne sont pas faites, le site reste en mode démonstration :
+tout fonctionne, mais avec des données d'exemple gardées dans le navigateur.
+
+ÉTAPE 1 · Créer le projet Supabase (la base de données et les comptes)
+  1. Va sur https://supabase.com et crée un compte (avec ton e-mail ou GitHub).
+  2. Clique sur "New project".
+     - Name : creative-studio
+     - Database password : clique sur "Generate", puis garde-le dans un endroit sûr.
+     - Region : choisis "West EU (Paris)" (les données restent en Europe).
+  3. Clique sur "Create new project" et attends 1 à 2 minutes.
+
+ÉTAPE 2 · Installer la base de données
+  1. Dans le menu de gauche, ouvre "SQL Editor", puis "New query".
+  2. Ouvre le fichier plateforme\supabase.sql avec le Bloc-notes, sélectionne tout (Ctrl+A), copie (Ctrl+C).
+  3. Colle dans Supabase (Ctrl+V), puis clique sur "Run".
+     Tu dois voir "Success. No rows returned".
+
+ÉTAPE 3 · Régler les comptes
+  1. Menu de gauche : "Authentication", puis "Sign In / Providers", puis "Email".
+     Désactive "Confirm email" et enregistre.
+     Pourquoi : l'envoi d'e-mails intégré à Supabase n'envoie qu'aux membres de ton équipe Supabase.
+     Sans ce réglage, tes clients et tes créatifs ne recevraient pas le lien de confirmation.
+     (Plus tard, branche un service d'e-mails comme Brevo ou Resend dans "Authentication > Emails > SMTP"
+     pour réactiver la confirmation et le "mot de passe oublié".)
+  2. Toujours dans "Authentication", ouvre "URL Configuration".
+     - Site URL : l'adresse de ton site, par exemple https://creative-studio-gray.vercel.app
+       (puis ton nom de domaine quand il sera branché).
+     - Redirect URLs : ajoute https://creative-studio-gray.vercel.app/** et, demain, https://tondomaine.com/**
+
+ÉTAPE 4 · Relier le site à Supabase
+  1. Dans Supabase : "Project Settings" (roue dentée), puis "API" (ou "Data API").
+  2. Copie la "Project URL" et la clé "anon public".
+  3. Ouvre plateforme\config.js avec le Bloc-notes et colle-les entre les guillemets :
+       supabaseUrl: "https://xxxxxxxx.supabase.co",
+       supabaseKey: "eyJhbGciOi..."
+     Enregistre. (Cette clé est faite pour être publique : la sécurité est dans la base.)
+  4. Double-clique sur publier.bat.
+
+ÉTAPE 5 · Devenir administrateur (équipe Studio)
+  1. Sur ton site, va dans "Mon espace", puis "Créer un compte client", avec ton adresse e-mail.
+  2. Dans Supabase, "SQL Editor", "New query", colle cette ligne en remplaçant l'adresse :
+       update public.profiles set role = 'studio' where email = 'ton@adresse.com';
+     Clique sur "Run".
+  3. Sur le site, déconnecte-toi puis reconnecte-toi : tu arrives dans le back-office.
+     Fais pareil pour chaque membre de l'équipe Studio.
+
+ÉTAPE 6 · Ton nom de domaine (demain)
+  Dans Vercel : ton projet, puis "Settings", puis "Domains", puis "Add".
+  Vercel t'indique les lignes à ajouter chez ton fournisseur de domaine.
+  Pense ensuite à mettre ce domaine dans Supabase (étape 3, point 2).
+
+
+AVANT D'OUVRIR AU PUBLIC
+- Complète les passages entre crochets [ ] dans conditions.html et confidentialite.html
+  (nom de la structure, adresse, e-mail de contact, durées, remboursement) et fais-les relire par un juriste.
+- Fixe les prix, délais et retouches dans plateforme\donnees.js :
+    prix: null  -> affiche "Sur devis". Mets un nombre (ex. 150) pour "à partir de 150 €".
+    delai: null -> affiche "Délai confirmé après étude". Mets un texte (ex. "5 jours").
+
+
+COMMENT ÇA MARCHE AU QUOTIDIEN
+- Un client crée son compte en commandant (ou dans "Mon espace").
+- Un créatif s'inscrit avec "Devenir créatif" (ou "Nous rejoindre"). Il arrive en "Candidat" :
+  dans le back-office, onglet "Créatifs", choisis son niveau et ses services, puis "Enregistrer".
+  Il ne reçoit des offres que pour les services cochés.
+- Les demandes du formulaire de l'accueil arrivent dans le back-office, onglet "Messages du site".
+- Il n'y a pas encore de notification par e-mail ou WhatsApp : l'équipe consulte le back-office,
+  les créatifs consultent leur espace (les pages se mettent à jour toutes seules).
+- Le paiement se fait hors plateforme pour l'instant : l'équipe l'enregistre avec "Enregistrer le règlement".

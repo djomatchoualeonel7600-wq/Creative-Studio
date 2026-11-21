@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Commander un service Creative Studio : choisissez un service, répondez à quelques questions, recevez votre première direction artistique sous 24 heures.">
+<link rel="icon" href="brand/creative-studio-mark.png">
+<title>Commander · Creative Studio</title>
+<link rel="stylesheet" href="plateforme/plateforme.css">
+<style>
+.order{display:grid;grid-template-columns:minmax(0,1fr) 21rem;gap:1.5rem;align-items:start;margin-top:1.5rem}
+@media (max-width:980px){.order{grid-template-columns:1fr}}
+.side{position:sticky;top:6.5rem}
+.wz{display:flex;gap:.4rem;margin:1.6rem 0 1rem;flex-wrap:wrap}
+.wz span{display:flex;align-items:center;gap:.5rem;font-size:.75rem;color:var(--muted);padding:.4rem .75rem .4rem .4rem;border-radius:99rem;border:1px solid var(--glass-line)}
+.wz span i{display:grid;place-items:center;width:1.4rem;height:1.4rem;border-radius:50%;font-style:normal;font-size:.6875rem;border:1px solid var(--glass-line)}
+.wz span.on{color:var(--cream);border-color:rgba(0,176,255,.5)}
+.wz span.on i{background:linear-gradient(90deg,var(--spark),var(--halo));border:0;color:#fff}
+.wz span.ok i{background:var(--champagne);color:#120F0B;border:0}
+.svcs{display:grid;grid-template-columns:repeat(auto-fill,minmax(14rem,1fr));gap:.75rem}
+.svc{position:relative;text-align:left;cursor:pointer;border-radius:1rem;border:1px solid var(--glass-line);background:var(--glass);padding:1rem;overflow:hidden;transition:.3s var(--ease);min-height:9.5rem;display:flex;flex-direction:column;gap:.4rem}
+.svc:hover{transform:translateY(-3px);border-color:rgba(0,176,255,.5)}
+.svc[aria-pressed="true"]{border-color:var(--champagne);box-shadow:0 0 0 1px var(--champagne),0 1rem 2.5rem -1.2rem rgba(220,198,144,.6)}
+.svc .ico{width:2.4rem;height:2.4rem;border-radius:.7rem;display:grid;place-items:center;background:rgba(220,198,144,.12);color:var(--champagne)}
+.svc .ico svg{width:1.25rem;height:1.25rem}
+.svc b{font-weight:500}
+.svc small{color:var(--muted);font-size:.75rem;line-height:1.4}
+.svc .pr{margin-top:auto;font-size:.75rem;color:var(--champagne)}
+.ffs{display:grid;grid-template-columns:repeat(auto-fill,minmax(15rem,1fr));gap:.75rem;margin-top:1rem}
+.ff{text-align:left;cursor:pointer;border-radius:1rem;border:1px solid var(--glass-line);background:var(--card);padding:1rem;transition:.3s var(--ease)}
+.ff[aria-pressed="true"]{border-color:var(--champagne);background:rgba(220,198,144,.08)}
+.ff ul{margin:.6rem 0 0;padding:0;list-style:none;display:grid;gap:.3rem;font-size:.8125rem;color:var(--muted)}
+.ff li::before{content:"✓";color:var(--live);margin-right:.45rem}
+.ff .meta{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.7rem}
+.grp{display:grid;gap:.6rem;margin-top:1.25rem}
+.grp > b{font-weight:500;font-size:.875rem}
+.grp > b em{font-style:normal;color:var(--bad)}
+.nav2{display:flex;justify-content:space-between;gap:.75rem;margin-top:1.5rem;flex-wrap:wrap}
+.sum h3{margin-bottom:.7rem}
+.sum .line{display:flex;justify-content:space-between;gap:1rem;font-size:.8125rem;padding:.45rem 0;border-bottom:1px solid rgba(220,198,144,.1)}
+.sum .line span{color:var(--muted)}
+.prom{margin-top:1rem;padding:.85rem;border-radius:.9rem;border:1px solid rgba(0,176,255,.35);background:rgba(25,105,251,.07);font-size:.8125rem}
+.prom b{color:var(--halo);font-weight:500}
+.gar{display:grid;gap:.45rem;margin:1rem 0 0;padding:0;list-style:none;font-size:.75rem;color:var(--muted)}
+.gar li{display:flex;gap:.5rem}.gar li::before{content:"";flex:none;width:.4rem;height:.4rem;margin-top:.45rem;border-radius:50%;background:var(--champagne)}
+.done{text-align:center;padding:3rem 1rem}
+.done .ok{width:4.5rem;height:4.5rem;margin:0 auto 1rem;border-radius:50%;display:grid;place-items:center;background:linear-gradient(90deg,var(--spark),var(--halo));box-shadow:0 0 2.5rem rgba(0,176,255,.6);color:#fff;font-size:1.8rem}
+</style>
+</head>
+<body>
+<header class="top" id="top"></header>
+<main class="wrap">
+  <div style="margin-top:2.5rem" class="rise">
+    <span class="eyebrow"><i aria-hidden="true"></i>Commander</span>
+    <h1 class="t">Votre projet, <b>en quelques minutes.</b></h1>
+    <p class="lead">Choisissez un service, répondez à quelques questions simples. Vous n'avez qu'un seul interlocuteur : Creative Studio.</p>
+  </div>
+  <div class="seg" role="tablist" aria-label="Type de commande" style="margin-top:1.5rem">
+    <button type="button" role="tab" aria-selected="true" data-mode="service">Commander un service</button>
+    <button type="button" role="tab" aria-selected="false" data-mode="mesure">Demande sur mesure</button>
+  </div>
+  <div class="order">
+    <section id="flow" aria-live="polite"></section>
+    <aside class="side"><div class="card sum" id="sum"></div></aside>
+  </div>
+</main>
+<footer class="wrap pf"><div class="row"><span>© 2026 <span class="cs"><span class="c1">Creative</span> <b class="c2">Studio</b></span> · Be Creative | Be Excellent</span><span><a href="conditions.html">Conditions</a> · <a href="confidentialite.html">Confidentialité</a> · <a href="index.html">Accueil</a></span></div></footer>
+<script src="plateforme/config.js"></script>
+<script src="plateforme/vendor/supabase.js"></script>
+<script src="plateforme/donnees.js"></script>
+<script src="plateforme/app.js"></script>
+<script src="plateforme/commander.js"></script>
+</body>
+</html>
