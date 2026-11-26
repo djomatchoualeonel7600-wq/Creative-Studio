@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Miniatures YouTube · Creative Studio</title>
+<meta name="description" content="Les miniatures YouTube réalisées par Creative Studio : finance, crypto, business, tech, développement personnel et vlog.">
+<link rel="icon" href="brand/creative-studio-mark.png">
+<link rel="stylesheet" href="r/r.css">
+<style>
+/* ===== Page Miniatures : la salle de projection ===== */
+.hero{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(2rem,5vw,4.5rem);align-items:center;padding-block:clamp(2.5rem,7vh,5.5rem) 3rem}
+@media (max-width:960px){.hero{grid-template-columns:minmax(0,1fr)}}
+.hero h1{font-size:clamp(2.6rem,5.6vw,4.9rem)}
+.hero h1 .metal{display:inline}
+.hero .btns{display:flex;gap:.75rem;flex-wrap:wrap;margin-top:2rem}
+.stats{display:flex;gap:2rem;margin-top:2.25rem;flex-wrap:wrap}
+.stats div{display:grid}
+.stats b{font-weight:300;font-size:2rem;letter-spacing:-.04em;line-height:1}
+.stats span{font-size:.75rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-top:.35rem}
+
+/* Le lecteur */
+.player{position:relative;cursor:zoom-in;border-radius:1.5rem;padding:.75rem;background:linear-gradient(160deg,rgba(255,247,232,.16),rgba(88,79,63,.12) 40%,rgba(255,255,255,.03));border:1px solid var(--line);box-shadow:0 3rem 6rem -2.5rem rgba(0,0,0,.9),0 0 0 1px rgba(0,0,0,.4) inset;transform:perspective(1600px) rotateY(-6deg) rotateX(3deg);transition:transform .8s var(--ease)}
+.player:hover{transform:perspective(1600px) rotateY(-2deg) rotateX(1deg)}
+@media (max-width:960px){.player{transform:none}.player:hover{transform:none}}
+.player::before{content:"";position:absolute;inset:-18% 0 auto;height:70%;z-index:-1;background:radial-gradient(closest-side,rgba(0,176,255,.2),transparent);filter:blur(10px)}
+.scr{position:relative;aspect-ratio:16/9;border-radius:1rem;overflow:hidden;background:#000}
+.scr img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.06);transition:opacity .9s var(--ease),transform 4.2s linear}
+.scr img.on{opacity:1;transform:scale(1)}
+.scr::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 70%,rgba(0,0,0,.55));pointer-events:none}
+.pbar{position:absolute;left:0;right:0;bottom:0;height:4px;background:rgba(255,255,255,.18);z-index:2}
+.pbar i{position:absolute;inset:0 auto 0 0;width:0;background:linear-gradient(90deg,var(--spark),var(--halo));box-shadow:0 0 12px rgba(0,176,255,.8)}
+.pbar.run i{animation:pb 3.6s linear forwards}
+@keyframes pb{to{width:100%}}
+.pmeta{display:flex;align-items:center;gap:.85rem;padding:.9rem .35rem .2rem}
+.pmeta .av{width:2.4rem;height:2.4rem;border-radius:50%;background:#14110d;padding:.4rem;border:1px solid var(--line);flex:none}
+.pmeta b{display:block;font-weight:500;font-size:1rem;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pmeta small{color:var(--muted);font-size:.8125rem}
+.pmeta .txt{min-width:0;flex:1}
+.pnext{flex:none;display:grid;place-items:center;width:2.5rem;height:2.5rem;border-radius:50%;border:1px solid var(--line);background:var(--glass);cursor:pointer}
+.pnext svg{width:1rem;height:1rem}
+
+/* Le mur */
+.wall{position:relative;margin-top:3.5rem;padding-block:1rem;overflow:hidden;mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.wall .rowm{display:flex;gap:1rem;width:max-content;animation:slide 90s linear infinite}
+.wall .rowm + .rowm{margin-top:1rem;animation-direction:reverse;animation-duration:110s}
+.wall:hover .rowm{animation-play-state:paused}
+@keyframes slide{to{transform:translateX(-50%)}}
+.wt{flex:none;width:clamp(13rem,22vw,21rem);aspect-ratio:16/9;border-radius:.85rem;overflow:hidden;border:1px solid rgba(220,198,144,.14);padding:0;cursor:zoom-in;background:#14110d;transition:transform .45s var(--ease),border-color .45s,box-shadow .45s}
+.wt img{width:100%;height:100%;object-fit:cover;filter:saturate(.85) brightness(.85);transition:filter .45s}
+.wt:hover{transform:translateY(-4px) scale(1.03);border-color:rgba(220,198,144,.55);box-shadow:0 1.5rem 3rem -1.5rem rgba(0,0,0,.9)}
+.wt:hover img{filter:none}
+@media (prefers-reduced-motion:reduce){.wall .rowm{animation:none}.wall{overflow-x:auto}}
+
+/* Sections */
+.sec{margin-top:7rem}
+.shead{display:flex;justify-content:space-between;align-items:end;gap:2rem;flex-wrap:wrap;margin-bottom:2.25rem}
+.shead h2{margin-top:1rem}
+.shead p{color:var(--muted);max-width:42ch;margin:0}
+
+/* Test du petit format */
+.sizes{display:grid;grid-template-columns:4fr 2fr 1fr;gap:clamp(.75rem,2vw,1.75rem);align-items:end;cursor:zoom-in}
+.sizes figure{margin:0}
+.sizes .fr{border-radius:.9rem;overflow:hidden;border:1px solid var(--line);aspect-ratio:16/9;background:#000}
+.sizes .fr img{width:100%;height:100%;object-fit:cover}
+.sizes figure:nth-child(2) .fr{border-radius:.6rem}
+.sizes figure:nth-child(3) .fr{border-radius:.35rem}
+.sizes figcaption{display:flex;align-items:center;gap:.5rem;margin-top:.8rem;font-size:.8125rem;color:var(--muted)}
+.sizes figcaption i{width:.45rem;height:.45rem;border-radius:50%;background:var(--halo);box-shadow:0 0 10px var(--halo)}
+@media (max-width:640px){.sizes{grid-template-columns:3fr 2fr 1fr}.sizes figcaption{font-size:.6875rem}}
+
+/* Filtres + grille */
+.mfil{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.75rem}
+.mchip{cursor:pointer;font-size:.875rem;padding:.6rem 1rem;border-radius:99rem;border:1px solid var(--line);background:var(--glass);color:var(--muted);transition:.3s var(--ease)}
+.mchip sup{font-size:.6875rem;margin-left:.3rem;opacity:.7}
+.mchip:hover{color:var(--cream);border-color:rgba(220,198,144,.5)}
+.mchip[aria-pressed="true"]{color:#120F0B;background:linear-gradient(90deg,#FFF7E8,var(--champagne) 55%,#B39557);border-color:transparent;font-weight:500}
+.mgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:2.25rem 1.5rem}
+@media (max-width:1000px){.mgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.mgrid{grid-template-columns:1fr;gap:1.75rem}}
+.mc{all:unset;cursor:zoom-in;display:block;opacity:0;transform:translateY(1.25rem);transition:opacity .6s var(--ease) var(--d),transform .6s var(--ease) var(--d)}
+.mc.in{opacity:1;transform:none}
+.mc:focus-visible{outline:2px solid var(--halo);outline-offset:.4rem;border-radius:1rem}
+.mi{position:relative;display:block;aspect-ratio:16/9;border-radius:1rem;overflow:hidden;background:#14110d;border:1px solid rgba(220,198,144,.12);transition:border-color .45s,box-shadow .45s}
+.mi img{width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease)}
+.mi .mt{position:absolute;right:.6rem;bottom:.6rem;font-size:.6875rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;padding:.3rem .55rem;border-radius:.4rem;background:rgba(0,0,0,.78);color:#fff}
+.mi .mz,.jp .mz{position:absolute;inset:0;display:grid;place-items:center;opacity:0;background:radial-gradient(closest-side,rgba(0,0,0,.35),transparent);transition:opacity .4s}
+.mi .mz svg,.jp .mz svg{width:3.2rem;height:3.2rem;padding:.85rem;border-radius:50%;background:rgba(10,8,6,.7);border:1px solid rgba(255,255,255,.3);color:#fff;backdrop-filter:blur(6px)}
+.mc:hover .mi{border-color:rgba(220,198,144,.55);box-shadow:0 1.75rem 3rem -1.75rem rgba(0,0,0,.95),0 0 0 1px rgba(220,198,144,.25)}
+.mc:hover .mi img{transform:scale(1.05)}
+.mc:hover .mz,.jp:hover .mz{opacity:1}
+.mm{display:flex;gap:.75rem;align-items:flex-start;margin-top:.9rem}
+.mm .av{width:2.1rem;height:2.1rem;border-radius:50%;padding:.35rem;background:#14110d;border:1px solid var(--line);flex:none}
+.mm b{display:block;font-weight:500;font-size:1rem;line-height:1.3;color:var(--cream)}
+.mm small{display:block;color:var(--muted);font-size:.8125rem;margin-top:.15rem}
+
+/* Japhet */
+.jgrid{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:2.5rem;align-items:center}
+@media (max-width:860px){.jgrid{grid-template-columns:minmax(0,1fr)}}
+.jp{all:unset;position:relative;display:block;cursor:zoom-in;border-radius:1.25rem;overflow:hidden;border:1px solid var(--line);box-shadow:0 2.5rem 5rem -2.5rem rgba(0,0,0,.95)}
+.jp img{width:100%;height:auto}
+.jtxt h2{margin-top:1rem}
+.jtxt p{color:var(--muted);margin:1rem 0 0;max-width:40ch}
+
+.rise{opacity:0;transform:translateY(2rem);transition:opacity .9s var(--ease),transform .9s var(--ease)}
+.rise.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.rise,.mc{opacity:1;transform:none;transition:none}}
+</style>
+</head>
+<body data-page="mini">
+<header class="top">
+  <div class="wrap tin">
+    <a class="logo" href="index.html" aria-label="Creative Studio, retour à l'accueil"><img src="brand/creative-studio-mark.png" alt=""><span class="cs"><span class="c1">Creative</span> <b class="c2">Studio</b></span></a>
+    <nav class="cats" aria-label="Réalisations">
+      <a href="index.html#projets">Identité de marque</a>
+      <a href="miniatures.html" aria-current="page">Miniatures</a>
+      <a href="personal-branding.html">Personal branding</a>
+      <a href="social-media.html">Social media</a>
+    </nav>
+    <a class="btn btn-metal btn-sm go" href="commander.html?service=miniature">Commander <span class="arr" aria-hidden="true">→</span></a>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <section class="hero">
+      <div class="rise">
+        <div class="kicker">Miniatures YouTube</div>
+        <h1 style="margin-top:1.1rem" data-flou>Des miniatures <span class="metal">qui font cliquer.</span></h1>
+        <p class="lead" data-flou>Une miniature se lit en une seconde, souvent en tout petit, au milieu de dizaines d'autres. Voici celles que nous avons créées pour des créateurs de contenu.</p>
+        <div class="btns">
+          <a class="btn btn-metal" href="commander.html?service=miniature">Commander une miniature <span class="arr" aria-hidden="true">→</span></a>
+          <a class="btn btn-glass" href="#galerie">Voir la galerie <span class="arr" aria-hidden="true">↓</span></a>
+        </div>
+        <div class="stats">
+          <div><b data-count>37</b><span>Miniatures</span></div>
+          <div><b>6</b><span>Thématiques</span></div>
+          <div><b>16:9</b><span>Format YouTube</span></div>
+        </div>
+      </div>
+      <div class="rise">
+        <div class="player" id="player" role="button" tabindex="0" aria-label="Agrandir la miniature affichée">
+          <div class="scr" id="scr"></div>
+          <div class="pbar" id="pbar" style="position:relative;margin-top:-4px"><i></i></div>
+          <div class="pmeta">
+            <img class="av" src="brand/creative-studio-mark.png" alt="">
+            <div class="txt"><b id="ptitle"></b><small><span id="ptheme"></span> · Creative Studio</small></div>
+            <button class="pnext" id="pnext" type="button" aria-label="Miniature suivante"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="wall" id="wall" aria-label="Le mur des miniatures">
+    <div class="rowm" id="wall1"></div>
+    <div class="rowm" id="wall2"></div>
+  </div>
+
+  <div class="wrap">
+    <section class="sec">
+      <div class="shead">
+        <div><div class="kicker">Le test du petit format</div><h2 data-flou>Lisible <span class="metal">à toutes les tailles.</span></h2></div>
+        <p data-flou>Sur un téléphone, une miniature fait à peine la taille d'un pouce. Nous vérifions chaque création à trois tailles avant de la livrer.</p>
+      </div>
+      <div class="sizes rise" id="sizes" role="button" tabindex="0" aria-label="Agrandir l'exemple">
+        <figure><div class="fr"><img alt="Miniature affichée sur un grand écran"></div><figcaption><i></i>Télévision et ordinateur</figcaption></figure>
+        <figure><div class="fr"><img alt="Miniature affichée sur une tablette"></div><figcaption><i></i>Tablette</figcaption></figure>
+        <figure><div class="fr"><img alt="Miniature affichée sur un téléphone"></div><figcaption><i></i>Téléphone</figcaption></figure>
+      </div>
+    </section>
+
+    <section class="sec" id="galerie">
+      <div class="shead">
+        <div><div class="kicker">La galerie</div><h2 data-flou>Toutes les <span class="metal">miniatures.</span></h2></div>
+        <p data-flou>Choisissez une thématique. Cliquez sur une miniature pour l'ouvrir en plein écran, puis passez à la suivante avec les flèches.</p>
+      </div>
+      <div class="mfil" id="mfil" role="group" aria-label="Filtrer par thématique"></div>
+      <div class="mgrid" id="mgrid"></div>
+    </section>
+
+    <section class="sec">
+      <div class="jgrid">
+        <div class="rise" id="japhet"></div>
+        <div class="jtxt rise">
+          <div class="kicker">Dossier Japhet</div>
+          <h2 data-flou>Exercice <span class="metal">n° 2.</span></h2>
+          <p data-flou>Une miniature à trois visages, avec un titre en arabe. Cliquez pour l'ouvrir en grand.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta rise">
+      <div class="kicker">Votre chaîne</div>
+      <h2 style="margin-top:1rem">Votre prochaine vidéo mérite <span class="metal">une miniature qui se clique.</span></h2>
+      <p>Envoyez-nous le titre de la vidéo et le message à faire passer. Vous recevez une première proposition sous 24 heures.</p>
+      <div class="btns"><a class="btn btn-metal" href="commander.html?service=miniature">Commander une miniature <span class="arr" aria-hidden="true">→</span></a><a class="btn btn-glass" href="index.html#contact">Nous écrire</a></div>
+    </section>
+  </div>
+</main>
+
+<footer class="wrap pf"><div class="row"><span>© 2026 <span class="cs"><span class="c1">Creative</span> <b class="c2">Studio</b></span> · Be Creative | Be Excellent</span><span><a href="conditions.html">Conditions</a> · <a href="confidentialite.html">Confidentialité</a> · <a href="index.html">Accueil</a></span></div></footer>
+
+<script src="r/data.js"></script>
+<script src="plateforme/flou.js"></script>
+<script src="r/r.js"></script>
+<script>
+document.getElementById('player').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();e.currentTarget.click()}});
+document.getElementById('sizes').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();e.currentTarget.click()}});
+</script>
+</body>
+</html>

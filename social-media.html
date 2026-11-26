@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Social media · Creative Studio</title>
+<meta name="description" content="Les projets social media de Creative Studio : LinkedIn Brand Booster et Otaku Fest West.">
+<link rel="icon" href="brand/creative-studio-mark.png">
+<link rel="stylesheet" href="r/r.css">
+</head>
+<body data-page="projets">
+<header class="top">
+  <div class="wrap tin">
+    <a class="logo" href="index.html" aria-label="Creative Studio, retour à l'accueil"><img src="brand/creative-studio-mark.png" alt=""><span class="cs"><span class="c1">Creative</span> <b class="c2">Studio</b></span></a>
+    <nav class="cats" aria-label="Réalisations">
+      <a href="index.html#projets">Identité de marque</a>
+      <a href="miniatures.html">Miniatures</a>
+      <a href="personal-branding.html">Personal branding</a>
+      <a href="social-media.html" aria-current="page">Social media</a>
+    </nav>
+    <a class="btn btn-metal btn-sm go" href="commander.html?mode=mesure">Commander <span class="arr" aria-hidden="true">→</span></a>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="phero">
+    <div class="rise">
+      <div class="kicker">Social media</div>
+      <h1 data-flou>Des visuels <span class="metal">qui arrêtent le défilement.</span></h1>
+      <p class="lead" data-flou>Affiches, flyers et mises en situation pour des événements en ligne et sur le terrain, classés par projet.</p>
+    </div>
+    <nav class="index rise" id="index" aria-label="Projets de la page"></nav>
+  </section>
+
+  <div id="chapters"></div>
+
+  <section class="cta rise">
+    <div class="kicker">À vous</div>
+    <h2 style="margin-top:1rem">Un événement <span class="metal">à annoncer ?</span></h2>
+    <p>Affiche, flyers, visuels pour les réseaux : décrivez votre événement, nous vous proposons une direction sous 24 heures.</p>
+    <div class="btns"><a class="btn btn-metal" href="commander.html?mode=mesure">Faire une demande <span class="arr" aria-hidden="true">→</span></a><a class="btn btn-glass" href="index.html#contact">Nous écrire</a></div>
+  </section>
+</main>
+
+<footer class="wrap pf"><div class="row"><span>© 2026 <span class="cs"><span class="c1">Creative</span> <b class="c2">Studio</b></span> · Be Creative | Be Excellent</span><span><a href="conditions.html">Conditions</a> · <a href="confidentialite.html">Confidentialité</a> · <a href="index.html">Accueil</a></span></div></footer>
+
+<script src="r/data.js"></script>
+<script>
+const R=window.R_DATA;
+const S=k=>R.lbb.filter(m=>m.serie===k);
+window.R_PAGE={projects:[
+ {id:'linkedin-brand-booster',name:'LinkedIn Brand Booster',kind:'Conférence en ligne',title:'LinkedIn <span class="metal">Brand Booster</span>',text:"Les visuels de la conférence en ligne LinkedIn Brand Booster : affiches, flyers et mises en situation pour deux sessions, « Notion & Productivité » et « Approcher un client ou un collaborateur sur LinkedIn ».",tags:['Affiches','Flyers','Mockups','LinkedIn'],
+  blocks:[{label:'Session · Notion & Productivité',items:S('notion'),sub:'LinkedIn Brand Booster'},{label:'Session · Approcher un client sur LinkedIn',items:S('client'),sub:'LinkedIn Brand Booster'}],count:()=>R.lbb.length+' visuels'},
+ {id:'otaku-fest-west',name:'Otaku Fest West',kind:'Festival · 6 juillet 2024',title:'Otaku <span class="metal">Fest West</span>',text:"L'affiche du festival Otaku Fest West et ses déclinaisons : flyer, panneau d'affichage et mur d'affiches.",tags:['Affiche','Flyer','Affichage urbain'],
+  blocks:[{items:R.otaku,sub:'Otaku Fest West'}],count:()=>R.otaku.length+' visuels'}
+]};
+</script>
+<script src="plateforme/flou.js"></script>
+<script src="r/r.js"></script>
+</body>
+</html>

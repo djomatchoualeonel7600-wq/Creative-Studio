@@ -17,14 +17,14 @@ window.CS_DATA = {
         { id: "complet", nom: "Identité complète", inclus: ["Logo et déclinaisons", "Couleurs et typographies", "Mockups, flyers et bannières", "Guide d'utilisation"], prix: null, delai: null, retouches: null }
       ],
       questions: ["Comment s'appelle votre marque ?", "Que faites-vous, en une phrase ?", "Qui sont vos clients ?", "Trois mots qui décrivent l'image que vous voulez donner"] },
-    { id: "miniature", nom: "Miniatures YouTube", icone: "yt", image: null,
+    { id: "miniature", nom: "Miniatures YouTube", icone: "yt", image: "r/m/je-te-montre-tout.jpg",
       phrase: "Des miniatures qui donnent envie de cliquer, au bon format, à chaque vidéo.",
       forfaits: [
         { id: "unite", nom: "À l'unité", inclus: ["Une miniature 16:9", "Version prête à publier"], prix: null, delai: null, retouches: null },
         { id: "pack", nom: "Pack mensuel", inclus: ["Plusieurs miniatures par mois", "Même ligne visuelle", "Priorité de traitement"], prix: null, delai: null, retouches: null }
       ],
       questions: ["Lien ou nom de votre chaîne", "Titre de la vidéo", "Le message principal de la miniature", "Photo de vous à utiliser (si vous en avez une)"] },
-    { id: "personal", nom: "Personal branding", icone: "pb", image: null,
+    { id: "personal", nom: "Personal branding", icone: "pb", image: "r/pb/etincelle/banniere-linkedin.jpg",
       phrase: "Une image personnelle claire et cohérente, sur LinkedIn et partout ailleurs.",
       forfaits: [
         { id: "profil", nom: "Profil", inclus: ["Bannière et visuels de profil", "Ligne graphique pour vos posts"], prix: null, delai: null, retouches: null },

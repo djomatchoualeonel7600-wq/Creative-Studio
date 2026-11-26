@@ -861,9 +861,49 @@ body{transition:background-color .4s,color .4s}
 .fcmd{position:fixed;left:max(1rem,env(safe-area-inset-left,0px));bottom:calc(1rem + env(safe-area-inset-bottom,0px));z-index:70;opacity:0;transform:translateY(1rem);pointer-events:none;transition:opacity .45s var(--ease),transform .45s var(--ease)}
 .fcmd.on{opacity:1;transform:none;pointer-events:auto}
 @media (prefers-reduced-motion:reduce){.fcmd{transition:none}}
+
+/* Catégories de réalisations */
+.ptabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.75rem;margin:0 0 2.25rem}
+@media (max-width:1100px){.ptabs{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.ptabs{grid-template-columns:1fr}}
+.ptabs a{position:relative;display:flex;align-items:center;gap:.9rem;padding:.6rem 1rem .6rem .6rem;border-radius:1.1rem;border:1px solid var(--glass-line);background:var(--glass);text-decoration:none;color:var(--cream);backdrop-filter:blur(.75rem);-webkit-backdrop-filter:blur(.75rem);transition:border-color .35s,transform .35s var(--ease),box-shadow .35s}
+.ptabs a:hover{border-color:rgba(220,198,144,.6);transform:translateY(-2px);box-shadow:0 1.2rem 2.4rem -1.6rem rgba(0,0,0,.9)}
+.ptabs a.on{border-color:transparent;background:linear-gradient(90deg,rgba(255,247,232,.14),rgba(220,198,144,.1));box-shadow:0 0 0 1px var(--champagne) inset}
+.ptabs .pi{flex:none;width:4.2rem;aspect-ratio:16/10;border-radius:.7rem;overflow:hidden;background:#14110d}
+.ptabs .pi img{width:100%;height:100%;object-fit:cover;transition:transform .6s var(--ease)}
+.ptabs a:hover .pi img{transform:scale(1.08)}
+.ptabs .pi-id{display:grid;place-items:center}.ptabs .pi-id img{width:55%;height:auto;object-fit:contain}
+.ptabs .pl{min-width:0;display:grid}
+.ptabs b{font-weight:500;font-size:.9375rem;line-height:1.2}
+.ptabs small{color:var(--muted);font-size:.75rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ptabs .pa{margin-left:auto;color:var(--champagne);transition:transform .35s var(--ease)}
+.ptabs a:hover .pa{transform:translateX(.25rem)}
+
+/* ===== Respiration (V22) : plus d'air entre les blocs, moins de petits textes serrés ===== */
+:root{--glass-line:rgba(220,198,144,.17)}
+body{line-height:1.65}
+@media (min-width:700px){.wrap{padding-left:max(clamp(2.5rem,6vw,9rem),env(safe-area-inset-left,0px));padding-right:max(clamp(2.5rem,6vw,9rem),env(safe-area-inset-right,0px))}}
+.block{padding-block:clamp(6.5rem,13vw,11.5rem)}
+.head{margin-bottom:clamp(3.25rem,6vw,5rem);gap:2.5rem}
+.head p{font-size:1.0625rem;line-height:1.75;max-width:40ch}
+.ptabs{margin-bottom:3rem;gap:1rem}
+.filters{gap:.65rem;margin-bottom:2.5rem}
+.svc-grid{gap:1.5rem}
+.svc-card .bd{padding:1.9rem 1.6rem 1.5rem;gap:.75rem}
+.svc-card p{font-size:.9375rem;line-height:1.7}
+.svc-card .mt{font-size:.8125rem;padding-top:1.1rem;margin-top:auto}
+.svc-flow{margin-top:clamp(5rem,9vw,7.5rem);gap:2rem}
+.svc-gar{margin-top:clamp(4rem,7vw,6rem);gap:.8rem}
+.svc-cta{margin-top:2.5rem;gap:1rem}
+
+/* V23 : vignettes rondes des catégories */
+.ptabs .pi{width:3.6rem;height:3.6rem;aspect-ratio:1;border-radius:50%;box-shadow:0 0 0 1px rgba(220,198,144,.35),0 .6rem 1.4rem -.6rem rgba(0,0,0,.8)}
+.ptabs a.on .pi{box-shadow:0 0 0 2px var(--champagne)}
+.ptabs a{padding:.65rem 1.1rem .65rem .65rem;border-radius:999px}
 </style>
 </head>
 <body>
+<script src="plateforme/intro-fusee.js"></script>
 
 <script>try{if(localStorage.getItem("cs-theme")==="light")document.documentElement.dataset.theme="light"}catch(e){}</script>
 
@@ -874,12 +914,9 @@ body{transition:background-color .4s,color .4s}
     <div class="bar">
       <a class="brand" href="#top" aria-label="Étincelle, retour en haut"><img src="brand/leonel-portrait-2.jpg" alt=""><span>Étincelle</span></a>
       <nav aria-label="Navigation principale">
-        <div class="dd"><button class="trace-h" type="button" aria-expanded="false" aria-controls="m-proj">Projets <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button><div class="menu two" id="m-proj"><a href="#projets"><i aria-hidden="true">→</i><span>Identité</span></a><a href="#projets"><i aria-hidden="true">→</i><span>Miniature</span></a><a href="#projets"><i aria-hidden="true">→</i><span>Personal branding</span></a><a href="#projets"><i aria-hidden="true">→</i><span>Motion design</span></a><a href="#projets"><i aria-hidden="true">→</i><span>UI &amp; UX design</span></a><a href="#projets"><i aria-hidden="true">→</i><span>Studio de podcast</span></a><a href="#projets"><i aria-hidden="true">→</i><span>Consultation et audit</span></a><a href="#projets"><i aria-hidden="true">→</i><span>Landing page</span></a></div></div>
+        <div class="dd"><button class="trace-h" type="button" aria-expanded="false" aria-controls="m-proj">Projets <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button><div class="menu two" id="m-proj"><a href="#projets"><i aria-hidden="true">→</i><span>Identité de marque</span></a><a href="miniatures.html"><i aria-hidden="true">→</i><span>Miniatures</span></a><a href="personal-branding.html"><i aria-hidden="true">→</i><span>Personal branding</span></a><a href="social-media.html"><i aria-hidden="true">→</i><span>Social media</span></a><a href="#projets"><i aria-hidden="true">→</i><span>Motion design</span></a><a href="#services"><i aria-hidden="true">→</i><span>UI &amp; UX design</span></a><a href="#services"><i aria-hidden="true">→</i><span>Studio de podcast</span></a><a href="#services"><i aria-hidden="true">→</i><span>Consultation et audit</span></a><a href="#services"><i aria-hidden="true">→</i><span>Landing page</span></a></div></div>
         <div class="dd"><button class="trace-h" type="button" aria-expanded="false" aria-controls="m-crea">Créatifs <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button><div class="menu two" id="m-crea"><a href="createurs.html#etincelle"><i aria-hidden="true">→</i><span>Étincelle</span></a><a href="createurs.html#createurs"><i aria-hidden="true">→</i><span>Warrior Design</span></a><a href="createurs.html#createurs"><i aria-hidden="true">→</i><span>Corrector X</span></a><a href="createurs.html#createurs"><i aria-hidden="true">→</i><span>Tower</span></a><a href="createurs.html#createurs"><i aria-hidden="true">→</i><span>Gloria</span></a><a href="createurs.html#createurs"><i aria-hidden="true">→</i><span>Stone Design</span></a><a href="createurs.html#createurs"><i aria-hidden="true">→</i><span>Queen Design</span></a><a href="createurs.html#createurs"><i aria-hidden="true">→</i><span>Yves</span></a><a href="createurs.html#createurs"><i aria-hidden="true">→</i><span>Jean-Yves</span></a><a href="createurs.html#createurs"><i aria-hidden="true">→</i><span>Mireille</span></a><a href="createurs.html#createurs"><i aria-hidden="true">→</i><span>Cyril</span></a></div></div>
-        <a class="trace-h" href="#services">Services</a>
-        <a class="trace-h" href="#methode">Méthode</a>
         <a href="connexion.html?type=crea">Nous rejoindre</a>
-        <a href="#contact">Partenariat</a>
         <a href="#contact">Contact</a>
       </nav>
       <button class="snd trace-h" id="snd" type="button" aria-pressed="false" aria-label="Activer l'ambiance sonore" title="Ambiance sonore"><svg class="spk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M16.5 9.5l4 5M20.5 9.5l-4 5"/></svg><span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span class="t">Son</span></button>
@@ -896,9 +933,9 @@ body{transition:background-color .4s,color .4s}
     <div class="wrap grid">
       <div class="copy">
         <h1>
-          <span class="row"><span class="w metal" style="animation-delay:.1s">Plusieurs</span> <span class="w metal" style="animation-delay:.2s">créatifs.</span></span>
-          <span class="row"><span class="w" style="animation-delay:.32s">Une</span> <span class="w" style="animation-delay:.42s">seule</span></span>
-          <span class="row"><span class="w" style="animation-delay:.56s">signature.</span></span>
+          <span class="row"><span class="w metal" style="animation-delay:.1s">Des</span> <span class="w metal" style="animation-delay:.2s">talents</span> <span class="w metal" style="animation-delay:.26s">rares,</span></span>
+          <span class="row"><span class="w" style="animation-delay:.38s">une</span> <span class="w" style="animation-delay:.46s">image</span></span>
+          <span class="row"><span class="w" style="animation-delay:.56s">qui</span> <span class="w" style="animation-delay:.64s">marque.</span></span>
         </h1>
         <p class="lead">J'ai créé <span class="cs"><span class="c1">Creative</span> <b class="c2">Studio</b></span> parce que d'excellents talents créatifs veulent laisser leur impact aujourd'hui sur des projets et des personnalités qui façonneront le monde demain. Mais aussi parce que personne ne devrait perdre une opportunité à cause de son image. Votre première direction créative arrive sous 24 heures.</p>
         <div class="ctas">
@@ -1012,11 +1049,12 @@ body{transition:background-color .4s,color .4s}
     <div class="wrap">
       <div class="head">
         <div>
-          <div class="kicker">Projets sélectionnés</div>
+          <div class="kicker">Identité de marque</div>
           <h2><span class="metal">Des marques qui</span><br>se reconnaissent.</h2>
         </div>
         <p>Les vitrines sont en noir et blanc pour une lecture homogène. Survolez pour révéler la couleur, cliquez pour ouvrir le projet en plein écran.</p>
       </div>
+      <nav class="ptabs" aria-label="Catégories de réalisations"><a class="on" href="#projets" aria-current="true"><span class="pi" aria-hidden="true"><img src="r/cats/identite.jpg" alt=""></span><span class="pl"><b>Identité de marque</b><small>Logos, chartes, motion</small></span></a><a href="miniatures.html"><span class="pi" aria-hidden="true"><img src="r/cats/miniatures.jpg" alt="" loading="lazy"></span><span class="pl"><b>Miniatures</b><small>37 miniatures YouTube</small></span><span class="pa" aria-hidden="true">→</span></a><a href="personal-branding.html"><span class="pi" aria-hidden="true"><img src="r/cats/personal-branding.jpg" alt="" loading="lazy"></span><span class="pl"><b>Personal branding</b><small>Étincelle · Douglas Fokam</small></span><span class="pa" aria-hidden="true">→</span></a><a href="social-media.html"><span class="pi" aria-hidden="true"><img src="r/cats/social-media.jpg" alt="" loading="lazy"></span><span class="pl"><b>Social media</b><small>LinkedIn Brand Booster · Otaku Fest West</small></span><span class="pa" aria-hidden="true">→</span></a></nav>
       <div class="filters" id="filters" role="group" aria-label="Filtrer par secteur"></div>
       <div class="ptease" id="ptease"><button class="btn btn-glass tint trace-on" type="button" id="popen"><span>Voir les <span id="pcount">33</span> projets</span> <span class="arr" aria-hidden="true">↓</span></button><p>Choisissez un secteur, ou ouvrez toute la galerie.</p></div>
       <div class="pfold" id="pfold"><div class="pin">
@@ -1045,8 +1083,8 @@ body{transition:background-color .4s,color .4s}
         <li><b>Création et contrôle</b><span>Vous suivez l'avancement, choisissez entre deux pistes. Chaque fichier est vérifié avant de partir.</span><small>Contrôle Studio</small></li>
         <li><b>Livraison dans votre espace</b><span>Vous téléchargez, demandez une retouche si besoin, et retrouvez votre marque pour la suite.</span><small>Espace marque</small></li>
       </ol>
-      <div class="svc-gar"><span>Un seul interlocuteur : Creative Studio</span><span>Paiement gardé jusqu'à votre validation</span><span>Chaque livraison contrôlée par l'équipe</span><span>Vos fichiers gardés dans votre espace</span></div>
-      <div class="svc-cta"><a class="btn btn-metal trace-on" href="commander.html">Commander un service <span class="arr" aria-hidden="true">→</span></a><a class="btn btn-glass trace-h" href="commander.html?mode=mesure">Demande sur mesure</a><a class="btn btn-glass trace-h" href="connexion.html">Mon espace</a><span class="note">Un événement, un lancement ? Une seule proposition, un seul prix.</span></div>
+      <div class="svc-gar"><span>Paiement gardé jusqu'à votre validation</span><span>Chaque livraison contrôlée par l'équipe</span><span>Vos fichiers gardés dans votre espace</span></div>
+      <div class="svc-cta"><a class="btn btn-metal trace-on" href="commander.html">Commander un service <span class="arr" aria-hidden="true">→</span></a><a class="btn btn-glass trace-h" href="commander.html?mode=mesure">Demande sur mesure</a><span class="note">Un événement, un lancement ? Une seule proposition, un seul prix.</span></div>
     </div>
   </section>
 
@@ -1389,6 +1427,8 @@ document.querySelectorAll('.dd').forEach(dd=>{
   m.addEventListener('click',()=>set(false));
   dd.addEventListener('keydown',e=>{ if(e.key==='Escape'){ set(false); b.focus(); } });
 });
+(function(){ const pb=document.querySelector('[aria-controls="m-proj"]'); if(!pb||!matchMedia('(pointer:fine)').matches) return;
+  pb.addEventListener('click',e=>{ e.stopImmediatePropagation(); const t=document.getElementById('services'); if(t) t.scrollIntoView({behavior:'smooth',block:'start'}); pb.setAttribute('aria-expanded','false'); document.getElementById('m-proj').classList.remove('open'); },true); })();
 document.addEventListener('click',()=>document.querySelectorAll('.dd').forEach(dd=>{ dd.querySelector('button').setAttribute('aria-expanded','false'); dd.querySelector('.menu').classList.remove('open'); }));
 
 /* ===== Options : étincelles et position du panneau ===== */
@@ -1738,6 +1778,7 @@ if(stage && !reduce && matchMedia('(pointer:fine)').matches){
 </script>
 
 <a class="fcmd btn btn-metal trace-on" id="fcmd" href="commander.html" tabindex="-1" aria-hidden="true">Commander <span class="arr" aria-hidden="true">→</span></a>
+<script src="plateforme/flou.js" defer></script>
 <script src="plateforme/config.js"></script>
 <script src="plateforme/vendor/supabase.js" defer></script>
 <script src="plateforme/donnees.js"></script>

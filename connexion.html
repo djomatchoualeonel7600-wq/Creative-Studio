@@ -29,6 +29,11 @@
 .side3{display:grid;gap:.75rem}
 .side3 .card h3{margin-bottom:.35rem}
 .side3 .card p{margin:0;font-size:.8125rem;color:var(--muted)}
+.pick .more{display:contents}.pick .more[hidden]{display:none}
+.seemore{all:unset;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.45rem;font-size:.8125rem;color:var(--champagne);padding:.55rem .9rem;border-radius:99rem;border:1px dashed var(--glass-line);transition:border-color .3s,background .3s}
+.seemore:hover{border-color:var(--champagne);background:rgba(220,198,144,.06)}
+.seemore[aria-expanded="true"] svg{transform:rotate(180deg)}
+.seemore svg{transition:transform .3s}
 </style>
 </head>
 <body>
@@ -58,20 +63,23 @@
   /* ===================== MODE DÉMONSTRATION ===================== */
   function renderDemo(){
     const db = CS.load();
+    const more = (list, what) => list.slice(0,3).join('') + (list.length > 3 ? `<div class="more" hidden>${list.slice(3).join('')}</div><button type="button" class="seemore" data-more data-lbl="Voir plus de ${what} (${list.length - 3})" aria-expanded="false"><span>Voir plus de ${what} (${list.length - 3})</span><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>` : '');
     const acc = (role,id,name,sub) => `<button type="button" class="acc" data-role="${role}" data-id="${esc(id)}"><i aria-hidden="true">${esc(name.slice(0,1))}</i><span>${esc(name)}<small>${esc(sub)}</small></span><span aria-hidden="true">→</span></button>`;
     app.innerHTML = intro('Trois espaces,', 'trois portes.', 'Chaque personne n\'entre que dans son espace. Le client ne voit jamais un créatif, le créatif ne voit jamais un client : seule l\'équipe Studio voit les deux côtés.') + `
       <div class="doors" id="doors">
       <section class="card door rise"><span class="ico">${ICO.client}</span><h2>Espace client</h2>
         <ul><li>Suivre ses commandes étape par étape</li><li>Choisir entre deux pistes, valider, demander une retouche</li><li>Télécharger ses fichiers et retrouver sa marque</li></ul>
-        <div class="pick">${db.clients.slice().reverse().map(c=>acc('client',c.id,c.nom,c.entreprise||'Particulier')).join('')}<a class="btn btn-metal" href="commander.html">Nouvelle commande <span class="arr" aria-hidden="true">→</span></a></div></section>
+        <div class="pick">${more(db.clients.map(c=>acc('client',c.id,c.nom,c.entreprise||'Particulier')),'clients')}<a class="btn btn-metal" href="commander.html">Nouvelle commande <span class="arr" aria-hidden="true">→</span></a></div></section>
       <section class="card door rise" style="animation-delay:.08s"><span class="ico">${ICO.crea}</span><h2>Espace créatif</h2>
         <ul><li>Recevoir des offres de missions payées</li><li>Déclarer son avancement en deux secondes</li><li>Livrer ses fichiers et voir ses gains</li></ul>
-        <div class="pick">${db.creatifs.slice(0,4).map(c=>acc('crea',c.id,c.pseudo,c.niveau+' · '+c.specialites.map(s=>CS.svc(s).nom).join(', '))).join('')}</div></section>
+        <div class="pick">${more(db.creatifs.map(c=>acc('crea',c.id,c.pseudo,c.niveau+' · '+c.specialites.map(s=>CS.svc(s).nom).join(', '))),'créatifs')}</div></section>
       <section class="card door rise" style="animation-delay:.16s"><span class="ico">${ICO.studio}</span><h2>Équipe Studio</h2>
         <ul><li>Qualifier, dispatcher, contrôler, livrer</li><li>Relayer les messages des deux côtés</li><li>Suivre les chiffres de la semaine</li></ul>
         <div class="pick">${acc('studio','tous','Équipe Studio','Accès complet (super-administrateur)')}${acc('studio','dispatch','Dispatch','Sous-rôle : attribuer les missions')}${acc('studio','controle','Contrôle qualité','Sous-rôle : valider les livrables')}${acc('studio','finance','Finance','Sous-rôle : paiements et marge')}</div></section></div>
       <div class="wall"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true" style="flex:none;color:var(--champagne)"><rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/></svg><p style="margin:0"><b>Version de démonstration.</b> Choisissez un compte d'exemple et passez d'un espace à l'autre pour suivre une même commande de bout en bout. En ligne, chacun crée son compte avec son e-mail et un mot de passe.</p></div>`;
     app.querySelector('#doors').onclick = e => {
+      const sm = e.target.closest('[data-more]');
+      if (sm) { const box = sm.previousElementSibling, open = box.hidden; box.hidden = !open; sm.setAttribute('aria-expanded', open); sm.querySelector('span').textContent = open ? 'Voir moins' : sm.dataset.lbl; return; }
       const b = e.target.closest('.acc'); if (!b) return;
       const role = b.dataset.role, id = b.dataset.id;
       if (role === 'studio') { CS.load().equipe.sousRole = id; CS.save(); }

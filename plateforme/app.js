@@ -47,17 +47,21 @@
     const t = now();
     const ev = (state, by, ago) => ({ state, by, at: t - ago });
     const db = {
-      v: 1, seq: 1047,
+      v: 2, seq: 1047,
       clients: [
-        { id: 'cl1', nom: 'Awa N.', entreprise: 'Maison Kora', type: 'Entreprise', secteur: 'Restauration', pays: 'Cameroun', langue: 'Français', contact: 'awa@exemple.com', source: 'LinkedIn', marque: { couleurs: ['#1F3A2E', '#E9C46A', '#F4EDE1'], polices: ['Cy Grotesk', 'Serif éditoriale'], brief: 'Cuisine camerounaise moderne, chaleureuse, haut de gamme sans être froide.' } },
-        { id: 'cl2', nom: 'Daniel M.', entreprise: 'Bantu Fit', type: 'Entreprise', secteur: 'Sport', pays: 'France', langue: 'Français', contact: '+33 6 00 00 00 00', source: 'Bouche à oreille', marque: { couleurs: [], polices: [], brief: '' } }
+        { id: 'cl1', nom: 'Douglas Fokam', entreprise: 'Afrisecur', type: 'Entreprise', secteur: 'Restauration', pays: 'Cameroun', langue: 'Français', contact: 'douglas@exemple.com', source: 'LinkedIn', marque: { couleurs: ['#1F3A2E', '#E9C46A', '#F4EDE1'], polices: ['Cy Grotesk', 'Serif éditoriale'], brief: 'Cuisine camerounaise moderne, chaleureuse, haut de gamme sans être froide.' } },
+        { id: 'cl2', nom: 'Philippe Simo', entreprise: '', type: 'Particulier', secteur: 'Sport', pays: 'France', langue: 'Français', contact: '+33 6 00 00 00 00', source: 'Bouche à oreille', marque: { couleurs: [], polices: [], brief: '' } },
+        ...[['cl3', 'Astone', ''], ['cl4', 'CamerTech', 'CamerTech'], ['cl5', 'LinkedIn Brand Booster', 'LBB'], ['cl6', 'Ndjoka', ''], ['cl7', 'Claude Noumbissi', ''], ['cl8', 'Franck Nobossie', ''], ['cl9', 'Osher Mindset', 'Osher Mindset']]
+          .map(([id, nom, ent]) => ({ id, nom, entreprise: ent, type: ent ? 'Entreprise' : 'Particulier', secteur: '', pays: '', langue: 'Français', contact: '', source: '', marque: { couleurs: [], polices: [], brief: '' } }))
       ],
       creatifs: [
-        { id: 'cr1', pseudo: 'Nova', specialites: ['identite', 'personal'], langues: ['Français', 'Anglais'], niveau: 'Confirmé', statut: 'dispo', capacite: 3, fuseau: 'Afrique/Douala', secteurs: ['Restauration', 'Mode & beauté'], contact: 'nova@exemple.com', score: 88, gains: { recu: 640, attente: 180 } },
-        { id: 'cr2', pseudo: 'Atlas', specialites: ['identite', 'uiux', 'landing'], langues: ['Français'], niveau: 'Certifié', statut: 'dispo', capacite: 2, fuseau: 'Europe/Paris', secteurs: ['Tech & services'], contact: 'atlas@exemple.com', score: 81, gains: { recu: 420, attente: 0 } },
-        { id: 'cr3', pseudo: 'Kali', specialites: ['miniature', 'motion'], langues: ['Français', 'Anglais'], niveau: 'Confirmé', statut: 'occupe', capacite: 2, fuseau: 'Afrique/Abidjan', secteurs: ['Culture & musique', 'Sport'], contact: 'kali@exemple.com', score: 92, gains: { recu: 910, attente: 120 } },
-        { id: 'cr4', pseudo: 'Orion', specialites: ['motion', 'identite'], langues: ['Anglais'], niveau: 'Candidat', statut: 'absent', absentJusqua: t + 4 * DAY, capacite: 1, fuseau: 'Afrique/Lagos', secteurs: ['Sport'], contact: 'orion@exemple.com', score: 64, gains: { recu: 0, attente: 0 } },
-        { id: 'cr5', pseudo: 'Sable', specialites: ['identite', 'miniature', 'personal'], langues: ['Français'], niveau: 'Certifié', statut: 'dispo', capacite: 2, fuseau: 'Europe/Paris', secteurs: ['Mode & beauté', 'Maison & bien-être'], contact: 'sable@exemple.com', score: 76, gains: { recu: 260, attente: 0 } }
+        { id: 'cr1', pseudo: 'Étincelle', specialites: ['identite', 'personal'], langues: ['Français', 'Anglais'], niveau: 'Confirmé', statut: 'dispo', capacite: 3, fuseau: 'Afrique/Douala', secteurs: ['Restauration', 'Mode & beauté'], contact: 'etincelle@exemple.com', score: 88, gains: { recu: 640, attente: 180 } },
+        { id: 'cr2', pseudo: 'Gloria', specialites: ['identite', 'uiux', 'landing'], langues: ['Français'], niveau: 'Certifié', statut: 'dispo', capacite: 2, fuseau: 'Europe/Paris', secteurs: ['Tech & services'], contact: 'gloria@exemple.com', score: 81, gains: { recu: 420, attente: 0 } },
+        { id: 'cr3', pseudo: 'Japhet', specialites: ['miniature', 'motion'], langues: ['Français', 'Anglais'], niveau: 'Confirmé', statut: 'occupe', capacite: 2, fuseau: 'Afrique/Abidjan', secteurs: ['Culture & musique', 'Sport'], contact: 'japhet@exemple.com', score: 92, gains: { recu: 910, attente: 120 } },
+        { id: 'cr4', pseudo: 'Corrector X', specialites: ['motion', 'identite'], langues: ['Anglais'], niveau: 'Candidat', statut: 'absent', absentJusqua: t + 4 * DAY, capacite: 1, fuseau: 'Afrique/Lagos', secteurs: ['Sport'], contact: 'correctorx@exemple.com', score: 64, gains: { recu: 0, attente: 0 } },
+        { id: 'cr5', pseudo: 'Warrior Design', specialites: ['identite', 'miniature', 'personal'], langues: ['Français'], niveau: 'Certifié', statut: 'dispo', capacite: 2, fuseau: 'Europe/Paris', secteurs: ['Mode & beauté', 'Maison & bien-être'], contact: 'warrior@exemple.com', score: 76, gains: { recu: 260, attente: 0 } },
+        ...[['cr6', 'Tower', ['motion', 'identite']], ['cr7', 'Stone Design', ['identite']], ['cr8', 'Queen Design', ['personal', 'miniature']], ['cr9', 'Yves', ['uiux', 'landing']], ['cr10', 'Jean-Yves', ['motion']], ['cr11', 'Mireille', ['identite', 'personal']], ['cr12', 'Cyril', ['miniature']]]
+          .map(([id, pseudo, specialites]) => ({ id, pseudo, specialites, langues: ['Français'], niveau: 'Certifié', statut: 'dispo', capacite: 2, fuseau: 'Europe/Paris', secteurs: [], contact: '', score: 75, gains: { recu: 0, attente: 0 } }))
       ],
       orders: [
         { id: 'CS-1042', clientId: 'cl1', service: 'identite', forfait: 'complet', state: 'livree', createdAt: t - 6 * DAY,
@@ -67,7 +71,7 @@
           versions: [{ n: 1, statut: 'refusee', note: 'Première piste', fichiers: [{ nom: 'kora-logo-v1.png', fmt: 'PNG', poids: '1,2 Mo' }], at: t - 3 * DAY },
                      { n: 2, statut: 'validee', note: 'Version finale validée par le Studio', fichiers: [{ nom: 'kora-logo.svg', fmt: 'SVG', poids: '84 Ko' }, { nom: 'kora-logo.png', fmt: 'PNG', poids: '1,4 Mo' }, { nom: 'kora-charte.pdf', fmt: 'PDF', poids: '6,8 Mo' }, { nom: 'kora-sources.zip', fmt: 'ZIP', poids: '48 Mo' }], at: t - 1 * DAY }],
           retouches: { incluses: 2, utilisees: 0, fiches: [] },
-          fil: { client: [{ from: 'studio', text: 'Bonjour Awa, votre brief est clair. Petite question : le nom doit-il apparaître en entier sur le logo ?', at: t - 5.9 * DAY }, { from: 'client', text: 'Oui, en entier s’il vous plaît.', at: t - 5.8 * DAY }, { from: 'studio', text: 'Votre identité est prête. Vous pouvez la télécharger depuis la page de livraison.', at: t - 1 * DAY }],
+          fil: { client: [{ from: 'studio', text: 'Bonjour Douglas, votre brief est clair. Petite question : le nom doit-il apparaître en entier sur le logo ?', at: t - 5.9 * DAY }, { from: 'client', text: 'Oui, en entier s’il vous plaît.', at: t - 5.8 * DAY }, { from: 'studio', text: 'Votre identité est prête. Vous pouvez la télécharger depuis la page de livraison.', at: t - 1 * DAY }],
                  crea: [{ from: 'studio', text: 'Mission confirmée. Le client veut le nom en entier sur le logo.', at: t - 5.7 * DAY }, { from: 'crea', text: 'Bien noté, première piste demain.', at: t - 5.6 * DAY }] },
           historique: [ev('soumise', 'Client', 6 * DAY), ev('qualification', 'Accueil Studio', 5.95 * DAY), ev('dispatch', 'Accueil Studio', 5.9 * DAY), ev('attribuee', 'Dispatch Studio', 5.7 * DAY), ev('production', 'Créatif', 5.6 * DAY), ev('controle', 'Créatif', 3 * DAY), ev('production', 'Contrôle Studio', 2.9 * DAY), ev('controle', 'Créatif', 1.2 * DAY), ev('livree', 'Contrôle Studio', 1 * DAY)],
           paiement: { statut: 'Payé', montant: null }, retour: null, remuneration: null },
@@ -80,15 +84,15 @@
           historique: [ev('soumise', 'Client', 2 * DAY), ev('qualification', 'Accueil Studio', 1.98 * DAY), ev('dispatch', 'Accueil Studio', 1.95 * DAY), ev('attribuee', 'Dispatch Studio', 1.9 * DAY), ev('production', 'Créatif', 1.8 * DAY)],
           paiement: { statut: 'Acompte reçu', montant: null }, retour: null, remuneration: null },
         { id: 'CS-1045', clientId: 'cl2', service: 'identite', forfait: 'essentiel', state: 'dispatch', createdAt: t - 7 * H,
-          brief: { reponses: ['Bantu Fit', 'Salle de sport et coaching en ligne', 'Jeunes actifs 20-35 ans', 'Énergie, force, communauté'], secteur: 'Sport', style: 'Audacieux', format: 'Web', couleurs: 'Noir, orange', limite: '', refs: [] },
+          brief: { reponses: ['Simo Training', 'Salle de sport et coaching en ligne', 'Jeunes actifs 20-35 ans', 'Énergie, force, communauté'], secteur: 'Sport', style: 'Audacieux', format: 'Web', couleurs: 'Noir, orange', limite: '', refs: [] },
           publication: true, prix: null, delaiPromis: t + 4 * DAY, creaId: null, offres: [{ creaId: 'cr2', delai: '4 jours', at: t - 2 * H }],
           offreOuverte: { at: t - 3 * H, fin: t + 1 * H, cibles: ['cr1', 'cr2', 'cr5'] },
           progres: null, choix: null, versions: [], retouches: { incluses: 2, utilisees: 0, fiches: [] },
-          fil: { client: [{ from: 'studio', text: 'Merci Daniel ! Votre demande est claire, nous composons votre équipe créative.', at: t - 5 * H }], crea: [] },
+          fil: { client: [{ from: 'studio', text: 'Merci Philippe ! Votre demande est claire, nous composons votre équipe créative.', at: t - 5 * H }], crea: [] },
           historique: [ev('soumise', 'Client', 7 * H), ev('qualification', 'Accueil Studio', 6 * H), ev('dispatch', 'Accueil Studio', 3 * H)],
           paiement: { statut: 'Payé', montant: null }, retour: null, remuneration: null },
         { id: 'CS-1046', clientId: 'cl2', service: 'motion', forfait: 'logo', state: 'controle', createdAt: t - 4 * DAY,
-          brief: { reponses: ['Animation du logo Bantu Fit', '5 secondes', 'Début des vidéos Instagram'], secteur: 'Sport', style: 'Technologique', format: 'Vertical 9:16', couleurs: '', limite: '', refs: [] },
+          brief: { reponses: ['Animation du logo Simo Training', '5 secondes', 'Début des vidéos Instagram'], secteur: 'Sport', style: 'Technologique', format: 'Vertical 9:16', couleurs: '', limite: '', refs: [] },
           publication: false, prix: null, delaiPromis: t + 0.5 * DAY, creaId: 'cr3', offres: [{ creaId: 'cr3', delai: '3 jours', at: t - 3.9 * DAY }],
           progres: 'Prêt à livrer', choix: null,
           versions: [{ n: 1, statut: 'soumise', note: 'Animation finale, 5 s, avec et sans son. Mon numéro si besoin : 06 12 34 56 78', fichiers: [{ nom: 'bantu-logo-anim.mp4', fmt: 'MP4', poids: '3,1 Mo' }, { nom: 'bantu-logo-anim-9x16.mp4', fmt: 'MP4', poids: '2,8 Mo' }], at: t - 2 * H, poster: 'v/forme-motion-01.jpg' }],
@@ -110,14 +114,14 @@
   }
 
   /* ---------- Lecture / écriture ---------- */
-  const EMPTY = () => ({ v: 1, me: null, clients: [], creatifs: [], orders: [], journal: [], contacts: [], equipe: { sousRole: 'tous' } });
+  const EMPTY = () => ({ v: 2, me: null, clients: [], creatifs: [], orders: [], journal: [], contacts: [], equipe: { sousRole: 'tous' } });
   let urls = {};
   function load() {
     if (LIVE) return mem || (mem = EMPTY());
     if (mem) return mem;
     const raw = ls.get(KEY);
     if (raw) { try { mem = JSON.parse(raw); } catch (e) { mem = null; } }
-    if (!mem || mem.v !== 1) { mem = seed(); save(); }
+    if (!mem || mem.v !== 2) { mem = seed(); save(); }
     return mem;
   }
   function save() { if (!LIVE) ls.set(KEY, JSON.stringify(mem)); }

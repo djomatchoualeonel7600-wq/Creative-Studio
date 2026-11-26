@@ -611,6 +611,157 @@ drop policy if exists "cs envoi" on storage.objects;
 create policy "cs lecture" on storage.objects for select to authenticated using (bucket_id = 'cs-fichiers' and public.cs_can_read(name));
 create policy "cs envoi" on storage.objects for insert to authenticated with check (bucket_id = 'cs-fichiers' and public.cs_can_write(name));
 
+-- ---------- Notifications par e-mail (Resend) ------------------------------
+-- Chaque événement important envoie un e-mail : nouvelle commande, mission proposée,
+-- message reçu, pistes prêtes, livraison, nouveau créatif, message du site.
+-- Tant que la clé Resend n'est pas enregistrée (voir LISEZ-MOI), rien n'est envoyé et rien ne bloque.
+do $$ begin create extension if not exists pg_net; exception when others then raise notice 'pg_net indisponible : %', sqlerrm; end $$;
+
+create table if not exists public.cs_reglages (cle text primary key, valeur text not null);
+alter table public.cs_reglages enable row level security;
+
+create or replace function public.cs_configurer_emails(p_site text, p_expediteur text, p_cle_resend text default null) returns text
+language plpgsql security definer set search_path = public as $$
+declare sid uuid;
+begin
+  insert into cs_reglages values ('site', rtrim(p_site, '/')) on conflict (cle) do update set valeur = excluded.valeur;
+  insert into cs_reglages values ('expediteur', p_expediteur) on conflict (cle) do update set valeur = excluded.valeur;
+  if nullif(trim(p_cle_resend), '') is not null then
+    select id into sid from vault.secrets where name = 'cs_resend';
+    if sid is null then perform vault.create_secret(trim(p_cle_resend), 'cs_resend', 'Clé API Resend de Creative Studio');
+    else perform vault.update_secret(sid, trim(p_cle_resend)); end if;
+  end if;
+  return 'Notifications par e-mail activées pour ' || rtrim(p_site, '/');
+end $$;
+
+create or replace function public.cs_html(t text) returns text language sql immutable as
+$$ select replace(replace(replace(coalesce(t, ''), '&', '&amp;'), '<', '&lt;'), '>', '&gt;') $$;
+
+create or replace function public.cs_service_nom(s text) returns text language sql immutable as $$
+  select case s when 'identite' then 'Identité visuelle' when 'miniature' then 'Miniatures YouTube' when 'personal' then 'Personal branding'
+    when 'motion' then 'Motion design' when 'uiux' then 'UI & UX design' when 'landing' then 'Landing page'
+    when 'audit' then 'Consultation et audit' when 'podcast' then 'Studio de podcast' when 'surmesure' then 'Projet sur mesure'
+    else initcap(coalesce(s, 'Service')) end $$;
+
+create or replace function public.cs_mail(p_to text, p_sujet text, p_titre text, p_texte text, p_page text default null, p_bouton text default null) returns void
+language plpgsql security definer set search_path = public as $$
+declare k text; site text; expe text; lien text; html text;
+begin
+  if coalesce(p_to, '') !~ '^[^@ ]+@[^@ ]+\.[^@ ]+$' then return; end if;
+  begin select decrypted_secret into k from vault.decrypted_secrets where name = 'cs_resend' limit 1;
+  exception when others then return; end;
+  if k is null then return; end if;
+  select valeur into site from cs_reglages where cle = 'site';
+  select valeur into expe from cs_reglages where cle = 'expediteur';
+  lien := case when p_page is null or site is null then null else site || '/' || p_page end;
+  html := '<div style="background:#F4F1EC;padding:32px 12px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif">'
+    || '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;margin:0 auto;background:#ffffff;border-radius:16px;overflow:hidden">'
+    || '<tr><td style="background:#0B0907;padding:22px 32px;font-size:18px;color:#ffffff"><span style="font-weight:300">Creative</span> <b style="color:#F2BC21">Studio</b></td></tr>'
+    || '<tr><td style="padding:32px 32px 8px"><h1 style="margin:0 0 14px;font-size:22px;line-height:1.3;font-weight:600;color:#1B1610">' || cs_html(p_titre) || '</h1>'
+    || '<p style="margin:0;font-size:15px;line-height:1.65;color:#4A4238;white-space:pre-line">' || cs_html(p_texte) || '</p></td></tr>'
+    || case when lien is null then '' else '<tr><td style="padding:24px 32px 8px"><a href="' || lien || '" style="display:inline-block;background:#DCC690;color:#120F0B;text-decoration:none;font-weight:600;font-size:15px;padding:13px 22px;border-radius:999px">'
+       || cs_html(coalesce(p_bouton, 'Ouvrir mon espace')) || ' &rarr;</a></td></tr>' end
+    || '<tr><td style="padding:28px 32px 30px;font-size:12px;color:#8A8174">Creative Studio · Be Creative | Be Excellent<br>Vous recevez cet e-mail parce que vous avez un compte sur la plateforme.</td></tr></table></div>';
+  perform net.http_post(url := 'https://api.resend.com/emails',
+    body := jsonb_build_object('from', coalesce(expe, 'Creative Studio <onboarding@resend.dev>'), 'to', jsonb_build_array(p_to), 'subject', p_sujet, 'html', html),
+    headers := jsonb_build_object('Authorization', 'Bearer ' || k, 'Content-Type', 'application/json'));
+exception when others then
+  insert into journal(who, what) values ('Système', 'E-mail non envoyé à ' || p_to || ' : ' || left(sqlerrm, 150));
+end $$;
+
+create or replace function public.cs_mail_studio(p_sujet text, p_titre text, p_texte text) returns void
+language plpgsql security definer set search_path = public as $$
+declare r record;
+begin
+  for r in select email from profiles where role = 'studio' and actif loop
+    perform cs_mail(r.email, p_sujet, p_titre, p_texte, 'studio.html', 'Ouvrir le back-office');
+  end loop;
+end $$;
+
+create or replace function public.cs_t_orders() returns trigger language plpgsql security definer set search_path = public as $$
+declare cl profiles; cr profiles; sd text; i int; e jsonb; nom_s text := cs_service_nom(new.service); c text;
+begin
+  select * into cl from profiles where id = new.client_id;
+  if tg_op = 'INSERT' then
+    perform cs_mail_studio('Nouvelle commande ' || new.id || ' · ' || nom_s, 'Nouvelle commande : ' || nom_s,
+      coalesce(nullif(cl.nom, ''), cl.email) || ' vient de passer la commande ' || new.id || '. Prenez-la en charge dans la file des commandes.');
+    perform cs_mail(cl.email, 'Commande ' || new.id || ' bien reçue', 'Merci, votre commande est bien reçue',
+      'Votre demande « ' || nom_s || ' » porte le numéro ' || new.id || '. Notre équipe l''étudie et vous recevez votre première direction artistique sous 24 heures. Vous suivez tout depuis votre espace.',
+      'espace-client.html', 'Suivre ma commande');
+    return new;
+  end if;
+  if new.crea_id is not null then select * into cr from profiles where id = new.crea_id; end if;
+  -- Mission proposée aux créatifs ciblés
+  if new.offre_ouverte is not null and (old.offre_ouverte is null or old.offre_ouverte ->> 'at' is distinct from new.offre_ouverte ->> 'at') then
+    for c in select jsonb_array_elements_text(coalesce(new.offre_ouverte -> 'cibles', '[]')) loop
+      perform cs_mail((select email from profiles where id = c::uuid), 'Nouvelle mission disponible · ' || nom_s, 'Une nouvelle mission vous attend',
+        'Une mission « ' || nom_s || ' » correspond à vos spécialités. Elle reste ouverte 4 heures : acceptez-la depuis votre espace si vous êtes disponible.',
+        'espace-createur.html', 'Voir la mission');
+    end loop;
+  end if;
+  -- Nouveaux messages dans les fils client et créatif
+  foreach sd in array array['client', 'crea'] loop
+    for i in coalesce(jsonb_array_length(old.fil -> sd), 0) .. coalesce(jsonb_array_length(new.fil -> sd), 0) - 1 loop
+      e := new.fil -> sd -> i;
+      if e ->> 'from' = 'studio' then
+        if sd = 'client' then perform cs_mail(cl.email, 'Du nouveau sur votre commande ' || new.id, 'Du nouveau sur votre commande ' || new.id, e ->> 'text', 'espace-client.html', 'Ouvrir mon espace');
+        elsif cr.id is not null then perform cs_mail(cr.email, 'Mission ' || new.id || ' : nouveau message', 'Message de l''équipe Studio', e ->> 'text', 'espace-createur.html', 'Ouvrir mon espace'); end if;
+      else
+        perform cs_mail_studio('Message ' || case when sd = 'client' then 'du client' else 'du créatif' end || ' · ' || new.id,
+          'Nouveau message ' || case when sd = 'client' then 'du client' else 'du créatif' end || ' sur ' || new.id, e ->> 'text');
+      end if;
+    end loop;
+  end loop;
+  -- Étapes qui demandent une action de l'équipe
+  if new.state is distinct from old.state then
+    if new.state = 'controle' then perform cs_mail_studio('À contrôler · ' || new.id, 'Une livraison attend votre contrôle', 'Le créatif a déposé une version pour la commande ' || new.id || '. Vérifiez-la avant de la transmettre au client.');
+    elsif new.state = 'retouche' then perform cs_mail_studio('Retouche demandée · ' || new.id, 'Le client demande une retouche', 'Commande ' || new.id || ' : rédigez la fiche de retouche pour le créatif.');
+    elsif new.state = 'terminee' then perform cs_mail_studio('Commande terminée · ' || new.id, 'Commande terminée', 'Le client a validé la commande ' || new.id || '.');
+    end if;
+  end if;
+  return new;
+exception when others then
+  insert into journal(who, what, order_id) values ('Système', 'Notification non envoyée : ' || left(sqlerrm, 150), new.id);
+  return new;
+end $$;
+
+drop trigger if exists cs_orders_notif on public.orders;
+create trigger cs_orders_notif after insert or update on public.orders for each row execute procedure public.cs_t_orders();
+
+create or replace function public.cs_t_profiles() returns trigger language plpgsql security definer set search_path = public as $$
+begin
+  if new.role = 'crea' then
+    perform cs_mail(new.email, 'Bienvenue chez Creative Studio', 'Bienvenue, ' || coalesce(nullif(new.pseudo, ''), nullif(new.nom, ''), 'créatif') || ' !',
+      'Votre candidature est bien reçue. L''équipe Studio étudie votre profil et vos travaux. Dès que vous êtes certifié, vous recevez ici les missions qui correspondent à vos spécialités.',
+      'espace-createur.html', 'Ouvrir mon espace');
+    perform cs_mail_studio('Nouvelle candidature de créatif', 'Un nouveau créatif s''est inscrit',
+      coalesce(nullif(new.pseudo, ''), new.nom, new.email) || ' attend votre validation dans l''onglet Créatifs.');
+  else
+    perform cs_mail(new.email, 'Bienvenue chez Creative Studio', 'Bienvenue' || coalesce(', ' || nullif(new.nom, ''), '') || ' !',
+      'Votre espace client est prêt. Commandez un service en quelques minutes : vous recevez votre première direction artistique sous 24 heures.',
+      'commander.html', 'Commander un service');
+  end if;
+  return new;
+exception when others then return new;
+end $$;
+
+drop trigger if exists cs_profiles_notif on public.profiles;
+create trigger cs_profiles_notif after insert on public.profiles for each row execute procedure public.cs_t_profiles();
+
+create or replace function public.cs_t_contacts() returns trigger language plpgsql security definer set search_path = public as $$
+begin
+  perform cs_mail_studio('Nouveau message du site', 'Nouveau message depuis le site',
+    trim(coalesce(new.prenom, '') || ' ' || coalesce(new.nom, '')) || E'\n' || coalesce(new.email, '') || E'\n' || coalesce(new.telephone, '') || E'\n' || coalesce(new.reseaux, ''));
+  return new;
+exception when others then return new;
+end $$;
+
+drop trigger if exists cs_contacts_notif on public.contacts;
+create trigger cs_contacts_notif after insert on public.contacts for each row execute procedure public.cs_t_contacts();
+
+revoke all on function public.cs_configurer_emails(text, text, text), public.cs_mail(text, text, text, text, text, text),
+  public.cs_mail_studio(text, text, text), public.cs_html(text), public.cs_service_nom(text) from public, anon, authenticated;
+
 -- =============================================================================
 -- APRÈS VOTRE PREMIÈRE INSCRIPTION SUR LE SITE : donnez-vous l'accès Équipe Studio.
 -- Remplacez l'adresse ci-dessous par la vôtre, puis lancez UNIQUEMENT cette ligne :

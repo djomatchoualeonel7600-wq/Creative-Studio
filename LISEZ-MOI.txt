@@ -47,6 +47,28 @@ tout fonctionne, mais avec des données d'exemple gardées dans le navigateur.
      Enregistre. (Cette clé est faite pour être publique : la sécurité est dans la base.)
   4. Double-clique sur publier.bat.
 
+ÉTAPE 4 bis · Les notifications par e-mail (Resend, gratuit jusqu'à 3 000 e-mails par mois)
+  Sans cette étape, tout fonctionne, mais personne ne reçoit d'e-mail.
+  1. Va sur https://resend.com et crée un compte.
+  2. Menu "Domains", puis "Add Domain" : écris ton nom de domaine (ex. creativestudio.com).
+     Resend t'affiche 3 ou 4 lignes (DNS) à ajouter chez ton fournisseur de domaine. Ajoute-les,
+     puis reviens cliquer sur "Verify". Cela peut prendre de quelques minutes à quelques heures.
+  3. Menu "API Keys", puis "Create API Key". Copie la clé (elle commence par re_).
+  4. Dans Supabase : "SQL Editor", "New query", colle cette ligne en remplaçant les 3 valeurs, puis "Run" :
+       select public.cs_configurer_emails('https://tondomaine.com', 'Creative Studio <notifications@tondomaine.com>', 're_ta_cle');
+     Tu dois voir "Notifications par e-mail activées". La clé est rangée dans le coffre-fort de Supabase.
+  5. (Conseillé) Pour les e-mails de confirmation et de mot de passe oublié :
+     Supabase > "Authentication" > "Emails" > "SMTP Settings" > active "Enable custom SMTP" :
+       Host : smtp.resend.com   Port : 465   Username : resend   Password : ta clé re_...
+       Sender email : notifications@tondomaine.com   Sender name : Creative Studio
+     Ensuite tu peux réactiver "Confirm email" (étape 3).
+
+  Qui reçoit quoi :
+  - Client : bienvenue, commande reçue, pistes prêtes, livraison prête, messages de l'équipe.
+  - Créatif : bienvenue, nouvelle mission disponible, mission confirmée, messages de l'équipe.
+  - Équipe Studio : nouvelle commande, nouveau créatif inscrit, message d'un client ou d'un créatif,
+    livraison à contrôler, retouche demandée, commande terminée, message du formulaire du site.
+
 ÉTAPE 5 · Devenir administrateur (équipe Studio)
   1. Sur ton site, va dans "Mon espace", puis "Créer un compte client", avec ton adresse e-mail.
   2. Dans Supabase, "SQL Editor", "New query", colle cette ligne en remplaçant l'adresse :
