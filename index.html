@@ -827,8 +827,8 @@ body{transition:background-color .4s,color .4s}
   background:var(--glass);border:1px solid var(--glass-line);box-shadow:inset 0 1px 0 rgba(255,249,240,.1),0 1.25rem 2.5rem -1.25rem #000;backdrop-filter:blur(16px) saturate(140%);-webkit-backdrop-filter:blur(16px) saturate(140%);transition:transform .45s var(--ease),box-shadow .45s}
 .svc-card:hover{transform:translateY(-.25rem);box-shadow:inset 0 0 0 1px rgba(0,176,255,.45),0 1.5rem 3rem -1.25rem rgba(25,105,251,.55)}
 .svc-card .pic{height:8.5rem;position:relative;overflow:hidden;background:radial-gradient(80% 90% at 30% 20%,rgba(88,79,63,.55),rgba(27,22,16,.4) 60%,transparent),repeating-linear-gradient(90deg,rgba(255,240,210,.04) 0 1px,transparent 1px .5625rem)}
-.svc-card .pic img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.05) brightness(.8);transition:filter .6s var(--ease),transform .9s var(--ease)}
-.svc-card:hover .pic img{filter:none;transform:scale(1.05)}
+.svc-card .pic img,.svc-card .pic video{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.05) brightness(.8);transition:filter .6s var(--ease),transform .9s var(--ease)}
+.svc-card:hover .pic img,.svc-card:hover .pic video{filter:none;transform:scale(1.05)}
 .svc-card .pic .pi{position:absolute;inset:0;display:grid;place-items:center;color:var(--champagne);opacity:.22}.svc-card .pic .pi svg{width:4.5rem;height:4.5rem}
 .svc-card:hover .pic .pi{opacity:.4;transition:opacity .5s}
 .svc-card .pic::after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 40%,rgba(8,6,5,.65))}
@@ -1732,7 +1732,7 @@ if(stage && !reduce && matchMedia('(pointer:fine)').matches){
   g.innerHTML=D.services.map(s=>{
     const ps=s.forfaits.map(f=>f.prix).filter(p=>p!=null), min=ps.length?Math.min(...ps):null;
     const dl=s.forfaits.map(f=>f.delai).find(d=>d);
-    return `<a class="svc-card trace-h" href="commander.html?service=${s.id}"><div class="pic">${s.image?`<img src="${s.image}" alt="" loading="lazy">`:`<span class="pi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width=".8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[s.icone]||''}</svg></span>`}</div><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[s.icone]||''}</svg></span>
+    return `<a class="svc-card trace-h" href="commander.html?service=${s.id}"><div class="pic">${s.image?(s.video?`<video src="${s.video}" poster="${s.image}" muted loop playsinline autoplay preload="metadata" aria-hidden="true"></video>`:`<img src="${s.image}" alt="" loading="lazy">`):`<span class="pi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width=".8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[s.icone]||''}</svg></span>`}</div><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[s.icone]||''}</svg></span>
       <div class="bd"><h3>${esc(s.nom)}</h3><p>${esc(s.phrase)}</p><p style="font-size:.75rem">${esc(s.forfaits.map(f=>f.nom).join(' · '))}${dl?' · '+esc(dl):''}</p>
       <div class="mt"><b>${min==null?'Sur devis':'à partir de '+min+' '+D.devise}</b><span>Commander <i aria-hidden="true">→</i></span></div></div></a>`;
   }).join('');

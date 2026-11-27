@@ -1,6 +1,5 @@
 /* Creative Studio — effet de flou au défilement.
-   Tout ce qui n'est pas encore au centre de l'écran est légèrement flou : on devine ce qui arrive.
-   En remontant vers le centre, le contenu devient net.
+   Seul le cinquième du bas de l'écran est flou : on devine ce qui arrive. Au-dessus, tout est net.
    - Grands titres et textes d'introduction : flou marqué, léger glissement vers le haut.
    - Tout le reste (cartes, images, paragraphes, boutons…) : flou plus doux.
    Coupé automatiquement si le visiteur préfère moins d'animations. */
@@ -28,7 +27,10 @@
     const set = new Set(c);
     soft = c.filter(el => { let p = el.parentElement; while (p) { if (set.has(p)) return false; p = p.parentElement; } return true; });
   }
-  const prog = (top, vh) => { const p = clamp((vh * .97 - top) / (vh * .4), 0, 1); return 1 - Math.pow(1 - p, 2); };
+  /* Le flou ne concerne que le cinquième du bas de l'écran : au-dessus de cette bande, tout est parfaitement net.
+     Un élément qui entre par le bas est flou, puis devient net en arrivant à 80 % de la hauteur. */
+  const BAND = .2;
+  const prog = (top, vh) => { const p = clamp((vh - top) / (vh * BAND), 0, 1); return 1 - Math.pow(1 - p, 2); };
   function upd() {
     tick = false;
     const vh = innerHeight;

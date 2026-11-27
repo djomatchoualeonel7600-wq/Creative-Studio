@@ -17,7 +17,7 @@ window.CS_DATA = {
         { id: "complet", nom: "Identité complète", inclus: ["Logo et déclinaisons", "Couleurs et typographies", "Mockups, flyers et bannières", "Guide d'utilisation"], prix: null, delai: null, retouches: null }
       ],
       questions: ["Comment s'appelle votre marque ?", "Que faites-vous, en une phrase ?", "Qui sont vos clients ?", "Trois mots qui décrivent l'image que vous voulez donner"] },
-    { id: "miniature", nom: "Miniatures YouTube", icone: "yt", image: "r/m/je-te-montre-tout.jpg",
+    { id: "miniature", nom: "Miniatures YouTube", icone: "yt", image: "r/m/breaking-into-tech.jpg",
       phrase: "Des miniatures qui donnent envie de cliquer, au bon format, à chaque vidéo.",
       forfaits: [
         { id: "unite", nom: "À l'unité", inclus: ["Une miniature 16:9", "Version prête à publier"], prix: null, delai: null, retouches: null },
@@ -31,7 +31,7 @@ window.CS_DATA = {
         { id: "complet", nom: "Accompagnement", inclus: ["Positionnement", "Kit de visuels pour les réseaux", "Modèles de posts réutilisables"], prix: null, delai: null, retouches: null }
       ],
       questions: ["Votre métier et ce que vous voulez qu'on retienne de vous", "Votre public cible", "Les réseaux que vous utilisez"] },
-    { id: "motion", nom: "Motion design", icone: "mo", image: "v/forme-motion-01.jpg",
+    { id: "motion", nom: "Motion design", icone: "mo", image: "v/kolobi-studio-motion-01.jpg", video: "v/kolobi-studio-motion-01.mp4",
       phrase: "Votre logo et vos messages prennent vie en animation 2D ou 3D.",
       forfaits: [
         { id: "logo", nom: "Animation de logo", inclus: ["Animation courte du logo", "Versions pour vidéo et réseaux"], prix: null, delai: null, retouches: null },
