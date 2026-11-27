@@ -124,7 +124,7 @@
     $('#sizes').addEventListener('click', () => LB.open([tm], 0));
 
     // Japhet
-    const J = D.japhet.map(m => ({ ...m, sub: 'Japhet' }));
+    const J = D.japhet.map(m => ({ ...m, sub: 'Miniature' }));
     $('#japhet').innerHTML = J.map((m, n) => `<button type="button" class="jp" data-i="${n}"><img src="${m.f}" alt="${esc(m.t)}" loading="lazy" width="${m.w}" height="${m.h}"><span class="mz">${ico('zoom')}</span></button>`).join('');
     $('#japhet').addEventListener('click', e => { const b = e.target.closest('.jp'); if (b) LB.open(J, +b.dataset.i); });
     $$('[data-count]').forEach(n => n.textContent = items.length);

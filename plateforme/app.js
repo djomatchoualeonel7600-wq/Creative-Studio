@@ -258,12 +258,12 @@
 
   /* ---------- Interface commune ---------- */
   function theme() {
-    try { if (localStorage.getItem('cs-theme') === 'light') document.documentElement.dataset.theme = 'light'; } catch (e) {}
+    try { localStorage.removeItem('cs-theme'); if (sessionStorage.getItem('cs-theme') === 'light') document.documentElement.dataset.theme = 'light'; } catch (e) {}
   }
   function toggleTheme() {
     const R = document.documentElement;
     if (R.dataset.theme === 'light') delete R.dataset.theme; else R.dataset.theme = 'light';
-    ls.set('cs-theme', R.dataset.theme === 'light' ? 'light' : 'dark');
+    try { sessionStorage.setItem('cs-theme', R.dataset.theme === 'light' ? 'light' : 'dark'); } catch (e) {}
   }
   let toastT;
   function toast(msg) {
