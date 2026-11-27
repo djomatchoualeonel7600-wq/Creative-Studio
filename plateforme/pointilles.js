@@ -35,8 +35,8 @@
         const k = Math.pow(1 - d / RADIUS, 2) * power;
         // les points s'écartent très légèrement du curseur
         x += dx / (d || 1) * k * 7; y += dy / (d || 1) * k * 7;
-        g.fillStyle = `rgba(${col},${(k * .5).toFixed(3)})`;
-        g.beginPath(); g.arc(x, y, .8 + k * 1.5, 0, 6.2832); g.fill();
+        g.fillStyle = `rgba(${col},${(k * .2).toFixed(3)})`;
+        g.beginPath(); g.arc(x, y, 1 + k * 1.4, 0, 6.2832); g.fill();
       }
     }
     // on continue tant que quelque chose bouge ou reste visible
